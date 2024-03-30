@@ -1,67 +1,61 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>EspecificWordle</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/EspecificWordle.styles.css" asp-append-version="true" />
+
     <script src="https://kit.fontawesome.com/d3102597a3.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 <body>
 
     <header>
 
-        <!-- Sidebar -->
-        @await Html.PartialAsync("NavHeader")
+        @await Html.PartialAsync("Sidebar")
 
-        <nav id="navBar" class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav id="navBar" class="navbar navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
 
-            <div class="container-fluid">
+            <div style="padding: .4rem;">
+                <a data-bs-toggle="offcanvas" data-bs-target="#sidebar" class="text-dark" asp-area="" asp-controller="" asp-action=""> <i class="fa fa-align-justify"></i></a>
+            </div>
 
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1" style="justify-content:space-between;">
+            <div class="order-title">
+                <a class="titulo">EspecificWordle</a>
+            </div>
 
-                        <li class="nav-item" style="text-align: left;">
-                            <a data-bs-toggle="offcanvas" data-bs-target="#sidebar" class="nav-link text-dark" asp-area="" asp-controller="" asp-action=""> <i class="fa fa-align-justify"></i></a>
-                        </li>
-
-                        <li class="nav-item" style="flex: 1; text-align:center;">
-                            <a class="navbar-brand titulo">EspecificWordle</a>
-                        </li>
-
-                        <li class="nav-item" style="text-align: right; margin: 0 1%;">
-                            <a class="nav-link text-dark" href="#"><i class="fa fa-adjust"></i></a>
-                        </li>
-
-                        <li class="nav-item" style="text-align: right;">
-                            <a class="nav-link text-dark" href="#"><i class="fas fa-cog"></i></a>
-                        </li>
-
-                    </ul>
-                </div>
-
+            <div style="padding: .4rem;">
+                <a class="text-dark" href="#"><i class="fa fa-adjust"></i></a>
             </div>
 
         </nav>
 
     </header>
 
-    <div class="container">
+    <div>
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - EspecificWordle - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="border-top footer text-muted" style="display: flex;justify-content: center;">
+        <div>
+            EN DESARROLLO
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

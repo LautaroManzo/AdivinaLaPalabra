@@ -2,12 +2,6 @@ html {
   font-size: 14px;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
@@ -41,13 +35,72 @@ body {
     margin-top: auto;
 }
 
-.titulo {
-    line-height: 2;
-    font-family: monospace;
-    margin: auto;
+@media (max-width: 280px) {
+
+    #navBar {
+        gap: 1rem;
+    }
+
+    button.form-control.form-control-lg {
+        font-size: 10px !important;
+    }
+
+    .titulo {
+        font-size: 16px !important;
+    }
+
+    .order-title {
+        order: 2;
+        width: 100%;
+        text-align: center;
+    }
+
 }
 
 #navBar a {
-    font-size: 1.5rem;
     font-weight: 400;
+    padding: .5rem;
+}
+
+.navbar-nav {
+    flex-direction: row;
+}
+
+.navbar-brand {
+    margin: 0;
+}
+
+.titulo {
+    color: black !important;
+    text-decoration: none;
+    font-weight: bold !important;
+    font-size: 1.5rem;
+    line-height: 2 !important;
+    font-family: monospace !important;
+    margin: auto;
+}
+
+.fila {
+    gap: 3px;
+}
+
+.fila div .form-control:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.fila div .form-control {
+    border-width: 2px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.form-control {
+    caret-color: transparent;
+    cursor: pointer;
+}
+
+.form-control-lg {
+    border-radius: .2rem;
 }
