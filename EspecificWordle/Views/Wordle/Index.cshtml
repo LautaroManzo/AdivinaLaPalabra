@@ -12,15 +12,15 @@
 
 </script>
 
-<div style="display:flex; flex-direction:column; align-items:center;">
+<div class="divConteiener">
 
-    <div style="margin: 5em 0; display: flex; flex-direction: column; gap: 3px; max-width: 500px; margin-left: 3px; margin-right: 3px;">
+    <div class="divWordle">
         @for (int i = 0; i < 5; i++)
         {
-            <div class="fila" style="display: flex; height: 50px;">
+            <div class="fila">
                 @for (int j = 0; j < Model.Wordle.Length; j++)
                 {
-                    <div style="flex: 1;">
+                    <div>
                         @Html.TextBox("Nombre", null, new { @class = "form-control form-control-lg", style = "height:50px; max-width:50px; padding: 0;", autocomplete = "off", maxlength = "1", oninput = "this.value = this.value.toUpperCase()" })
                     </div>
                 }
@@ -31,10 +31,3 @@
     @await Html.PartialAsync("Keyboard")
 
 </div>
-
-
-<style type="text/css">
-
-
-
-</style>
