@@ -21,7 +21,7 @@
                 @for (int j = 0; j < Model.Wordle.Length; j++)
                 {
                     <div>
-                        @Html.TextBox("Nombre", null, new { @class = "form-control form-control-lg", style = "height:50px; max-width:50px; padding: 0;", autocomplete = "off", maxlength = "1", oninput = "this.value = this.value.toUpperCase()" })
+                        @Html.TextBox("Nombre", null, new { @class = "form-control form-control-lg", style = "height:50px; max-width:50px; padding: 0;", autocomplete = "off", role = "presentation", maxlength = "1", oninput = "this.value = this.value.toUpperCase()" })
                     </div>
                 }
             </div>
