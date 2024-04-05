@@ -9,10 +9,11 @@ html {
 html {
   position: relative;
   min-height: 100%;
+  user-select: none;  /* Esto es para que no sea pueda clickear + arrastrar el cursor para copiar o marcar algo */
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 #sidebar a {
