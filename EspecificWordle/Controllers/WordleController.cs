@@ -16,7 +16,7 @@ namespace EspecificWordle.Controllers
         {
             var palabra = "Palabra";
             
-            return View(new WordleViewModel { Wordle = palabra.ToUpper() });
+            return View(new WordleViewModel { Wordle = palabra.ToUpper(), Tildes = false });
         }
 
         

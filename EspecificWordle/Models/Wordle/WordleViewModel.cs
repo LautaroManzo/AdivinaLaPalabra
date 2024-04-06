@@ -4,6 +4,8 @@
     {
         public string Wordle { get; set; }
 
+        public bool Tildes { get; set; }
+
 
     }
 }

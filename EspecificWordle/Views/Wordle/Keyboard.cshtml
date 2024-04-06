@@ -1,23 +1,26 @@
 ﻿
 <div class="divKeyboard">
 
-    <div class="fila">
-        <div>
-            <button class="form-control form-control-lg tildes">Á</button>
+    @if (Model.Tildes)
+    {
+        <div class="fila">
+            <div>
+                <button class="form-control form-control-lg tildes">Á</button>
+            </div>
+            <div>
+                <button class="form-control form-control-lg tildes">É</button>
+            </div>
+            <div>
+                <button class="form-control form-control-lg tildes">Í</button>
+            </div>
+            <div>
+                <button class="form-control form-control-lg tildes">Ó</button>
+            </div>
+            <div>
+                <button class="form-control form-control-lg tildes">Ú</button>
+            </div>
         </div>
-        <div>
-            <button class="form-control form-control-lg tildes">É</button>
-        </div>
-        <div>
-            <button class="form-control form-control-lg tildes">Í</button>
-        </div>
-        <div>
-            <button class="form-control form-control-lg tildes">Ó</button>
-        </div>
-        <div>
-            <button class="form-control form-control-lg tildes">Ú</button>
-        </div>
-    </div>
+    }
 
     <div class="fila">
         <div>

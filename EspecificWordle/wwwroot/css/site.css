@@ -27,7 +27,7 @@ body {
 }
 
 #sidebar a:hover {
-    background-color: #f5f5f5;
+    background-color: #E0E0E0;
 }
 
 .div-separator {
@@ -61,6 +61,21 @@ body {
 #navBar a {
     font-weight: 400;
     padding: .5rem;
+}
+
+.menu {
+    color:black;
+}
+
+.menu:hover {
+    background-color: #E0E0E0;
+    border-radius: 10%;
+    color: black;
+}
+
+.mode:hover {
+    background-color: #E0E0E0;
+    border-radius: 50%;
 }
 
 .navbar-nav {
@@ -158,4 +173,12 @@ body {
 .footer-conteiner {
     display: flex;
     justify-content: center;
+}
+
+.divKeyboard button:hover {
+    background-color: #E0E0E0;
+}
+
+.divKeyboard .fila button:focus {
+    border-color: #E0E0E0;
 }
