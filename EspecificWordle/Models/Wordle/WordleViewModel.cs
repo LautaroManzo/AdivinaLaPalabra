@@ -6,6 +6,8 @@
 
         public bool Tildes { get; set; }
 
+        public int Intentos { get; set; }
+
 
     }
 }

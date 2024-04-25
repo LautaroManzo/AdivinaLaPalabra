@@ -1,4 +1,31 @@
 ﻿
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('.divKeyboard button').on('click', function () {
+
+            let buttonText = $(this).text();
+
+            let filaIntento = $('.divWordle > div:not(.div-disable)');
+
+            // Filtra el primer input sin valor y lo retorna
+            let inputFila = filaIntento.find('input').filter(function () {
+
+                return $(this).val().trim() === '';
+
+            }).first();
+
+            inputFila.val(buttonText);
+
+        });
+
+
+
+    });
+
+</script>
+
 <div class="divKeyboard">
 
     @if (Model.Tildes)
@@ -117,7 +144,7 @@
             <button class="form-control form-control-lg letras">M</button>
         </div>
         <div>
-            <button title="Delete" class="form-control form-control-lg letras"><i class="fa-solid fa-arrow-left"></i></button>
+            <button title="Delete" class="form-control form-control-lg letras delete"><i class="fa-solid fa-arrow-left"></i></button>
         </div>
     </div>
 

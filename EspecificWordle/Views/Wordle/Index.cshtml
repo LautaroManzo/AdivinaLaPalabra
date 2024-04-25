@@ -2,13 +2,68 @@
 
 <script type="text/javascript">
 
+    let inputFocus;
+
     $(document).ready(function () {
 
         console.log("@Model.Wordle");
 
+        // Habilita la fila que se esta usando segun el numero de intento.
+        $('.divWordle').children().each(function (index) {
+            if (index === (@Model.Intentos - 1))
+                $(this).removeClass('div-disable');
+        });
+
+        // Guardo en todo momento el input que tiene focus
+        $('.divWordle > div:not(.div-disable) input').on('focus', function () {
+            inputFocus = $(this);
+        });
+
+        // Avanza de input y se le pasa el focus al de adelante
+        $('.divWordle > div:not(.div-disable) input').on("input", function (e) { 
+            inputFocus.parent().next('div').find('input').focus();
+        });
+
+        $('.divWordle > div:not(.div-disable) input').on("keydown", function (e) {
+
+            // Expresión regular para letras de la A-Z (mayúsculas y minúsculas)
+            var abcRegex = /^[a-zA-Z\b]+$/;
+
+            if (abcRegex.test(String.fromCharCode(e.keyCode))) {
+
+                // Esto es para reemplazar el valor si el input ya contiene 
+                if (inputFocus.val() != "" && e.keyCode != 8) {
+                    inputFocus.val("");                    
+                    return true;
+                }
+                
+                // Se asigna evento de borrado a las teclas delete y suprimir
+                if (e.keyCode === 8) {
+                    e.preventDefault();
+                    onDeleteClick();
+                }
+
+                // Desactiva la tecla TAB para que el user no pueda moverse entre los inputs.
+                if (e.keyCode === 9)
+                    e.preventDefault();
+            }
+            else {
+                e.preventDefault();
+                return false;
+            }
+
+        });
+
+        // funcion para manejar el borrado en inputs
+        function onDeleteClick() {
+            // Borro el valor del input
+            inputFocus.val("");
+            // Busco el input previo al borrado para pasarle el focus.
+            inputFocus.parent().prev('div').find('input').focus();
+        }
+
+        $(".delete").on('click', onDeleteClick);
     });
-
-
 
 </script>
 
@@ -17,11 +72,12 @@
     <div class="divWordle">
         @for (int i = 0; i < 5; i++)
         {
-            <div class="fila">
+            <div class="fila div-disable">
                 @for (int j = 0; j < Model.Wordle.Length; j++)
                 {
                     <div>
-                        @Html.TextBox("Nombre", null, new { @class = "form-control form-control-lg", style = "height:50px; max-width:50px; padding: 0;", autocomplete = "off", role = "presentation", maxlength = "1", oninput = "this.value = this.value.toUpperCase()" })
+                        <input type="text" class="form-control form-control-lg input" autocomplete="off" role="presentation"
+                            maxlength="1" oninput="this.value = this.value.toUpperCase()" name="letters" />
                     </div>
                 }
             </div>

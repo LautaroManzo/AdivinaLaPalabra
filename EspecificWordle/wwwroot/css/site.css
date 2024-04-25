@@ -182,3 +182,13 @@ body {
 .divKeyboard .fila button:focus {
     border-color: #E0E0E0;
 }
+
+.input {
+    height: 50px;
+    max-width: 50px;
+    padding: 0;
+}
+
+.div-disable {
+    pointer-events:none;
+}

@@ -14,9 +14,13 @@ namespace EspecificWordle.Controllers
 
         public IActionResult Index()
         {
-            var palabra = "Palabra";
-            
-            return View(new WordleViewModel { Wordle = palabra.ToUpper(), Tildes = false });
+            var viewModel = new WordleViewModel {
+                Wordle = "Palabra".ToUpper(),
+                Tildes = false,
+                Intentos = 1
+            };
+
+            return View(viewModel);
         }
 
         
