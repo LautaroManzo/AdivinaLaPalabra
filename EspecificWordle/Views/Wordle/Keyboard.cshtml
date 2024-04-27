@@ -5,22 +5,18 @@
 
         $('.divKeyboard button').on('click', function () {
 
+            if ($(this).hasClass('delete')) {
+                onDeleteClick();
+                return true;
+            }
+
             let buttonText = $(this).text();
 
-            let filaIntento = $('.divWordle > div:not(.div-disable)');
+            inputFocus.val(buttonText);
 
-            // Filtra el primer input sin valor y lo retorna
-            let inputFila = filaIntento.find('input').filter(function () {
-
-                return $(this).val().trim() === '';
-
-            }).first();
-
-            inputFila.val(buttonText);
+            inputFocus.parent().next('div').find('input').focus();
 
         });
-
-
 
     });
 

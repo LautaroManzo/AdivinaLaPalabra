@@ -54,15 +54,12 @@
 
         });
 
-        // funcion para manejar el borrado en inputs
-        function onDeleteClick() {
-            // Borro el valor del input
-            inputFocus.val("");
-            // Busco el input previo al borrado para pasarle el focus.
-            inputFocus.parent().prev('div').find('input').focus();
-        }
-
-        $(".delete").on('click', onDeleteClick);
+        // 200 milisegundos para que haga enfoque en el primer input
+        setTimeout(function () {
+            var inputFocus = $('.divWordle > div:not(.div-disable)').find("input").first();
+            inputFocus.focus();
+        }, 200);
+        
     });
 
 </script>
