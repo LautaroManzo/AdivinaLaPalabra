@@ -1,4 +1,6 @@
-﻿@model WordleViewModel
+﻿@using EspecificWordle.Models
+
+@model WordleViewModel
 
 <script type="text/javascript">
 
@@ -63,6 +65,10 @@
     });
 
 </script>
+
+@Html.HiddenFor(x => x.Wordle)
+@Html.HiddenFor(x => x.Tildes)
+@Html.HiddenFor(x => x.Intentos)
 
 <div class="divConteiener">
 

@@ -17,39 +17,44 @@
 </head>
 <body>
 
-    <header>
+    <form method="post">
 
-        @await Html.PartialAsync("Sidebar")
+        <header>
 
-        <nav id="navBar" class="navbar navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+            @await Html.PartialAsync("Sidebar")
 
-            <div title="Menú" class="divNavBar-padding">
-                <a class="menu" data-bs-toggle="offcanvas" data-bs-target="#sidebar" class="text-dark" asp-area="" asp-controller="" asp-action=""> <i class="fa fa-align-justify fa-lg"></i></a>
-            </div>
+            <nav id="navBar" class="navbar navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
 
-            <div class="order-title">
-                <a class="titulo">EspecificWordle</a>
-            </div>
+                <div title="Menú" class="divNavBar-padding">
+                    <a class="menu" data-bs-toggle="offcanvas" data-bs-target="#sidebar" class="text-dark" asp-area="" asp-controller="" asp-action=""> <i class="fa fa-align-justify fa-lg"></i></a>
+                </div>
 
-            <div title="Modo oscuro" class="divNavBar-padding">
-                <a class="text-dark mode" href="#"><i class="fa fa-adjust fa-lg"></i></a>
-            </div>
+                <div class="order-title">
+                    <a class="titulo">EspecificWordle</a>
+                </div>
 
-        </nav>
+                <div title="Modo oscuro" class="divNavBar-padding">
+                    <a class="text-dark mode" href="#"><i class="fa fa-adjust fa-lg"></i></a>
+                </div>
 
-    </header>
+            </nav>
 
-    <div>
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+        </header>
 
-    <footer class="border-top footer text-muted footer-conteiner">
         <div>
-            EN DESARROLLO
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
         </div>
-    </footer>
+
+        <footer class="border-top footer text-muted footer-conteiner">
+            <div>
+                EN DESARROLLO
+            </div>
+        </footer>
+
+    </form>
+    
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

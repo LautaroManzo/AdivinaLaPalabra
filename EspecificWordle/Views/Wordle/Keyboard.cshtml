@@ -9,16 +9,40 @@
                 onDeleteClick();
                 return true;
             }
+            else if ($(this).hasClass('enter')) {
+                return true;
+            }
 
             let buttonText = $(this).text();
 
             inputFocus.val(buttonText);
 
             inputFocus.parent().next('div').find('input').focus();
-
         });
 
     });
+
+    function enter() {
+        let url = '@Html.Raw(Url.Action("Enter", "Wordle", new { area = "Gestion" }))';
+
+        let data = { @Model.GetType().Name: $('form').serializeObject() };
+
+        // console.log(data);
+
+        $.ajax({    // Falta ver la forma de enviar token
+            type: 'POST',
+            url: url,
+            data: data,
+            dataType: 'json',
+            success: function (response) {
+                console.log("SUCCESS");
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("ERROR");
+            }
+        });
+
+    }
 
 </script>
 
@@ -28,119 +52,119 @@
     {
         <div class="fila">
             <div>
-                <button class="form-control form-control-lg tildes">Á</button>
+                <button type="button" class="form-control form-control-lg tildes">Á</button>
             </div>
             <div>
-                <button class="form-control form-control-lg tildes">É</button>
+                <button type="button" class="form-control form-control-lg tildes">É</button>
             </div>
             <div>
-                <button class="form-control form-control-lg tildes">Í</button>
+                <button type="button" class="form-control form-control-lg tildes">Í</button>
             </div>
             <div>
-                <button class="form-control form-control-lg tildes">Ó</button>
+                <button type="button" class="form-control form-control-lg tildes">Ó</button>
             </div>
             <div>
-                <button class="form-control form-control-lg tildes">Ú</button>
+                <button type="button" class="form-control form-control-lg tildes">Ú</button>
             </div>
         </div>
     }
 
     <div class="fila">
         <div>
-            <button class="form-control form-control-lg letras">Q</button>
+            <button type="button" class="form-control form-control-lg letras">Q</button>
         </div>
         <div>
-            <button class="form-control form-control-lg letras">W</button>
+            <button type="button" class="form-control form-control-lg letras">W</button>
         </div>
         <div>
-            <button class="form-control form-control-lg letras">E</button>
+            <button type="button" class="form-control form-control-lg letras">E</button>
         </div>
         <div>
-            <button class="form-control form-control-lg letras">R</button>
+            <button type="button" class="form-control form-control-lg letras">R</button>
         </div>
         <div>
-            <button class="form-control form-control-lg letras">T</button>
+            <button type="button" class="form-control form-control-lg letras">T</button>
         </div>
         <div>
-            <button class="form-control form-control-lg letras">Y</button>
+            <button type="button" class="form-control form-control-lg letras">Y</button>
         </div>
         <div>
-            <button class="form-control form-control-lg letras">U</button>
+            <button type="button" class="form-control form-control-lg letras">U</button>
         </div>
         <div>
-            <button class="form-control form-control-lg letras">I</button>
+            <button type="button" class="form-control form-control-lg letras">I</button>
         </div>
         <div>
-            <button class="form-control form-control-lg letras">O</button>
+            <button type="button" class="form-control form-control-lg letras">O</button>
         </div>
         <div>
-            <button class="form-control form-control-lg letras">P</button>
-        </div>
-    </div>
-
-    <div class="fila">
-        <div>
-            <button class="form-control form-control-lg letras">A</button>
-        </div>
-        <div>
-            <button class="form-control form-control-lg letras">S</button>
-        </div>
-        <div>
-            <button class="form-control form-control-lg letras">D</button>
-        </div>
-        <div>
-            <button class="form-control form-control-lg letras">F</button>
-        </div>
-        <div>
-            <button class="form-control form-control-lg letras">G</button>
-        </div>
-        <div>
-            <button class="form-control form-control-lg letras">H</button>
-        </div>
-        <div>
-            <button class="form-control form-control-lg letras">Y</button>
-        </div>
-        <div>
-            <button class="form-control form-control-lg letras">J</button>
-        </div>
-        <div>
-            <button class="form-control form-control-lg letras">K</button>
-        </div>
-        <div>
-            <button class="form-control form-control-lg letras">L</button>
-        </div>
-        <div>
-            <button class="form-control form-control-lg letras">Ñ</button>
+            <button type="button" class="form-control form-control-lg letras">P</button>
         </div>
     </div>
 
     <div class="fila">
         <div>
-            <button title="Intro" class="form-control form-control-lg letras"><i class="fa-solid fa-check"></i></button>
+            <button type="button" class="form-control form-control-lg letras">A</button>
         </div>
         <div>
-            <button class="form-control form-control-lg letras">Z</button>
+            <button type="button" class="form-control form-control-lg letras">S</button>
         </div>
         <div>
-            <button class="form-control form-control-lg letras">X</button>
+            <button type="button" class="form-control form-control-lg letras">D</button>
         </div>
         <div>
-            <button class="form-control form-control-lg letras">C</button>
+            <button type="button" class="form-control form-control-lg letras">F</button>
         </div>
         <div>
-            <button class="form-control form-control-lg letras">V</button>
+            <button type="button" class="form-control form-control-lg letras">G</button>
         </div>
         <div>
-            <button class="form-control form-control-lg letras">B</button>
+            <button type="button" class="form-control form-control-lg letras">H</button>
         </div>
         <div>
-            <button class="form-control form-control-lg letras">N</button>
+            <button type="button" class="form-control form-control-lg letras">Y</button>
         </div>
         <div>
-            <button class="form-control form-control-lg letras">M</button>
+            <button type="button" class="form-control form-control-lg letras">J</button>
         </div>
         <div>
-            <button title="Delete" class="form-control form-control-lg letras delete"><i class="fa-solid fa-arrow-left"></i></button>
+            <button type="button" class="form-control form-control-lg letras">K</button>
+        </div>
+        <div>
+            <button type="button" class="form-control form-control-lg letras">L</button>
+        </div>
+        <div>
+            <button type="button" class="form-control form-control-lg letras">Ñ</button>
+        </div>
+    </div>
+
+    <div class="fila">
+        <div>
+            <button type="button" title="Intro" onclick="enter()" class="form-control form-control-lg letras enter"><i class="fa-solid fa-check"></i></button>
+        </div>
+        <div>
+            <button type="button" class="form-control form-control-lg letras">Z</button>
+        </div>
+        <div>
+            <button type="button" class="form-control form-control-lg letras">X</button>
+        </div>
+        <div>
+            <button type="button" class="form-control form-control-lg letras">C</button>
+        </div>
+        <div>
+            <button type="button" class="form-control form-control-lg letras">V</button>
+        </div>
+        <div>
+            <button type="button" class="form-control form-control-lg letras">B</button>
+        </div>
+        <div>
+            <button type="button" class="form-control form-control-lg letras">N</button>
+        </div>
+        <div>
+            <button type="button" class="form-control form-control-lg letras">M</button>
+        </div>
+        <div>
+            <button type="button" title="Delete" class="form-control form-control-lg letras delete"><i class="fa-solid fa-arrow-left"></i></button>
         </div>
     </div>
 

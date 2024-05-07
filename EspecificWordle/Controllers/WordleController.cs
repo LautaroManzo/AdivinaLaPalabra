@@ -23,7 +23,14 @@ namespace EspecificWordle.Controllers
             return View(viewModel);
         }
 
-        
+        [HttpPost]
+        public IActionResult Enter(WordleViewModel wordleViewModel)
+        {
+
+
+
+            return Json(wordleViewModel);
+        }        
 
     }
 }
