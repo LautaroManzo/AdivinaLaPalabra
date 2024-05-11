@@ -17,7 +17,7 @@ namespace EspecificWordle.Controllers
             var viewModel = new WordleViewModel {
                 Wordle = "Palabra".ToUpper(),
                 Tildes = false,
-                Intentos = 1
+                Intentos = 0
             };
 
             return View(viewModel);

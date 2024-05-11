@@ -5,7 +5,7 @@
 
     $(document).ready(function () {
 
-        $('.divKeyboard button').on('click', function () {
+        $(document).on("click", '.divKeyboard button', function () {
 
             if ($(this).hasClass('delete')) {
                 onDeleteClick();
@@ -15,9 +15,7 @@
                 return true;
             }
 
-            let buttonText = $(this).text();
-
-            inputFocus.val(buttonText);
+            inputFocus.val($(this).text());
 
             inputFocus.parent().next('div').find('input').focus();
         });
@@ -36,12 +34,15 @@
     function enter() {
         let url = '@Html.Raw(Url.Action("Enter", "Wordle", new { area = "Gestion" }))';
 
+        // Antes del Ajax validar que haya ingresado todas las letras !!!!!!!!!!
+
         let data = { @Model.GetType().Name: $('form').serializeObject() };
 
-        data.WordleViewModel.PalabraIngresada = obtenerFila(data.WordleViewModel, 0);
+        data.WordleViewModel.PalabraIngresada = obtenerFila(data.WordleViewModel, data.WordleViewModel.Intentos);
         data.__RequestVerificationToken = $('input[name="__RequestVerificationToken"]').val();
 
-        console.log(data.WordleViewModel);
+        // console.log(data.WordleViewModel);
+        // console.log(data.WordleViewModel.PalabraIngresada);
 
         $.ajax({
             type: 'POST',
@@ -51,10 +52,14 @@
             success: function (response) {
                 
                 console.log("SUCCESS");
+                
+                // 'Mapeo' de viewmodel
                 $("#Intentos").val(response.intentos);
-                 
-                $('.divWordle > div.div-disable:first').removeClass('div-disable'); // Se saca la class en el div siguiente
-                $('.divWordle > div:not(.div-disable):first').addClass('div-disable');  // Se agrega la class en el div donde se ingresó la palabra
+
+                filaFocus.next("div").removeClass('div-disable'); // Se saca la class en el div siguiente
+                filaFocus.addClass('div-disable');  // Se agrega la class en el div donde se ingresó la palabra
+                filaFocus = filaFocus.next("div");  // Se cambia la fila que tiene el foco
+                filaFocus.find("input").first().focus();  // Se da el foco al input de la fila siguiente
 
             },
             error: function (jqXHR, textStatus, errorThrown) {

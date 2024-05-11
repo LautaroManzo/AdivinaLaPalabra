@@ -5,6 +5,7 @@
 <script type="text/javascript">
 
     let inputFocus;
+    let filaFocus;
 
     $(document).ready(function () {
 
@@ -12,21 +13,27 @@
 
         // Habilita la fila que se esta usando segun el numero de intento.
         $('.divWordle').children().each(function (index) {
-            if (index === (@Model.Intentos - 1))
+            if (index === (@Model.Intentos - 0)) {
                 $(this).removeClass('div-disable');
+                filaFocus = $(this);    // Foco de la fila
+            }
         });
 
         // Guardo en todo momento el input que tiene focus
-        $('.divWordle > div:not(.div-disable) input').on('focus', function () {
+        $(document).on('focus', '.divWordle > div:not(.div-disable) input', function () {
             inputFocus = $(this);
         });
 
         // Avanza de input y se le pasa el focus al de adelante
-        $('.divWordle > div:not(.div-disable) input').on("input", function (e) { 
+        $(document).on("input", '.divWordle > div:not(.div-disable) input', function (e) {
             inputFocus.parent().next('div').find('input').focus();
         });
 
-        $('.divWordle > div:not(.div-disable) input').on("keydown", function (e) {
+        $(document).on("keydown", '.divWordle > div:not(.div-disable) input', function (e) {
+
+            // 13 Tecla de Enter
+            if (e.keyCode == 13)
+                enter();
 
             // Expresión regular para letras de la A-Z (mayúsculas y minúsculas)
             var abcRegex = /^[a-zA-Z\b]+$/;
@@ -58,7 +65,7 @@
 
         // 200 milisegundos para que haga enfoque en el primer input
         setTimeout(function () {
-            var inputFocus = $('.divWordle > div:not(.div-disable)').find("input").first();
+            var inputFocus = filaFocus.find("input").first();
             inputFocus.focus();
         }, 200);
         
