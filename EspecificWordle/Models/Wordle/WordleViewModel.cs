@@ -8,6 +8,10 @@
 
         public int Intentos { get; set; }
 
+        public string PalabraIngresada { get; set; }
+
+        public bool[] Posiciones { get; set; }
+
 
     }
 }

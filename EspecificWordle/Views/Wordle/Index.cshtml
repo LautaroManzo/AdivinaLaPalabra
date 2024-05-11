@@ -69,18 +69,19 @@
 @Html.HiddenFor(x => x.Wordle)
 @Html.HiddenFor(x => x.Tildes)
 @Html.HiddenFor(x => x.Intentos)
+@Html.HiddenFor(x => x.PalabraIngresada)
 
 <div class="divConteiener">
 
     <div class="divWordle">
-        @for (int i = 0; i < 5; i++)
+        @for (int i = 0; i < 5; i++)    // FILAS
         {
             <div class="fila div-disable">
-                @for (int j = 0; j < Model.Wordle.Length; j++)
+                @for (int j = 0; j < Model.Wordle.Length; j++)  // COLUMNAS
                 {
                     <div>
-                        <input type="text" class="form-control form-control-lg input" autocomplete="off" role="presentation"
-                            maxlength="1" oninput="this.value = this.value.toUpperCase()" name="letters" />
+                        <input name="@($"{i}_{j}")" type="text" class="form-control form-control-lg input" autocomplete="off" role="presentation"
+                               maxlength="1" oninput="this.value = this.value.toUpperCase()" />
                     </div>
                 }
             </div>

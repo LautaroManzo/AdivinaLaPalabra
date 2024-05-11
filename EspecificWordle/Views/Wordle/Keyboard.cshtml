@@ -1,4 +1,6 @@
-﻿
+﻿@using Newtonsoft.Json
+@using System.Collections
+
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -22,23 +24,44 @@
 
     });
 
+    function obtenerFila(model, intento) {
+        let palabraIngresada = "";
+        for (let col = 0; col < 7; col++) { // El 7 tiene que venir desde el view model, y sacar la palabra.
+            let key = `${intento}_${col}`;
+            palabraIngresada += model[key];
+        }
+        return palabraIngresada;
+    }
+
     function enter() {
         let url = '@Html.Raw(Url.Action("Enter", "Wordle", new { area = "Gestion" }))';
 
         let data = { @Model.GetType().Name: $('form').serializeObject() };
 
-        // console.log(data);
+        data.WordleViewModel.PalabraIngresada = obtenerFila(data.WordleViewModel, 0);
+        data.__RequestVerificationToken = $('input[name="__RequestVerificationToken"]').val();
 
-        $.ajax({    // Falta ver la forma de enviar token
+        console.log(data.WordleViewModel);
+
+        $.ajax({
             type: 'POST',
             url: url,
             data: data,
             dataType: 'json',
             success: function (response) {
+                
                 console.log("SUCCESS");
+                $("#Intentos").val(response.intentos);
+                 
+                $('.divWordle > div.div-disable:first').removeClass('div-disable'); // Se saca la class en el div siguiente
+                $('.divWordle > div:not(.div-disable):first').addClass('div-disable');  // Se agrega la class en el div donde se ingresó la palabra
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log("ERROR");
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown);
             }
         });
 
