@@ -137,9 +137,12 @@ body {
 
 .letras {
     height: 50px;
-    max-width: 50px;
     padding: 0;
     font-size: 13px;
+}
+
+.enter {
+    padding: .4em;
 }
 
 .divConteiener {
@@ -149,7 +152,7 @@ body {
 }
 
 .divWordle {
-    margin: 4em 0;
+    margin: 5.5em 0 4em 0;
     display: flex;
     flex-direction: column;
     gap: 3px;
@@ -162,7 +165,7 @@ body {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 3.5px;
     max-width: 500px;
 }
 
@@ -194,9 +197,10 @@ body {
 }
 
 .div-messages {
-    width:100%;
+    width: 100%;
     max-width: 500px;
-    margin: .6em;
+    margin: .8em;
+    position: absolute;
 }
 
 #message {
