@@ -43,7 +43,19 @@ body {
     }
 
     button.form-control.form-control-lg {
-        font-size: 10px !important;
+        font-size: 14px !important;
+    }
+
+    .delete i {
+        font-size: 1em !important;
+    }
+
+    .fa-circle-check {
+        font-size: .8em !important;
+    }
+
+    .enter {
+        padding:0.1em !important;
     }
 
     .titulo {
@@ -56,6 +68,22 @@ body {
         text-align: center;
     }
 
+}
+
+@media (min-width: 280px) {
+
+    .d-sm-none {
+        display: none !important;
+    }
+
+    .d-sm-inline {
+        display: inline !important;
+    }
+
+}
+
+.delete {
+    padding: .2em !important;
 }
 
 #navBar a {
@@ -99,9 +127,7 @@ body {
 .fila {
     display: flex;
     height: 50px;
-    margin-left: 3px;
-    margin-right: 3px;
-    gap: 3px;
+    gap: 4px;
 }
 
 .fila div {
@@ -167,6 +193,7 @@ body {
     flex-direction: column;
     gap: 3.5px;
     max-width: 500px;
+    padding: 3px;
 }
 
 .divNavBar-padding {
