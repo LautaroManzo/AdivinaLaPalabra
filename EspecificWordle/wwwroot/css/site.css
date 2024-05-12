@@ -192,3 +192,20 @@ body {
 .div-disable {
     pointer-events:none;
 }
+
+.div-messages {
+    width:100%;
+    max-width: 500px;
+    margin: .6em;
+}
+
+#message {
+    display: none;
+    text-align: center;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.alert {
+    margin-bottom: 0;
+}

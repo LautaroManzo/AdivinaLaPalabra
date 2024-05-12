@@ -29,3 +29,20 @@ $.fn.serializeObject = function () {
     });
     return obj;
 };
+
+// Funcion para mostrar un mensaje de error/info..
+function ShowMessage(message, color) {
+
+    if ($("#message").length)
+        return;
+
+    $(".divConteiener").prepend(`<div class="div-messages"><div id="message" class="alert alert-${color}" role="alert">${message}</div></div>`);
+
+    $("#message").fadeIn(500);
+
+    setTimeout(function () {
+        $("#message").fadeOut(1000, function () {
+            $(this).parent().remove();
+        });
+    }, 3000);
+}
