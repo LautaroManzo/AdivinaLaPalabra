@@ -51,10 +51,27 @@
                 dataType: 'json',
                 success: function (response) {
                 
-                    console.log("SUCCESS");
-                
+                    console.log("SUCCESS");  
+
                     // 'Mapeo' de viewmodel
                     $("#Intentos").val(response.intentos);
+
+                    // console.log(response.letras);
+
+                    // Se recorre la lista de letras
+                    $.each(response.letras, function (index, elemento) {
+                        
+                        if (elemento.color == "Verde") {
+                            changeInputAndButton(index, elemento.letra, "input-success", "button-success");
+                        }
+                        else if (elemento.color == "Amarillo") {
+                            changeInputAndButton(index, elemento.letra, "input-medium", "button-medium");
+                        }
+                        else {
+                            changeInputAndButton(index, elemento.letra, "input-grey", "button-grey");
+                        }
+
+                    });
 
                     filaFocus.next("div").removeClass('div-disable'); // Se saca la class en el div siguiente
                     filaFocus.addClass('div-disable');  // Se agrega la class en el div donde se ingresó la palabra
@@ -74,6 +91,16 @@
         else {
             ShowMessage("Debe ingresar todas las letras", "danger");
         }
+    }
+
+    // Se cambia el aspecto de los inputs y buttons
+    function changeInputAndButton(posicion, letra, classInput, classButton) {
+
+        filaFocus.find('input').eq(posicion).addClass(classInput);
+
+        $(".divKeyboard").find("button").filter(function () {
+            return $(this).text().trim() === letra;
+        }).first().addClass(classButton);
     }
 
 </script>

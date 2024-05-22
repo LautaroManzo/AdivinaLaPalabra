@@ -36,21 +36,46 @@ namespace EspecificWordle.Controllers
                 var palabraSecreta = wordleViewModel.Wordle;
                 var palabraIngresada = wordleViewModel.PalabraIngresada;
 
-                bool[] letras = new bool[palabraSecreta.Length];    // Letras donde la posicion es correcta/incorrecta
+                // Letras donde la posicion es correcta/incorrecta
+                List<object> letras = new List<object>();
 
                 for (int i = 0; i < palabraSecreta.Length; i++)
                 {
                     if (palabraSecreta[i] == palabraIngresada[i])
                     {
-                        letras[i] = true;
+                        letras.Add(new { 
+                            Letra = palabraIngresada[i].ToString(),
+                            Color = "Verde"
+                        });
                     }
                     else
                     {
-                        letras[i] = false;
+                        // P A L A B R A
+                        // P A R T I D O
+
+                        if (palabraSecreta.Contains(palabraIngresada[i]))
+                        {
+                            // Contiene la letra de la posicion [i]
+                            letras.Add(new
+                            {
+                                Letra = palabraIngresada[i].ToString(),
+                                Color = "Amarillo"
+                            });
+                        }
+                        else
+                        {
+                            // No contiene la letra
+                            letras.Add(new
+                            {
+                                Letra = palabraIngresada[i].ToString(),
+                                Color = "Gris"
+                            });
+                        }
+
                     }
                 }
 
-                wordleViewModel.Posiciones = letras;
+                wordleViewModel.Letras = letras;
                 wordleViewModel.Intentos++;
             }
 

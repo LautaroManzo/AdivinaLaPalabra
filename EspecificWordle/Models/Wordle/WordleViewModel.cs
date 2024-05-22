@@ -10,8 +10,8 @@
 
         public string PalabraIngresada { get; set; }
 
-        public bool[] Posiciones { get; set; }
+        public List<object> Letras { get; set; }
 
-
+        
     }
 }
