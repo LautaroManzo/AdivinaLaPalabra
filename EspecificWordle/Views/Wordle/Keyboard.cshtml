@@ -98,9 +98,13 @@
 
         filaFocus.find('input').eq(posicion).addClass(classInput);
 
-        $(".divKeyboard").find("button").filter(function () {
-            return $(this).text().trim() === letra;
-        }).first().addClass(classButton);
+        let button = $(".divKeyboard").find("button:contains('" + letra + "')").first();
+         
+        if (!button.hasClass("button-success")) {
+            button.removeClass("button-medium");
+            button.addClass(classButton);
+        }
+
     }
 
 </script>

@@ -266,14 +266,38 @@ body {
     border-color: #43a047;
 }
 
+.button-success:hover {
+    background-color: #43a047 !important;
+}
+
+.button-success:active {
+    color: #fff;
+}
+
 .button-medium {
     background-color: #e4a81d;
     color: #fff;
     border-color: #e4a81d;
 }
 
+.button-medium:hover {
+    background-color: #e4a81d !important;
+}
+
+.button-medium:active {
+    color: #fff;
+}
+
 .button-grey {
     background-color: #757575;
     color: #fff;
     border-color: #757575;
+}
+
+.button-grey:hover {
+    background-color: #757575 !important;
+}
+
+.button-grey:active {
+    color: #fff;
 }
