@@ -1,19 +1,42 @@
+
 html {
-  font-size: 14px;
+    background-color: #EFBC9B !important;
+    font-size: 14px;
+    height: 100%;
+    user-select: none;
+}
+
+nav {
+    background-color: #F3EEEA;
+}
+
+header {
+    position: fixed;
+    width: 100%;
+}
+
+body {
+    background-color: #EBE3D5;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+form, main {
+    height: 100%;
+}
+
+input:focus {
+    border-color: #776B5D !important;
+    outline: none;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
-  user-select: none;  /* Esto es para que no sea pueda clickear + arrastrar el cursor para copiar o marcar algo */
-}
-
-body {
-    margin-bottom: 60px;
+#sidebar {
+    background-color: #F3EEEA;
 }
 
 #sidebar a {
@@ -27,7 +50,7 @@ body {
 }
 
 #sidebar a:hover {
-    background-color: #E0E0E0;
+    background-color: #B0A695;
 }
 
 .div-separator {
@@ -68,6 +91,11 @@ body {
         text-align: center;
     }
 
+    .div-messages {
+        top: 7.5rem !important;
+        font-size: smaller;
+    }
+
 }
 
 @media (min-width: 280px) {
@@ -96,13 +124,13 @@ body {
 }
 
 .menu:hover {
-    background-color: #E0E0E0;
+    background-color: #B0A695;
     border-radius: 10%;
     color: black;
 }
 
 .mode:hover {
-    background-color: #E0E0E0;
+    background-color: #B0A695;
     border-radius: 50%;
 }
 
@@ -128,6 +156,10 @@ body {
     display: flex;
     height: 50px;
     gap: 4px;
+}
+
+.divKeyboard .fila {
+    gap: 6px;
 }
 
 .fila div {
@@ -172,9 +204,11 @@ body {
 }
 
 .divConteiener {
+    height:100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content:center;
 }
 
 .divWordle {
@@ -191,7 +225,7 @@ body {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 3.5px;
+    gap: 6px;
     max-width: 500px;
     padding: 3px;
 }
@@ -205,12 +239,17 @@ body {
     justify-content: center;
 }
 
+.divKeyboard button {
+    border: none;
+}
+
 .divKeyboard button:hover {
-    background-color: #E0E0E0;
+    background-color: #B0A695;
+    border-color: #B0A695;
 }
 
 .divKeyboard .fila button:focus {
-    border-color: #E0E0E0;
+    border-color: #B0A695;
 }
 
 .input {
@@ -227,8 +266,8 @@ body {
 .div-messages {
     width: 100%;
     max-width: 500px;
-    margin: .8em;
     position: absolute;
+    top: 6rem;
 }
 
 #message {
@@ -300,4 +339,11 @@ body {
 
 .button-grey:active {
     color: #fff;
+}
+
+.alert-custom {
+    color: black;
+    background-color: #B0A695;
+    border-color: #776B5D;
+    font-weight: 600;
 }

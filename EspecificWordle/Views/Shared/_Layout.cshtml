@@ -19,43 +19,37 @@
 
     <form method="post">
 
-        <header>
+        <div style="height:100%;">
+            <header>
 
-            @await Html.PartialAsync("Sidebar")
+                @await Html.PartialAsync("Sidebar")
 
-            <nav id="navBar" class="navbar navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+                <nav id="navBar" class="navbar navbar-toggleable-sm navbar-light box-shadow">
 
-                <div title="Menú" class="divNavBar-padding">
-                    <a class="menu" data-bs-toggle="offcanvas" data-bs-target="#sidebar" class="text-dark" asp-area="" asp-controller="" asp-action=""> <i class="fa fa-align-justify fa-lg"></i></a>
-                </div>
+                    <div title="Menú" class="divNavBar-padding">
+                        <a class="menu" data-bs-toggle="offcanvas" data-bs-target="#sidebar" class="text-dark" asp-area="" asp-controller="" asp-action=""> <i class="fa fa-align-justify fa-lg"></i></a>
+                    </div>
 
-                <div class="order-title">
-                    <a class="titulo">EspecificWordle</a>
-                </div>
+                    <div class="order-title">
+                        <a class="titulo">EspecificWordle</a>
+                    </div>
 
-                <div title="Modo oscuro" class="divNavBar-padding">
-                    <a class="text-dark mode" href="#"><i class="fa fa-adjust fa-lg"></i></a>
-                </div>
+                    <div title="Modo oscuro" class="divNavBar-padding">
+                        <a class="text-dark mode" href="#" onclick="changeMode();"><i class="fa fa-adjust fa-lg"></i></a>
+                    </div>
 
-            </nav>
+                </nav>
 
-        </header>
+            </header>
 
-        <div>
-            <main role="main" class="pb-3">
+            <main role="main">
                 @RenderBody()
             </main>
-        </div>
 
-        <footer class="border-top footer text-muted footer-conteiner">
-            <div>
-                EN DESARROLLO
-            </div>
-        </footer>
+        </div>
 
     </form>
     
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

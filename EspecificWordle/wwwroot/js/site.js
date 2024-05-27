@@ -46,3 +46,9 @@ function ShowMessage(message, color) {
         });
     }, 3000);
 }
+
+function changeMode() {
+
+
+
+}
