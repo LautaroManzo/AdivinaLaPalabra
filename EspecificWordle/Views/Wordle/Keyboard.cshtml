@@ -7,17 +7,21 @@
 
         $(document).on("click", '.divKeyboard button', function () {
 
-            if ($(this).hasClass('delete')) {
-                onDeleteClick();
-                return true;
-            }
-            else if ($(this).hasClass('enter')) {
-                return true;
+            if ($("#Resultado").val() == '@false') {
+
+                if ($(this).hasClass('delete')) {
+                    onDeleteClick();
+                    return true;
+                }
+                else if ($(this).hasClass('enter')) {
+                    return true;
+                }
+
+                inputFocus.val($(this).text());
+
+                inputFocus.parent().next('div').find('input').focus();
             }
 
-            inputFocus.val($(this).text());
-
-            inputFocus.parent().next('div').find('input').focus();
         });
 
     });
@@ -32,7 +36,7 @@
     }
 
     function enter() {
-        let url = '@Html.Raw(Url.Action("Enter", "Wordle", new { area = "Gestion" }))';
+        let url = '@Html.Raw(Url.Action("Enter", "Wordle"))';
         let data = { @Model.GetType().Name: $('form').serializeObject() };
         let palabraIngresada = obtenerFila(data.WordleViewModel, data.WordleViewModel.Intentos);
 
@@ -58,32 +62,38 @@
 
                     // console.log(response.letras);
 
-                    // Se recorre la lista de letras
-                    $.each(response.letras, function (index, elemento) {
+                    if (response.resultado) {
+                        $("#Resultado").val(true);
+
+                        changeInputAndButton(undefined, undefined, "input-success", "button-success", true, palabraIngresada);
+
+                        $(".resultado").modal('show');
+                    }
+                    else {
+                        // Se recorre la lista de letras
+                        $.each(response.letras, function (index, elemento) {
                         
-                        if (elemento.color == "Verde") {
-                            changeInputAndButton(index, elemento.letra, "input-success", "button-success");
-                        }
-                        else if (elemento.color == "Amarillo") {
-                            changeInputAndButton(index, elemento.letra, "input-medium", "button-medium");
-                        }
-                        else {
-                            changeInputAndButton(index, elemento.letra, "input-grey", "button-grey");
-                        }
+                            if (elemento.color == "Verde") {
+                                changeInputAndButton(index, elemento.letra, "input-success", "button-success");
+                            }
+                            else if (elemento.color == "Amarillo") {
+                                changeInputAndButton(index, elemento.letra, "input-medium", "button-medium");
+                            }
+                            else {
+                                changeInputAndButton(index, elemento.letra, "input-grey", "button-grey");
+                            }
 
-                    });
+                        });
 
-                    filaFocus.next("div").removeClass('div-disable'); // Se saca la class en el div siguiente
-                    filaFocus.addClass('div-disable');  // Se agrega la class en el div donde se ingresó la palabra
-                    filaFocus = filaFocus.next("div");  // Se cambia la fila que tiene el foco
-                    filaFocus.find("input").first().focus();  // Se da el foco al input de la fila siguiente
+                        filaFocus.next("div").removeClass('div-disable'); // Se saca la class en el div siguiente
+                        filaFocus.addClass('div-disable');  // Se agrega la class en el div donde se ingresó la palabra
+                        filaFocus = filaFocus.next("div");  // Se cambia la fila que tiene el foco
+                        filaFocus.find("input").first().focus();  // Se da el foco al input de la fila siguiente
+                    }
 
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR");
-                    // console.log(jqXHR);
-                    // console.log(textStatus);
-                    // console.log(errorThrown);
+                    console.error('Error al realizar la solicitud AJAX:', errorThrown);
                 }
             });
 
@@ -94,20 +104,102 @@
     }
 
     // Se cambia el aspecto de los inputs y buttons
-    function changeInputAndButton(posicion, letra, classInput, classButton) {
+    function changeInputAndButton(posicion, letra, classInput, classButton, result, palabraIngresada) {
 
-        filaFocus.find('input').eq(posicion).addClass(classInput);
+        if (result) {
+            filaFocus.find('input').addClass(classInput);
 
-        let button = $(".divKeyboard").find("button:contains('" + letra + "')").first();
-         
-        if (!button.hasClass("button-success")) {
-            button.removeClass("button-medium");
-            button.addClass(classButton);
+            var letras = palabraIngresada.split('');
+
+            for (var i = 0; i < letras.length; i++) {
+                let button = $(".divKeyboard").find("button:contains('" + letras[i] + "')").first();
+                button.removeClass("button-medium");
+                button.addClass(classButton);
+            }
+
+            filaFocus.addClass('div-disable');
+            inputFocus.blur();
+
+            modalResult(palabraIngresada);  // palabraIngresada ?
         }
+        else {
+            filaFocus.find('input').eq(posicion).addClass(classInput);
+
+            let button = $(".divKeyboard").find("button:contains('" + letra + "')").first();
+         
+            if (!button.hasClass("button-success")) {
+                button.removeClass("button-medium");
+                button.addClass(classButton);
+            }
+        }
+    }
+
+    function modalResult(palabra) {
+
+        $.ajax({
+            url: '@Url.Action("Result", "Wordle")',
+            method: 'POST',
+            data: { palabra: palabra },
+            dataType: 'json',
+            success: function (data) {
+
+                let modal = $('#resultModal');
+
+                var modalTitle = modal.find('.modal-title');
+                var modalBodyInput = modal.find('.modal-body input');
+
+                // Faltan validaciones
+                modalTitle.text("Ganaste");
+                
+                modal.find('.modal-body #spanPalabra').text(data.palabra);
+                modal.find('.modal-body #spanSignificado').text(data.significado);
+                modal.find('.modal-body #spanOtraInfo').text(data.info);
+
+                modal.modal('show');
+                modal.addClass("modal-center");
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Error al realizar la solicitud AJAX:', errorThrown);
+            }
+        });
 
     }
 
 </script>
+
+<div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-size">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="resultModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="mb-3">
+                    <span id="spanPalabra"></span>
+                </div>
+
+                <div class="mb-3">
+                    <span id="spanSignificado"></span>
+                </div>
+
+                <div class="mb-3">
+                    <span id="spanOtraInfo"></span>
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <div class="divKeyboard">
 

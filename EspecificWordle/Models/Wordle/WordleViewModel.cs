@@ -12,6 +12,6 @@
 
         public List<object> Letras { get; set; }
 
-        
+        public bool Resultado { get; set; }
     }
 }

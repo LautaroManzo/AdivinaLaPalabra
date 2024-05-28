@@ -29,7 +29,7 @@ namespace EspecificWordle.Controllers
         {
             if (wordleViewModel.Wordle.Equals(wordleViewModel.PalabraIngresada))
             {
-                // Si es correcta
+                wordleViewModel.Resultado = true;
             }
             else
             {
@@ -80,7 +80,21 @@ namespace EspecificWordle.Controllers
             }
 
             return Json(wordleViewModel);
-        }        
+        }
+
+        [HttpPost]
+        public IActionResult Result(string palabra)
+        {
+            var resultado = new
+            {
+                Palabra = palabra,
+                Significado = "Test test palabra partida partido probando, texto largo. Esto esta andando bien.",
+                Info = "Esto es solo de prueba.", 
+                Result = true
+            };
+            
+            return Json(resultado);
+        }
 
     }
 }

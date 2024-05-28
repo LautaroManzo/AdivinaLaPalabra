@@ -347,3 +347,12 @@ input:focus {
     border-color: #776B5D;
     font-weight: 600;
 }
+
+.modal-center {
+    display: flex !important;
+    justify-content: center;
+}
+
+.modal-size {
+    max-width: 500px;
+}
