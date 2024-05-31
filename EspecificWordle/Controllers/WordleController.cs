@@ -76,7 +76,11 @@ namespace EspecificWordle.Controllers
                 }
 
                 wordleViewModel.Letras = letras;
-                wordleViewModel.Intentos++;
+
+                if (wordleViewModel.Intentos != 4)
+                    wordleViewModel.Intentos++;
+                else
+                    wordleViewModel.Resultado = false;
             }
 
             return Json(wordleViewModel);
@@ -85,13 +89,28 @@ namespace EspecificWordle.Controllers
         [HttpPost]
         public IActionResult Result(string palabra)
         {
-            var resultado = new
+            var resultado = new object();
+
+            if (!string.IsNullOrEmpty(palabra))
             {
-                Palabra = palabra,
-                Significado = "Test test palabra partida partido probando, texto largo. Esto esta andando bien.",
-                Info = "Esto es solo de prueba.", 
-                Result = true
-            };
+                resultado = new
+                {
+                    Palabra = palabra,
+                    Significado = "Test test palabra partida partido probando, texto largo. Esto esta andando bien.",
+                    Info = "Esto es solo de prueba.", 
+                    Result = true
+                };
+            }
+            else
+            {
+                resultado = new
+                {
+                    Palabra = palabra,
+                    Significado = "Test test palabra partida partido probando, texto largo. Esto esta andando bien.",
+                    Info = "Esto es solo de prueba.",
+                    Result = false
+                };
+            }
             
             return Json(resultado);
         }

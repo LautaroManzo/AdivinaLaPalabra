@@ -4,9 +4,11 @@
 
 <script type="text/javascript">
 
+    let abcRegex = /^[a-zA-Z]+$/;   // Expresión regular para letras de la A-Z (mayúsculas y minúsculas)
+
     let inputFocus;
     let filaFocus;
-
+    
     $(document).ready(function () {
 
         console.log("@Model.Wordle");
@@ -21,52 +23,17 @@
 
         // Guardo en todo momento el input que tiene focus
         $(document).on('focus', '.divWordle > div:not(.div-disable) input', function () {
+            
+            if (inputFocus)
+                inputFocus.removeClass("foco");
+
             inputFocus = $(this);
-        });
-
-        // Avanza de input y se le pasa el focus al de adelante
-        $(document).on("input", '.divWordle > div:not(.div-disable) input', function (e) {
-            inputFocus.parent().next('div').find('input').focus();
-        });
-
-        $(document).on("keydown", '.divWordle > div:not(.div-disable) input', function (e) {
-
-            // 13 Tecla de Enter
-            if (e.keyCode == 13)
-                enter();
-
-            // Expresión regular para letras de la A-Z (mayúsculas y minúsculas)
-            var abcRegex = /^[a-zA-Z\b]+$/;
-
-            if (abcRegex.test(String.fromCharCode(e.keyCode))) {
-
-                // Esto es para reemplazar el valor si el input ya contiene 
-                if (inputFocus.val() != "" && e.keyCode != 8) {
-                    inputFocus.val("");                    
-                    return true;
-                }
-                
-                // Se asigna evento de borrado a las teclas delete y suprimir
-                if (e.keyCode === 8) {
-                    e.preventDefault();
-                    onDeleteClick();
-                }
-
-                // Desactiva la tecla TAB para que el user no pueda moverse entre los inputs.
-                if (e.keyCode === 9)
-                    e.preventDefault();
-            }
-            else {
-                e.preventDefault();
-                return false;
-            }
-
+            inputFocus.addClass("foco");
         });
 
         // 200 milisegundos para que haga enfoque en el primer input
         setTimeout(function () {
-            var inputFocus = filaFocus.find("input").first();
-            inputFocus.focus();
+            var inputFocus = filaFocus.find("input").first().focus();
         }, 200);
         
     });

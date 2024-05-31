@@ -1,6 +1,6 @@
 
 html {
-    background-color: #EFBC9B !important;
+    background-color: #EBE3D5;
     font-size: 14px;
     height: 100%;
     user-select: none;
@@ -24,11 +24,6 @@ body {
 
 form, main {
     height: 100%;
-}
-
-input:focus {
-    border-color: #776B5D !important;
-    outline: none;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -355,4 +350,8 @@ input:focus {
 
 .modal-size {
     max-width: 500px;
+}
+
+.foco {
+    border-color: #776B5D !important;
 }

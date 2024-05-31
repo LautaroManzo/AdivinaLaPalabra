@@ -6,15 +6,15 @@
     $(document).ready(function () {
 
         $(document).on("click", '.divKeyboard button', function () {
-
-            if ($("#Resultado").val() == '@false') {
-
+            
+            if ($("#Resultado").val() == "" || $("#Resultado").val() && $("#Resultado").val() == '@false') {
+    
                 if ($(this).hasClass('delete')) {
                     onDeleteClick();
-                    return true;
+                    return;
                 }
                 else if ($(this).hasClass('enter')) {
-                    return true;
+                    return;
                 }
 
                 inputFocus.val($(this).text());
@@ -60,9 +60,7 @@
                     // 'Mapeo' de viewmodel
                     $("#Intentos").val(response.intentos);
 
-                    // console.log(response.letras);
-
-                    if (response.resultado) {
+                    if (response.resultado == true) {
                         $("#Resultado").val(true);
 
                         changeInputAndButton(undefined, undefined, "input-success", "button-success", true, palabraIngresada);
@@ -89,6 +87,18 @@
                         filaFocus.addClass('div-disable');  // Se agrega la class en el div donde se ingresó la palabra
                         filaFocus = filaFocus.next("div");  // Se cambia la fila que tiene el foco
                         filaFocus.find("input").first().focus();  // Se da el foco al input de la fila siguiente
+
+                        if(response.resultado == false) {
+                            $("#Resultado").val(false);
+
+                            filaFocus.addClass('div-disable');
+                            inputFocus.blur();
+
+                            modalResult();  // palabraIngresada ?
+                            
+                            $(".resultado").modal('show');
+                        }
+
                     }
 
                 },
@@ -106,7 +116,7 @@
     // Se cambia el aspecto de los inputs y buttons
     function changeInputAndButton(posicion, letra, classInput, classButton, result, palabraIngresada) {
 
-        if (result) {
+        if (result == true) {
             filaFocus.find('input').addClass(classInput);
 
             var letras = palabraIngresada.split('');
@@ -120,6 +130,7 @@
             filaFocus.addClass('div-disable');
             inputFocus.blur();
 
+            filaFocus.find('input.foco').removeClass("foco"); // buscar en el div no en la filafocus
             modalResult(palabraIngresada);  // palabraIngresada ?
         }
         else {
@@ -131,6 +142,12 @@
                 button.removeClass("button-medium");
                 button.addClass(classButton);
             }
+
+            if (result == false) {
+                filaFocus.find('input.foco').removeClass("foco"); // buscar en el div no en la filafocus
+                modalResult();  // palabraIngresada ?
+            }
+
         }
     }
 
@@ -148,8 +165,14 @@
                 var modalTitle = modal.find('.modal-title');
                 var modalBodyInput = modal.find('.modal-body input');
 
-                // Faltan validaciones
-                modalTitle.text("Ganaste");
+                if (data.result == true) {
+                    modalTitle.text("Ganaste")
+                    modal.addClass("Win");
+                }
+                else {
+                    modalTitle.text("Perdiste");
+                    modal.addClass("Lost");
+                }
                 
                 modal.find('.modal-body #spanPalabra').text(data.palabra);
                 modal.find('.modal-body #spanSignificado').text(data.significado);

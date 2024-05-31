@@ -1,16 +1,67 @@
 ﻿
+$(document).on("keypress", function (e) {
+
+    let keyCode = e.keyCode || e.which;
+
+    // Se hace esto para evitar el uso de letras con acento.
+    // Si la tecla presionada está dentro del rango de letras del alfabeto inglés.
+    if ((keyCode < 65 || keyCode > 90) && (keyCode < 97 || keyCode > 122))
+        e.preventDefault();
+});
+
+$(document).on("keydown", function (e) {
+
+    // 13 Tecla de Enter
+    if (e.keyCode == 13)
+        enter();
+
+    // Se asigna evento de borrado a las teclas delete y suprimir
+    if (e.keyCode === 8) {
+        e.preventDefault();
+        onDeleteClick();
+    }
+
+    // Desactiva la tecla TAB para que el user no pueda moverse entre los inputs.
+    if (e.keyCode === 9)
+        e.preventDefault();
+
+    if (abcRegex.test(String.fromCharCode(e.keyCode))) {
+
+        // Esto es para reemplazar el valor si el input ya contiene
+        if (inputFocus.val() != "") {
+            inputFocus.val(e.key.toUpperCase());
+            inputFocus.removeClass("foco");
+            inputFocus.blur();
+            inputFocus = inputFocus.parent().next('div').find('input');       
+            inputFocus.addClass("foco");
+            return;
+        }
+
+    }
+    else {
+        e.preventDefault();
+    }
+
+    inputFocus.focus();
+});
+
+$(document).on('input', '.divWordle > div:not(.div-disable) input', function (e) {
+    // Avanza de input cada vez que se modifica el input
+    inputFocus.parent().next('div').find('input').focus();
+});
+
 // funcion para manejar el borrado en inputs
 function onDeleteClick() {
 
     // Borro el valor del input
-    inputFocus.val("");
-
-    // Busco el input previo al borrado para pasarle el focus.
-    inputFocus.parent().prev('div').find('input').focus();
+    if (inputFocus.val() != "")
+        inputFocus.val("");
 
     // Mantiene el foco si el input a borrar es el primero 
-    if (filaFocus.find('input').first().is(inputFocus))
-        inputFocus.focus();
+    if (!filaFocus.find('input').first().is(inputFocus)) {
+        inputFocus.removeClass("foco");
+        inputFocus.parent().prev('div').find('input').focus();    // Busco el input previo al borrado para pasarle el focus.
+    }
 }
 
 // Función serializeObject
@@ -55,7 +106,10 @@ function changeMode() {
 
 // Evento que se ejecuta al abrir el modal
 $('#resultModal').on('show.bs.modal', function () {
-    showConfetis();
+
+    if ($('#resultModal').hasClass("Win"))
+        showConfetis();
+
 });
 
 // Evento que se ejecuta al cerrar el modal
