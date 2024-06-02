@@ -1,13 +1,14 @@
 
 html {
-    background-color: #EBE3D5;
+    background-color: #E8E8E8;
     font-size: 14px;
     height: 100%;
     user-select: none;
 }
 
 nav {
-    background-color: #F3EEEA;
+    background-color: #C7C8CC;
+    width: 100%;
 }
 
 header {
@@ -16,7 +17,7 @@ header {
 }
 
 body {
-    background-color: #EBE3D5;
+    background-color: #E8E8E8;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -31,7 +32,7 @@ form, main {
 }
 
 #sidebar {
-    background-color: #F3EEEA;
+    background-color: #E8E8E8;
 }
 
 #sidebar a {
@@ -45,7 +46,7 @@ form, main {
 }
 
 #sidebar a:hover {
-    background-color: #B0A695;
+    background-color: #C7C8CC;
 }
 
 .div-separator {
@@ -119,13 +120,13 @@ form, main {
 }
 
 .menu:hover {
-    background-color: #B0A695;
+    background-color: #8f8f8f;
     border-radius: 10%;
     color: black;
 }
 
 .mode:hover {
-    background-color: #B0A695;
+    background-color: #8f8f8f;
     border-radius: 50%;
 }
 
@@ -149,7 +150,7 @@ form, main {
 
 .fila {
     display: flex;
-    height: 50px;
+    height: 60px;
     gap: 4px;
 }
 
@@ -167,7 +168,7 @@ form, main {
 }
 
 .fila div .form-control {
-    border-width: 2px;
+    border-width: 1px;
     text-align: center;
     font-weight: bold;
     font-size: 18px;
@@ -189,7 +190,7 @@ form, main {
 }
 
 .letras {
-    height: 50px;
+    height: 60px;
     padding: 0;
     font-size: 13px;
 }
@@ -207,13 +208,19 @@ form, main {
 }
 
 .divWordle {
-    margin: 5.5em 0 4em 0;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 4px;
     max-width: 500px;
-    margin-left: 3px;
-    margin-right: 3px;
+    margin-left: 5%;
+    margin-right: 5%;
+    flex: 1;
+    justify-content: center;
+}
+
+.divWordle .fila {
+    height: 58px;
+    gap: 4px;
 }
 
 .divKeyboard {
@@ -221,8 +228,9 @@ form, main {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    max-width: 500px;
-    padding: 3px;
+    max-width: 600px;
+    margin: 0 3px 6px 3px;
+    padding: 0 6px 0px 6px;
 }
 
 .divNavBar-padding {
@@ -239,19 +247,24 @@ form, main {
 }
 
 .divKeyboard button:hover {
-    background-color: #B0A695;
-    border-color: #B0A695;
+    background-color: #C7C8CC;
+    border-color: #C7C8CC;
 }
 
 .divKeyboard .fila button:focus {
-    border-color: #B0A695;
+    border-color: #C7C8CC;
+}
+
+.divKeyboard .fila button {
+    font-size: 1.5rem;
+    font-weight: 500;
 }
 
 .input {
-    height: 50px;
-    max-width: 50px;
+    height: 58px;
+    max-width: 58px;
     padding: 0;
-    font-size: 1.5rem !important;
+    font-size: 1.8rem !important;
 }
 
 .div-disable {
@@ -260,9 +273,10 @@ form, main {
 
 .div-messages {
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     position: absolute;
-    top: 6rem;
+    top: 1rem;
+    z-index: 1;
 }
 
 #message {
@@ -338,9 +352,8 @@ form, main {
 
 .alert-custom {
     color: black;
-    background-color: #B0A695;
-    border-color: #776B5D;
-    font-weight: 600;
+    background-color: #C7C8CC;
+    border-color: #757575;
 }
 
 .modal-center {
@@ -349,9 +362,9 @@ form, main {
 }
 
 .modal-size {
-    max-width: 500px;
+    max-width: 600px;
 }
 
 .foco {
-    border-color: #776B5D !important;
+    border-color: #757575 !important;
 }
