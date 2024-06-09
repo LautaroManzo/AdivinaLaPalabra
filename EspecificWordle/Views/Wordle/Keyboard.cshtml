@@ -40,7 +40,10 @@
         let data = { @Model.GetType().Name: $('form').serializeObject() };
         let palabraIngresada = obtenerFila(data.WordleViewModel, data.WordleViewModel.Intentos);
 
-        if (palabraIngresada.length == data.WordleViewModel.Wordle.length) {
+        if (data.WordleViewModel.Resultado == 'true' || data.WordleViewModel.Resultado == 'false') {    // Ver otra forma de validar esto
+            modalResult($("#Resultado").val());
+        }
+        else if (palabraIngresada.length == data.WordleViewModel.Wordle.length) {
 
             data.WordleViewModel.PalabraIngresada = obtenerFila(data.WordleViewModel, data.WordleViewModel.Intentos);
             data.__RequestVerificationToken = $('input[name="__RequestVerificationToken"]').val();
@@ -92,9 +95,10 @@
                             $("#Resultado").val(false);
 
                             filaFocus.addClass('div-disable');
+                            inputFocus.removeClass("foco");
                             inputFocus.blur();
 
-                            modalResult();  // palabraIngresada ?
+                            modalResult(false);
                             
                             $(".resultado").modal('show');
                         }
@@ -109,7 +113,7 @@
 
         }
         else {
-            ShowMessage("Debe ingresar todas las letras", "danger");
+            ShowMessage("Debe ingresar todas las letras", "custom");
         }
     }
 
@@ -118,6 +122,7 @@
 
         if (result == true) {
             filaFocus.find('input').addClass(classInput);
+            addAnimation(filaFocus.find('input').parent());
 
             var letras = palabraIngresada.split('');
 
@@ -131,10 +136,11 @@
             inputFocus.blur();
 
             filaFocus.find('input.foco').removeClass("foco"); // buscar en el div no en la filafocus
-            modalResult(palabraIngresada);  // palabraIngresada ?
+            modalResult(true);
         }
         else {
             filaFocus.find('input').eq(posicion).addClass(classInput);
+            addAnimation(filaFocus.find('input').parent());
 
             let button = $(".divKeyboard").find("button:contains('" + letra + "')").first();
          
@@ -145,18 +151,23 @@
 
             if (result == false) {
                 filaFocus.find('input.foco').removeClass("foco"); // buscar en el div no en la filafocus
-                modalResult();  // palabraIngresada ?
+                modalResult(false);
             }
 
         }
     }
 
-    function modalResult(palabra) {
+    function addAnimation(divParent) {
+        divParent.addClass("animated-flip");
+        divParent.toggleClass('rotated');
+    }
+
+    function modalResult(result) {
 
         $.ajax({
             url: '@Url.Action("Result", "Wordle")',
             method: 'POST',
-            data: { palabra: palabra },
+            data: { result: result },
             dataType: 'json',
             success: function (data) {
 

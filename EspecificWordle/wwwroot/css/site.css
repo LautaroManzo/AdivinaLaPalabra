@@ -1,35 +1,74 @@
 
+/* Page */
+
 html {
     background-color: #E8E8E8;
     font-size: 14px;
-    height: 100%;
     user-select: none;
-}
-
-nav {
-    background-color: #C7C8CC;
-    width: 100%;
-}
-
-header {
-    position: fixed;
-    width: 100%;
 }
 
 body {
     background-color: #E8E8E8;
     display: flex;
     flex-direction: column;
-    height: 100%;
 }
 
-form, main {
+html, body, form, main {
     height: 100%;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
+
+/* Nav */
+
+nav {
+    background-color: #C7C8CC;
+    width: 100%;
+}
+
+.navbar-nav {
+    flex-direction: row;
+}
+
+.navbar-brand {
+    margin: 0;
+}
+
+.div-navbar-padding {
+    padding: .4rem;
+}
+
+#navBar a {
+    padding: .5rem;
+}
+
+.menu {
+    color: black;
+}
+
+.menu:hover {
+    background-color: #8f8f8f;
+    border-radius: 10%;
+    color: black;
+}
+
+.titulo {
+    text-decoration: none;
+    font-weight: bold !important;
+    font-size: 1.5rem;
+    line-height: 2 !important;
+    font-family: monospace !important;
+    margin: auto;
+}
+
+.mode:hover {
+    background-color: #8f8f8f;
+    border-radius: 50%;
+}
+
+/* Sidebar */
 
 #sidebar {
     background-color: #E8E8E8;
@@ -55,107 +94,54 @@ form, main {
     margin-top: auto;
 }
 
-@media (max-width: 280px) {
+/* Conteiner */
 
-    #navBar {
-        gap: 1rem;
-    }
-
-    button.form-control.form-control-lg {
-        font-size: 14px !important;
-    }
-
-    .delete i {
-        font-size: 1em !important;
-    }
-
-    .fa-circle-check {
-        font-size: .8em !important;
-    }
-
-    .enter {
-        padding:0.1em !important;
-    }
-
-    .titulo {
-        font-size: 16px !important;
-    }
-
-    .order-title {
-        order: 2;
-        width: 100%;
-        text-align: center;
-    }
-
-    .div-messages {
-        top: 7.5rem !important;
-        font-size: smaller;
-    }
-
+.divConteiener {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-@media (min-width: 280px) {
+/* Wordle */
 
-    .d-sm-none {
-        display: none !important;
-    }
-
-    .d-sm-inline {
-        display: inline !important;
-    }
-
+.divWordle {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 500px;
+    margin-left: 5%;
+    margin-right: 5%;
+    flex: 1;
+    justify-content: center;
 }
 
-.delete {
-    padding: .2em !important;
-}
-
-#navBar a {
-    font-weight: 400;
-    padding: .5rem;
-}
-
-.menu {
-    color:black;
-}
-
-.menu:hover {
-    background-color: #8f8f8f;
-    border-radius: 10%;
-    color: black;
-}
-
-.mode:hover {
-    background-color: #8f8f8f;
-    border-radius: 50%;
-}
-
-.navbar-nav {
-    flex-direction: row;
-}
-
-.navbar-brand {
-    margin: 0;
-}
-
-.titulo {
-    color: black !important;
-    text-decoration: none;
-    font-weight: bold !important;
-    font-size: 1.5rem;
-    line-height: 2 !important;
-    font-family: monospace !important;
-    margin: auto;
+.divWordle .fila {
+    height: 58px;
+    gap: 4px;
 }
 
 .fila {
     display: flex;
     height: 60px;
     gap: 4px;
+    position: relative;
 }
 
-.divKeyboard .fila {
-    gap: 6px;
+.input {
+    height: 58px;
+    max-width: 58px;
+    padding: 0;
+    font-size: 1.8rem !important;
+}
+
+.div-disable {
+    pointer-events: none;
+}
+
+.foco {
+    border-color: #757575 !important;
 }
 
 .fila div {
@@ -183,45 +169,7 @@ form, main {
     border-radius: .2rem;
 }
 
-.tildes {
-    height: 50px;
-    padding: 0;
-    font-size: 13px;
-}
-
-.letras {
-    height: 60px;
-    padding: 0;
-    font-size: 13px;
-}
-
-.enter {
-    padding: .4em;
-}
-
-.divConteiener {
-    height:100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content:center;
-}
-
-.divWordle {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    max-width: 500px;
-    margin-left: 5%;
-    margin-right: 5%;
-    flex: 1;
-    justify-content: center;
-}
-
-.divWordle .fila {
-    height: 58px;
-    gap: 4px;
-}
+/* Keyboard */
 
 .divKeyboard {
     width: 100%;
@@ -231,15 +179,6 @@ form, main {
     max-width: 600px;
     margin: 0 3px 6px 3px;
     padding: 0 6px 0px 6px;
-}
-
-.divNavBar-padding {
-    padding: .4rem;
-}
-
-.footer-conteiner {
-    display: flex;
-    justify-content: center;
 }
 
 .divKeyboard button {
@@ -260,16 +199,31 @@ form, main {
     font-weight: 500;
 }
 
-.input {
-    height: 58px;
-    max-width: 58px;
-    padding: 0;
-    font-size: 1.8rem !important;
+.divKeyboard .fila {
+    gap: 6px;
 }
 
-.div-disable {
-    pointer-events:none;
+.tildes {
+    height: 50px;
+    padding: 0;
+    font-size: 13px;
 }
+
+.letras {
+    height: 60px;
+    padding: 0;
+    font-size: 13px;
+}
+
+.enter {
+    padding: .4em;
+}
+
+.delete {
+    padding: .2em !important;
+}
+
+/* Messages */
 
 .div-messages {
     width: 100%;
@@ -290,6 +244,8 @@ form, main {
     margin-bottom: 0;
 }
 
+/* Custom class */
+
 .input-success {
     background-color: #43a047;
     color: #fff;
@@ -309,9 +265,9 @@ form, main {
 }
 
 .button-success {
-    background-color: #43a047;
-    color: #fff;
-    border-color: #43a047;
+    background-color: #43a047 !important;
+    color: #fff !important;
+    border-color: #43a047 !important;
 }
 
 .button-success:hover {
@@ -323,9 +279,9 @@ form, main {
 }
 
 .button-medium {
-    background-color: #e4a81d;
-    color: #fff;
-    border-color: #e4a81d;
+    background-color: #e4a81d !important;
+    color: #fff !important;
+    border-color: #e4a81d !important;
 }
 
 .button-medium:hover {
@@ -337,9 +293,9 @@ form, main {
 }
 
 .button-grey {
-    background-color: #757575;
-    color: #fff;
-    border-color: #757575;
+    background-color: #757575 !important;
+    color: #fff !important;
+    border-color: #757575 !important;
 }
 
 .button-grey:hover {
@@ -351,10 +307,12 @@ form, main {
 }
 
 .alert-custom {
-    color: black;
-    background-color: #C7C8CC;
-    border-color: #757575;
+    color: #FFFFFF;
+    background-color: #757575;
+    border-color: #999999;
 }
+
+/* Modal */
 
 .modal-center {
     display: flex !important;
@@ -365,6 +323,103 @@ form, main {
     max-width: 600px;
 }
 
-.foco {
-    border-color: #757575 !important;
+/* Resolución menor a 280px */
+
+@media (max-width: 280px) {
+
+    #navBar {
+        gap: 1rem;
+    }
+
+    button.form-control.form-control-lg {
+        font-size: 14px !important;
+    }
+
+    .delete i {
+        font-size: 1em !important;
+    }
+
+    .fa-circle-check {
+        font-size: .8em !important;
+    }
+
+    .enter {
+        padding: 0.1em !important;
+    }
+
+    .order-title {
+        order: 2;
+        width: 100%;
+        text-align: center;
+    }
+
+    .div-messages {
+        top: 7.5rem !important;
+        font-size: smaller;
+    }
+}
+
+@media (min-width: 280px) {
+
+    .d-sm-none {
+        display: none !important;
+    }
+
+    .d-sm-inline {
+        display: inline !important;
+    }
+}
+
+/* Animaciones */
+
+.animated-move {
+    animation: moveLeftAndRight 0.4s forwards;
+}
+
+@keyframes moveLeftAndRight {
+
+    0% {
+        left: 0;
+    }
+
+    10% {
+        left: -10px;
+    }
+
+    20% {
+        left: 10px;
+    }
+
+    30% {
+        left: -5px;
+    }
+
+    40% {
+        left: 5px;
+    }
+
+    50% {
+        left: -2px;
+    }
+
+    60% {
+        left: 2px;
+    }
+
+    70%, 100% {
+        left: 0;
+    }
+
+}
+
+.animated-flip {
+    transition: transform 1s ease;
+}
+
+.animated-flip.rotated {
+    transform: rotateY(180deg);
+}
+
+.rotated input {
+    transform: rotateY(-180deg);
 }

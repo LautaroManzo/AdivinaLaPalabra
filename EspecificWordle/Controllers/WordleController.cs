@@ -87,15 +87,15 @@ namespace EspecificWordle.Controllers
         }
 
         [HttpPost]
-        public IActionResult Result(string palabra)
+        public IActionResult Result(bool result)
         {
             var resultado = new object();
 
-            if (!string.IsNullOrEmpty(palabra))
+            if (result)
             {
                 resultado = new
                 {
-                    Palabra = palabra,
+                    Palabra = "PALABRA",
                     Significado = "Test test palabra partida partido probando, texto largo. Esto esta andando bien.",
                     Info = "Esto es solo de prueba.", 
                     Result = true
@@ -105,7 +105,7 @@ namespace EspecificWordle.Controllers
             {
                 resultado = new
                 {
-                    Palabra = palabra,
+                    Palabra = "PALABRA",
                     Significado = "Test test palabra partida partido probando, texto largo. Esto esta andando bien.",
                     Info = "Esto es solo de prueba.",
                     Result = false
