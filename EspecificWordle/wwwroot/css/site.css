@@ -314,17 +314,27 @@ nav {
 
 /* Modal */
 
-.modal-center {
+.modal-center { 
     display: flex !important;
     justify-content: center;
 }
 
-.modal-size {
-    max-width: 600px;
+.modal-body {
+    display:flex;
+    flex-direction:column;
+    background-color: #E8E8E8;
 }
 
-.modal-content {
-    min-width: 600px;
+.modal-div-button-end {
+    display:flex;
+    justify-content:end;
+}
+
+.modal-div-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
 }
 
 /* Resolución menor a 280px */
