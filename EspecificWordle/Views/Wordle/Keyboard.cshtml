@@ -28,7 +28,7 @@
 
     function obtenerFila(model, intento) {
         let palabraIngresada = "";
-        for (let col = 0; col < 7; col++) { // El 7 tiene que venir desde el view model, y sacar la palabra.
+        for (let col = 0; col < @Model.Length; col++) { // El 7 tiene que venir desde el view model, y sacar la palabra.
             let key = `${intento}_${col}`;
             palabraIngresada += model[key];
         }
@@ -43,13 +43,10 @@
         if (data.WordleViewModel.Resultado == 'true' || data.WordleViewModel.Resultado == 'false') {    // Ver otra forma de validar esto
             modalResult($("#Resultado").val());
         }
-        else if (palabraIngresada.length == data.WordleViewModel.Wordle.length) {
+        else if (palabraIngresada.length == data.WordleViewModel.Wordle.length) {   // Esta validacion hacerla tambien en el back
 
             data.WordleViewModel.PalabraIngresada = obtenerFila(data.WordleViewModel, data.WordleViewModel.Intentos);
             data.__RequestVerificationToken = $('input[name="__RequestVerificationToken"]').val();
-
-            // console.log(data.WordleViewModel);
-            // console.log(data.WordleViewModel.PalabraIngresada);
 
             $.ajax({
                 type: 'POST',
@@ -58,49 +55,54 @@
                 dataType: 'json',
                 success: function (response) {
                 
-                    console.log("SUCCESS");  
-
-                    // 'Mapeo' de viewmodel
-                    $("#Intentos").val(response.intentos);
-
-                    if (response.resultado == true) {
-                        $("#Resultado").val(true);
-
-                        changeInputAndButton(undefined, undefined, "input-success", "button-success", true, palabraIngresada);
-
-                        $(".resultado").modal('show');
+                    if (response.error) {
+                        ShowMessage(response.message, "custom");
                     }
                     else {
-                        // Se recorre la lista de letras
-                        $.each(response.letras, function (index, elemento) {
-                        
-                            if (elemento.color == "Verde") {
-                                changeInputAndButton(index, elemento.letra, "input-success", "button-success");
-                            }
-                            else if (elemento.color == "Amarillo") {
-                                changeInputAndButton(index, elemento.letra, "input-medium", "button-medium");
-                            }
-                            else {
-                                changeInputAndButton(index, elemento.letra, "input-grey", "button-grey");
-                            }
+                        console.log("SUCCESS");
 
-                        });
+                        // 'Mapeo' de viewmodel
+                        $("#Intentos").val(response.intentos);
 
-                        filaFocus.next("div").removeClass('div-disable'); // Se saca la class en el div siguiente
-                        filaFocus.addClass('div-disable');  // Se agrega la class en el div donde se ingresó la palabra
-                        filaFocus = filaFocus.next("div");  // Se cambia la fila que tiene el foco
-                        filaFocus.find("input").first().focus();  // Se da el foco al input de la fila siguiente
+                        if (response.resultado == true) {
+                            $("#Resultado").val(true);
 
-                        if(response.resultado == false) {
-                            $("#Resultado").val(false);
+                            changeInputAndButton(undefined, undefined, "input-success", "button-success", true, palabraIngresada);
 
-                            filaFocus.addClass('div-disable');
-                            inputFocus.removeClass("foco");
-                            inputFocus.blur();
-
-                            modalResult(false);
-                            
                             $(".resultado").modal('show');
+                        }
+                        else {
+                            // Se recorre la lista de letras
+                            $.each(response.letras, function (index, elemento) {
+
+                                if (elemento.color == "Verde") {
+                                    changeInputAndButton(index, elemento.letra, "input-success", "button-success");
+                                }
+                                else if (elemento.color == "Amarillo") {
+                                    changeInputAndButton(index, elemento.letra, "input-medium", "button-medium");
+                                }
+                                else {
+                                    changeInputAndButton(index, elemento.letra, "input-grey", "button-grey");
+                                }
+
+                            });
+
+                            filaFocus.next("div").removeClass('div-disable'); // Se saca la class en el div siguiente
+                            filaFocus.addClass('div-disable');  // Se agrega la class en el div donde se ingresó la palabra
+                            filaFocus = filaFocus.next("div");  // Se cambia la fila que tiene el foco
+                            filaFocus.find("input").first().focus();  // Se da el foco al input de la fila siguiente
+
+                            if (response.resultado == false) {
+                                $("#Resultado").val(false);
+
+                                filaFocus.addClass('div-disable');
+                                inputFocus.removeClass("foco");
+                                inputFocus.blur();
+
+                                modalResult(false);
+
+                                $(".resultado").modal('show');
+                            }
                         }
 
                     }

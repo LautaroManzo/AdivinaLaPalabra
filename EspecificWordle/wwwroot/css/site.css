@@ -323,6 +323,10 @@ nav {
     max-width: 600px;
 }
 
+.modal-content {
+    min-width: 600px;
+}
+
 /* Resolución menor a 280px */
 
 @media (max-width: 280px) {

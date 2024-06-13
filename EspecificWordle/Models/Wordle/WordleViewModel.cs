@@ -8,6 +8,8 @@
 
         public int Intentos { get; set; }
 
+        public int Length { get; set; }
+
         public string PalabraIngresada { get; set; }
 
         public List<object> Letras { get; set; }
