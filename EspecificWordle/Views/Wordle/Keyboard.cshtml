@@ -188,8 +188,6 @@
                 }
                 
                 modal.find('.modal-body #spanPalabra').text(data.palabra);
-                modal.find('.modal-body #spanSignificado').text(data.significado);
-                modal.find('.modal-body #spanOtraInfo').text(data.info);
 
                 modal.modal('show');
                 modal.addClass("modal-center");
@@ -215,7 +213,20 @@
                 
                 <div class="modal-div-content">
 
-                    <h5 class="modal-title" id="resultModalLabel"></h5>
+                    <div style="display: flex;align-items: center;">
+                        <h3 class="modal-title" id="resultModalLabel"></h3>
+                        <img class="icon-size" src="~/Icons/gafas-de-sol.png">
+                    </div>
+
+                    <div>
+                        <span id="spanPalabra" style="font-size: larger;"></span>
+                    </div>
+
+                    <div class="div-modal-modos">
+                        <button type="button" class="form-control form-control-lg">Aleatoria</button>
+                        <button type="button" class="form-control form-control-lg">Tildes</button>
+                        <button type="button" class="form-control form-control-lg">Cientifica</button>
+                    </div>
 
                 </div>
 

@@ -134,6 +134,7 @@ nav {
     max-width: 58px;
     padding: 0;
     font-size: 1.8rem !important;
+    font-family: monospace !important;
 }
 
 .div-disable {
@@ -213,6 +214,7 @@ nav {
     height: 60px;
     padding: 0;
     font-size: 13px;
+    font-family: monospace !important;
 }
 
 .enter {
@@ -335,6 +337,40 @@ nav {
     justify-content: center;
     align-items: center;
     flex: 1;
+    flex-direction:column;
+    gap:2rem;
+}
+
+.modal-title {
+    margin-right:5px;
+    font-family: 'Public Pixel', sans-serif !important;
+}
+
+.div-modal-modos {
+    display: flex;
+    flex-direction: row;
+    gap: .3rem;
+}
+
+.div-modal-modos button {
+    border: none;
+    font-family: monospace;
+}
+
+.div-modal-modos button:hover {
+    background-color: #C7C8CC;
+    border-color: #C7C8CC;
+}
+
+.div-modal-modos button:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: #C7C8CC !important;
+}
+
+.div-modal-modos button {
+    font-size: 1.2rem;
+    font-weight: 500;
 }
 
 /* Resolución menor a 280px */
@@ -436,4 +472,11 @@ nav {
 
 .rotated input {
     transform: rotateY(-180deg);
+}
+
+/* Iconos */
+
+.icon-size {
+    height:20px;
+    width:20px;
 }
