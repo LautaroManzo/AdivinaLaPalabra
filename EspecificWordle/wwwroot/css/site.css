@@ -355,6 +355,7 @@ nav {
 .div-modal-modos button {
     border: none;
     font-family: monospace;
+    text-wrap: nowrap;
 }
 
 .div-modal-modos button:hover {

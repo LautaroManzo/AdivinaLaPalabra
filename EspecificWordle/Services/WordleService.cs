@@ -14,18 +14,33 @@ namespace EspecificWordle.Services
         {
             try
             {
-                var url = $"https://api.datamuse.com/words?sp={lengthWordle}&v={language}";     // https://www.datamuse.com/api/
+                var url = $"https://clientes.api.greenborn.com.ar/public-random-word?l={lengthWordle}";
 
                 HttpResponseMessage response = await _httpClient.GetAsync(url);
                 response.EnsureSuccessStatusCode();
 
                 var json = await response.Content.ReadAsStringAsync();
-                var listWords = JArray.Parse(json).ToObject<List<WordObject>>();
-                
-                // Se obtiene una palabra random de la lista que retorna la API.
-                var word = listWords != null && listWords.Count > 0 ? listWords[new Random().Next(0, listWords.Count)].Word : string.Empty;
+                var wordArray = JsonConvert.DeserializeObject<string[]>(json);
+                var word = string.Empty;
+
+                if (wordArray != null && wordArray.Length > 0)
+                {
+                    word = wordArray[0];
+
+                    // Si la palabra obtenida tiene acento se realiza otra llamada recursiva.
+                    if (ContainsAccentedCharacters(word))
+                        return await RandomWordleAsync(lengthWordle, language);
+                }
 
                 return word;
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception("Error al realizar la solicitud HTTP.", ex);
+            }
+            catch (JsonException ex)
+            {
+                throw new Exception("Error al deserializar la respuesta JSON.", ex);
             }
             catch (Exception ex)
             {
@@ -33,12 +48,26 @@ namespace EspecificWordle.Services
             }
         }
 
+        public bool ContainsAccentedCharacters(string input)
+        {
+            var acentos = new char[] { 'á', 'é', 'í', 'ó', 'ú' };
+
+            foreach (var acento in acentos)
+            {
+                if (input.Contains(acento))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public async Task<bool> WordCheckingAsync(string word, string language)
         {
             try
             {
                 var url = $"https://api.datamuse.com/words?sp={word}&v={language}";
-                var exist = false;
 
                 HttpResponseMessage response = await _httpClient.GetAsync(url);
                 response.EnsureSuccessStatusCode();
@@ -47,9 +76,9 @@ namespace EspecificWordle.Services
                 var listWords = JArray.Parse(json).ToObject<List<WordObject>>();
 
                 if (listWords != null && listWords.Count > 0)
-                    exist = listWords.First().Word.Equals(word.ToLower());
-
-                return exist;
+                    return listWords.Any(w => w.Word.Equals(word.ToLower()));
+                else
+                    return false;
             }
             catch (Exception ex)
             {

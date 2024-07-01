@@ -16,7 +16,7 @@ async Task InitializeConfigApp(IServiceProvider services)
 {
     var wordService = services.GetRequiredService<IWordleService>();
     var configApp = services.GetRequiredService<ConfigApp>();
-    configApp.Wordle = await wordService.RandomWordleAsync("?????", "es");
+    configApp.Wordle = await wordService.RandomWordleAsync("5", "es");
 }
 
 using (var scope = app.Services.CreateScope())
