@@ -1,46 +1,43 @@
 ﻿using EspecificWordle.Interfaces;
-using HtmlAgilityPack;
-using Newtonsoft.Json;
+using EspecificWordle.Models.ConfigApp;
 using Newtonsoft.Json.Linq;
-using System.Text.RegularExpressions;
+using Python.Runtime;
 
 namespace EspecificWordle.Services
 {
     public class WordleService : IWordleService
     {
         private static readonly HttpClient _httpClient = new HttpClient();
+        private readonly ConfigApp _configApp;
 
-        public async Task<string> RandomWordleAsync(string lengthWordle, string language)
+        public WordleService(ConfigApp configApp)
+        {
+            _configApp = configApp;
+        }
+
+        #region Archivos
+
+        public async Task<string> RandomWordleAsync()
         {
             try
             {
-                var url = $"https://clientes.api.greenborn.com.ar/public-random-word?l={lengthWordle}";
+                var filePath = "C:\\Users\\USER\\Documents\\Projects\\EspecificWordle\\EspecificWordle\\FilesWords\\RandomWords.txt";
+                var outputPath = "C:\\Users\\USER\\Documents\\Projects\\EspecificWordle\\EspecificWordle\\FilesWords\\OutRandomWords.txt";
 
-                HttpResponseMessage response = await _httpClient.GetAsync(url);
-                response.EnsureSuccessStatusCode();
+                var words = (await File.ReadAllLinesAsync(filePath)).ToList();
 
-                var json = await response.Content.ReadAsStringAsync();
-                var wordArray = JsonConvert.DeserializeObject<string[]>(json);
-                var word = string.Empty;
+                var randomIndex = new Random().Next(words.Count);
+                var randomWord = words[randomIndex];
 
-                if (wordArray != null && wordArray.Length > 0)
-                {
-                    word = wordArray[0];
+                // Se agrega la palabra random al archivo
+                await File.AppendAllTextAsync(outputPath, randomWord + Environment.NewLine);
 
-                    // Si la palabra obtenida tiene acento se realiza otra llamada recursiva.
-                    if (ContainsAccentedCharacters(word))
-                        return await RandomWordleAsync(lengthWordle, language);
-                }
+                // Se elimina la palabra random del archivo para que no se repita
+                words.Remove(randomWord);
 
-                return word;
-            }
-            catch (HttpRequestException ex)
-            {
-                throw new Exception("Error al realizar la solicitud HTTP.", ex);
-            }
-            catch (JsonException ex)
-            {
-                throw new Exception("Error al deserializar la respuesta JSON.", ex);
+                await File.WriteAllLinesAsync(filePath, words);
+
+                return randomWord;
             }
             catch (Exception ex)
             {
@@ -48,20 +45,9 @@ namespace EspecificWordle.Services
             }
         }
 
-        public bool ContainsAccentedCharacters(string input)
-        {
-            var acentos = new char[] { 'á', 'é', 'í', 'ó', 'ú' };
+        #endregion Archivos
 
-            foreach (var acento in acentos)
-            {
-                if (input.Contains(acento))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        #region Apis
 
         public async Task<bool> WordCheckingAsync(string word, string language)
         {
@@ -85,6 +71,139 @@ namespace EspecificWordle.Services
                 throw new Exception("Error al verificar si la palabra existe.", ex);
             }
         }
+
+        #endregion Apis
+
+        #region Python
+
+        public async Task<string> GetDefinitionWord(string palabra)
+        {
+            try
+            {
+                dynamic sys = Py.Import("sys");
+                sys.path.append(@"C:\Users\USER\Documents\Projects\EspecificWordle\EspecificWordle\Python");
+
+                dynamic functionsWords = Py.Import("FunctionsWords");
+
+                dynamic wordEn = (string)functionsWords.translateEn(palabra);
+                dynamic defEn = functionsWords.wordDefinition(wordEn);
+
+                if (!string.IsNullOrEmpty(defEn.ToString()))
+                {
+                    dynamic result = functionsWords.translateEs(defEn.ToString());
+                    return result.ToString().Replace(";", ",");
+                }
+                else
+                    return string.Empty;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error " + e.Message);
+            }
+        }
+
+        public async Task<string> TranslateWord(string word)
+        {
+            try
+            {
+                dynamic sys = Py.Import("sys");
+                sys.path.append(@"C:\Users\USER\Documents\Projects\EspecificWordle\EspecificWordle\Python");
+
+                dynamic functionsWords = Py.Import("FunctionsWords");
+                dynamic wordEn = (string)functionsWords.translateEn(word);
+
+                return wordEn;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error al traducir de español a ingles " + e.Message);
+            }
+        }
+
+        public async Task<List<string>> GetSynonymsWord(string word)
+        {
+            try
+            {
+                dynamic sys = Py.Import("sys");
+                sys.path.append(@"C:\Users\USER\Documents\Projects\EspecificWordle\EspecificWordle\Python");
+
+                dynamic functionsWords = Py.Import("FunctionsWords");
+
+                dynamic wordEn = (string)functionsWords.translateEn(word);
+
+                dynamic result = functionsWords.wordSynonyms(wordEn);
+
+                var pyList = new PyList(result);
+                var listSynonyms = new List<string>();
+
+                foreach (PyObject item in pyList)
+                {
+                    string palabra = item.As<string>().ToLower();
+                    if (!palabra.Equals(word) && !listSynonyms.Contains(palabra) && !palabra.Contains("_"))
+                        listSynonyms.Add(palabra);
+                }
+
+                return listSynonyms.Take(3).ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error al obtener sinonimos" + e.Message);
+            }
+        }
+
+        public async Task<List<string>> GetAntonymsWord(string word)
+        {
+            try
+            {
+                dynamic sys = Py.Import("sys");
+                sys.path.append(@"C:\Users\USER\Documents\Projects\EspecificWordle\EspecificWordle\Python");
+
+                dynamic functionsWords = Py.Import("FunctionsWords");
+
+                dynamic wordEn = (string)functionsWords.translateEn(word);
+                dynamic result = functionsWords.wordAntonyms(wordEn);
+
+                var pyList = new PyList(result);
+                var listAntonyms = new List<string>();
+
+                foreach (PyObject item in pyList)
+                {
+                    string palabra = item.As<string>().ToLower();
+                    if (!palabra.Equals(word) && !listAntonyms.Contains(palabra) && !palabra.Contains("_"))
+                        listAntonyms.Add(palabra);
+                }
+
+                return listAntonyms.Take(3).ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error al obtener antonimos" + e.Message);
+            }
+        }
+
+        public async Task<string> GetWordUseExample(string word)
+        {
+            try
+            {
+                dynamic sys = Py.Import("sys");
+                sys.path.append(@"C:\Users\USER\Documents\Projects\EspecificWordle\EspecificWordle\Python");
+
+                dynamic functionsWords = Py.Import("FunctionsWords");
+                dynamic wordEn = (string)functionsWords.translateEn(word);
+                dynamic result = functionsWords.wordUseExample(wordEn);
+
+                if (result == null)
+                    return string.Empty;
+                else
+                    return (string)result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error al obtener usos de la palabra " + e.Message);
+            }
+        }
+
+        #endregion Python
 
         public class WordObject
         {

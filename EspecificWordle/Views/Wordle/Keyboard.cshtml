@@ -189,6 +189,12 @@
                 
                 modal.find('.modal-body #spanPalabra').text(data.palabra);
 
+                modal.find('.modal-body #spanDef').text("Definición: " + data.definicion);
+                modal.find('.modal-body #spanSin').text("Sinónimos: " + data.sinonimos);
+                modal.find('.modal-body #spanAnt').text("Antónimos: " + data.antonimos);
+                modal.find('.modal-body #spanWordEn').text("Ingles: " + data.palabraEn);
+                modal.find('.modal-body #spanUse').text("Ejemplo de uso: " + data.ejemploUso);
+
                 modal.modal('show');
                 modal.addClass("modal-center");
             },
@@ -218,8 +224,13 @@
                         <img class="icon-size" src="~/Icons/gafas-de-sol.png">
                     </div>
 
-                    <div>
+                    <div style="display: flex;flex-direction: column;gap: 1rem;">
                         <span id="spanPalabra" style="font-size: larger;"></span>
+                        <span id="spanDef" style="font-size: larger;"></span>
+                        <span id="spanSin" style="font-size: larger;"></span>
+                        <span id="spanAnt" style="font-size: larger;"></span>
+                        <span id="spanWordEn" style="font-size: larger;"></span>
+                        <span id="spanUse" style="font-size: larger;"></span>
                     </div>
 
                     <div class="div-modal-modos">

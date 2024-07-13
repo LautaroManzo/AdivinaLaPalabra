@@ -22,10 +22,10 @@ namespace EspecificWordle.Controllers
         {
             var viewModel = new WordleViewModel
             {
-                Wordle = _configApp.Wordle.ToUpper(),
+                Wordle = _configApp.RandomWord.ToUpper(),
                 Tildes = false,
                 Intentos = 0,
-                Length = _configApp.Wordle.Length
+                Length = _configApp.RandomWord.Length
             };
 
             return View(viewModel);
@@ -107,7 +107,12 @@ namespace EspecificWordle.Controllers
             var resultado = new
             {
                 Titulo = "Excelente",
-                Palabra = _configApp.Wordle,
+                Palabra = _configApp.RandomWord,
+                Definicion = _configApp.RandomWordDef,
+                Sinonimos = _configApp.RandomWordSynonyms,
+                Antonimos = _configApp.RandomWordAntonyms,
+                PalabraEn = _configApp.RandomWordEn,
+                EjemploUso = _configApp.RandomWordUseExamples,
                 Result = result ? result : false
             };
             
