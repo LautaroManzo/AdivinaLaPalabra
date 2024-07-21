@@ -11,38 +11,46 @@ $(document).on("keypress", function (e) {
 
 $(document).on("keydown", function (e) {
 
-    // 13 Tecla de Enter
-    if (e.keyCode == 13)
-        enter();
+    if (inputFocus) {
 
-    // Se asigna evento de borrado a las teclas delete y suprimir
-    if (e.keyCode === 8) {
-        e.preventDefault();
-        onDeleteClick();
-    }
+        // 13 Tecla de Enter
+        if (e.keyCode == 13)
+            enter();
 
-    // Desactiva la tecla TAB para que el user no pueda moverse entre los inputs.
-    if (e.keyCode === 9)
-        e.preventDefault();
-
-    if (abcRegex.test(String.fromCharCode(e.keyCode))) {
-
-        // Esto es para reemplazar el valor si el input ya contiene
-        if (inputFocus.val() != "") {
-            inputFocus.val(e.key.toUpperCase());
-            inputFocus.removeClass("foco");
-            inputFocus.blur();
-            inputFocus = inputFocus.parent().next('div').find('input');       
-            inputFocus.addClass("foco");
-            return;
+        // Se asigna evento de borrado a las teclas delete y suprimir
+        if (e.keyCode === 8) {
+            e.preventDefault();
+            onDeleteClick();
         }
 
-    }
-    else {
-        e.preventDefault();
+        // Desactiva la tecla TAB para que el user no pueda moverse entre los inputs.
+        if (e.keyCode === 9)
+            e.preventDefault();
+
+        if (abcRegex.test(String.fromCharCode(e.keyCode))) {
+
+            // Esto es para reemplazar el valor si el input ya contiene
+            if (inputFocus.val() != "") {
+                inputFocus.val(e.key.toUpperCase());
+
+                if (inputFocus.parent().next('div').find('input').length != 0) {
+                    inputFocus.removeClass("foco");
+                    inputFocus.blur();
+                    inputFocus = inputFocus.parent().next('div').find('input');
+                    inputFocus.addClass("foco");
+                }
+
+                return;
+            }
+
+        }
+        else {
+            e.preventDefault();
+        }
+
+        inputFocus.focus();
     }
 
-    inputFocus.focus();
 });
 
 $(document).on('input', '.divWordle > div:not(.div-disable) input', function (e) {

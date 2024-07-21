@@ -28,7 +28,7 @@
 
     function obtenerFila(model, intento) {
         let palabraIngresada = "";
-        for (let col = 0; col < @Model.Length; col++) { // El 7 tiene que venir desde el view model, y sacar la palabra.
+        for (let col = 0; col < @Model.Length; col++) {
             let key = `${intento}_${col}`;
             palabraIngresada += model[key];
         }
@@ -97,7 +97,7 @@
 
                                 filaFocus.addClass('div-disable');
                                 inputFocus.removeClass("foco");
-                                inputFocus.blur();
+                                inputFocus = null;
 
                                 modalResult(false, $("#Intentos").val());
 
@@ -135,9 +135,10 @@
             }
 
             filaFocus.addClass('div-disable');
-            inputFocus.blur();
 
             filaFocus.find('input.foco').removeClass("foco"); // buscar en el div no en la filafocus
+            inputFocus = null;
+
             modalResult(true, $("#Intentos").val());
         }
         else {
@@ -174,21 +175,23 @@
 
                 // Controlar que exista un solo modal abierto para que no se dupliquen
 
-                let divModal = $("#resultModal");
-                divModal.attr('role', 'dialog');
-                divModal.addClass('modal fade');
+                if (!$(".show").length > 0) { 
+                    let divModal = $("#resultModal");
+                    divModal.attr('role', 'dialog');
+                    divModal.addClass('modal fade');
 
-                divModal.append(data);
+                    divModal.append(data);
 
-                $('#resultModal').one('show.bs.modal', function () {
-                    showConfetis();
-                });
+                    $('#resultModal').one('show.bs.modal', function () {
+                        showConfetis();
+                    });
 
-                document.getElementById('resultModal').addEventListener('hidden.bs.modal', function () {
-                    $(".modal-dialog").remove();
-                });
+                    document.getElementById('resultModal').addEventListener('hidden.bs.modal', function () {
+                        $(".modal-dialog").remove();
+                    });
 
-                divModal.modal('show');
+                    divModal.modal('show');
+                }
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error('Error al realizar la solicitud AJAX:', errorThrown);

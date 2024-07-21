@@ -8,8 +8,6 @@
 
         public string Definicion { get; set; }
 
-        public string DefinicionRae { get; set; }
-
         public string Sinonimos { get; set; }
 
         public string Antonimos { get; set; }

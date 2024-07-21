@@ -2,6 +2,8 @@
 using EspecificWordle.Models.ConfigApp;
 using Newtonsoft.Json.Linq;
 using Python.Runtime;
+using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace EspecificWordle.Services
@@ -62,10 +64,8 @@ namespace EspecificWordle.Services
                 var json = await response.Content.ReadAsStringAsync();
                 var listWords = JArray.Parse(json).ToObject<List<WordObject>>();
 
-                // Arreglar el problema con los acentos.
-
                 if (listWords != null && listWords.Count > 0)
-                    return listWords.Any(w => w.Word.Equals(word.ToLower()));
+                    return listWords.Any(w => RemoveAcentos(w.Word).Equals(word.ToLower()));
                 else
                     return false;
             }
@@ -75,56 +75,61 @@ namespace EspecificWordle.Services
             }
         }
 
+        public string RemoveAcentos(string text)
+        {
+            var normalizedString = text.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new StringBuilder();
+
+            foreach (var c in normalizedString)
+            {
+                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        }
+
         #endregion Apis
 
         #region Python
 
         public async Task<string> GetDefinitionWord(string palabra)
         {
+            var messageDefaults = new List<string>{ 
+                "Versión electrónica 23.7 del «Diccionario de la lengua española», obra lexicográfica académica por excelencia.", 
+                "Diccionario de la lengua española", "Definición RAE", "Entradas que contienen la forma" };
+
             try
             {
                 dynamic sys = Py.Import("sys");
                 sys.path.append(@"C:\Users\USER\Documents\Projects\EspecificWordle\EspecificWordle\Python");
-
                 dynamic functionsWords = Py.Import("FunctionsWords");
 
-                dynamic wordEn = (string)functionsWords.translateEn(palabra);
-                dynamic defEn = functionsWords.wordDefinition(wordEn);
-
-                if (!string.IsNullOrEmpty(defEn.ToString()))
-                {
-                    dynamic result = functionsWords.translateEs(defEn.ToString());
-                    return result.ToString().Replace(";", ",");
-                }
-                else
-                    return string.Empty;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Error " + e.Message);
-            }
-        }
-
-        public async Task<string> GetDefinitionRaeWord(string palabra)
-        {
-            try
-            {
-                dynamic sys = Py.Import("sys");
-                sys.path.append(@"C:\Users\USER\Documents\Projects\EspecificWordle\EspecificWordle\Python");
-
-                dynamic functionsWords = Py.Import("FunctionsWords");
-
+                // Definicion de la RAE
                 dynamic def = functionsWords.wordDefinitionRae(palabra);
 
-                // Si viene el mensaje por default?
-
-                if (!string.IsNullOrEmpty(def.ToString()))
+                if (!string.IsNullOrEmpty(def.ToString()) && !messageDefaults.Any(m => def.ToString().Contains(m)))
                 {
                     var x = def.ToString();
                     return Regex.Replace(x, @"(?<!^)(\d+\. )", "\n$1");
                 }
                 else
-                    return string.Empty;
+                {
+                    // Definicion de WORDNET
+                    dynamic wordEn = (string)functionsWords.translateEn(palabra);
+                    dynamic defEn = functionsWords.wordDefinition(wordEn);
+
+                    if (!string.IsNullOrEmpty(defEn.ToString()))
+                    {
+                        dynamic result = functionsWords.translateEs(defEn.ToString());
+                        return result.ToString().Replace(";", ",");
+                    }
+                    else
+                        return string.Empty;
+                }
             }
             catch (Exception e)
             {

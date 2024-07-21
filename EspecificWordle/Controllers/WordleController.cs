@@ -111,7 +111,6 @@ namespace EspecificWordle.Controllers
                 Intento = result ? ResultadoSegunIntento(intento) : "Que mal..",
                 Palabra = _configApp.RandomWord,
                 Definicion = _configApp.RandomWordDef,
-                DefinicionRae = _configApp.RandomWordDefRae,
                 Sinonimos = string.Join(", ", _configApp.RandomWordSynonyms),
                 Antonimos = string.Join(", ", _configApp.RandomWordAntonyms),
                 PalabraEn = _configApp.RandomWordEn.ToLower(),

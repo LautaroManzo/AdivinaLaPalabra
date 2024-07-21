@@ -26,7 +26,6 @@ async Task InitializeConfigApp(IServiceProvider services)
     using (Py.GIL())
     {
         configApp.RandomWordDef = await wordService.GetDefinitionWord(configApp.RandomWord);
-        configApp.RandomWordDefRae = await wordService.GetDefinitionRaeWord(configApp.RandomWord);
         configApp.RandomWordEn = await wordService.TranslateWord(configApp.RandomWord);
         configApp.RandomWordSynonyms = await wordService.GetSynonymsWord(configApp.RandomWord);
         configApp.RandomWordAntonyms = await wordService.GetAntonymsWord(configApp.RandomWord);
