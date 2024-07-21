@@ -68,8 +68,6 @@
                             $("#Resultado").val(true);
 
                             changeInputAndButton(undefined, undefined, "input-success", "button-success", true, palabraIngresada);
-
-                            $(".resultado").modal('show');
                         }
                         else {
                             // Se recorre la lista de letras
@@ -99,9 +97,9 @@
                                 inputFocus.removeClass("foco");
                                 inputFocus = null;
 
-                                modalResult(false, $("#Intentos").val());
-
-                                $(".resultado").modal('show');
+                                setTimeout(function () {
+                                    modalResult(false, $("#Intentos").val());
+                                }, 1000);
                             }
                         }
 
@@ -139,7 +137,9 @@
             filaFocus.find('input.foco').removeClass("foco"); // buscar en el div no en la filafocus
             inputFocus = null;
 
-            modalResult(true, $("#Intentos").val());
+            setTimeout(function () {
+                modalResult(true, $("#Intentos").val());
+            }, 900);
         }
         else {
             filaFocus.find('input').eq(posicion).addClass(classInput);
@@ -154,7 +154,10 @@
 
             if (result == false) {
                 filaFocus.find('input.foco').removeClass("foco"); // buscar en el div no en la filafocus
-                modalResult(false, $("#Intentos").val());
+                
+                setTimeout(function () {
+                    modalResult(false, $("#Intentos").val());
+                }, 900);
             }
 
         }
@@ -173,8 +176,6 @@
             data: { result: result, intento: intento },
             success: function (data) {
 
-                // Controlar que exista un solo modal abierto para que no se dupliquen
-
                 if (!$(".show").length > 0) { 
                     let divModal = $("#resultModal");
                     divModal.attr('role', 'dialog');
@@ -192,6 +193,7 @@
 
                     divModal.modal('show');
                 }
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error('Error al realizar la solicitud AJAX:', errorThrown);

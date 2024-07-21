@@ -249,9 +249,9 @@ nav {
 /* Custom class */
 
 .input-success {
-    background-color: #43a047;
-    color: #fff;
-    border-color: #43a047;
+    background-color: #43a047 !important;
+    color: #fff !important;
+    border-color: #43a047 !important;
 }
 
 .input-medium {
@@ -464,7 +464,7 @@ sup {
 
 /* Resolución menor a 280px */
 
-@media (max-width: 280px) {
+@media (max-width: 320px) {
 
     #navBar {
         gap: 1rem;
@@ -498,7 +498,7 @@ sup {
     }
 }
 
-@media (min-width: 280px) {
+@media (min-width: 320px) {
 
     .d-sm-none {
         display: none !important;
