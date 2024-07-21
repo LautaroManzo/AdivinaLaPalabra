@@ -1,7 +1,9 @@
 ﻿using EspecificWordle.Interfaces;
 using EspecificWordle.Models;
 using EspecificWordle.Models.ConfigApp;
+using EspecificWordle.Models.Wordle;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace EspecificWordle.Controllers
 {
@@ -101,22 +103,49 @@ namespace EspecificWordle.Controllers
 
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Result(bool result)
+        [HttpGet]
+        public async Task<IActionResult> Result(bool result, int intento)
         {
-            var resultado = new
+            var resultado = new ResultViewModel()
             {
-                Titulo = "Excelente",
+                Intento = result ? ResultadoSegunIntento(intento) : "Que mal..",
                 Palabra = _configApp.RandomWord,
                 Definicion = _configApp.RandomWordDef,
-                Sinonimos = _configApp.RandomWordSynonyms,
-                Antonimos = _configApp.RandomWordAntonyms,
-                PalabraEn = _configApp.RandomWordEn,
+                DefinicionRae = _configApp.RandomWordDefRae,
+                Sinonimos = string.Join(", ", _configApp.RandomWordSynonyms),
+                Antonimos = string.Join(", ", _configApp.RandomWordAntonyms),
+                PalabraEn = _configApp.RandomWordEn.ToLower(),
                 EjemploUso = _configApp.RandomWordUseExamples,
                 Result = result ? result : false
             };
-            
-            return Json(resultado);
+
+            return PartialView("_Result", resultado);
+        }
+
+        private string ResultadoSegunIntento(int intento)
+        {
+            var result = string.Empty;
+
+            switch (intento)
+            {
+                case 0:
+                    result = EstadoResult.Excelente.ToString();
+                    break;
+                case 1:
+                    result = EstadoResult.Buenisimo.ToString();
+                    break;
+                case 2:
+                    result = EstadoResult.Aceptable.ToString();
+                    break;
+                case 3:
+                    result = EstadoResult.Normal.ToString();
+                    break;
+                case 4:
+                    result = EstadoResult.Mejorable.ToString();
+                    break;
+            }
+
+            return result;
         }
 
         private enum EstadoResult

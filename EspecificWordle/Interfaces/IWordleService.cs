@@ -8,6 +8,8 @@
 
         Task<string> GetDefinitionWord(string word);
 
+        Task<string> GetDefinitionRaeWord(string palabra);
+
         Task<string> TranslateWord(string word);
 
         Task<List<string>> GetSynonymsWord(string word);

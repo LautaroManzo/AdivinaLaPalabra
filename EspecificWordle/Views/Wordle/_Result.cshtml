@@ -1,0 +1,104 @@
+﻿@using EspecificWordle.Models.Wordle
+
+@model ResultViewModel
+
+<div class="modal-dialog modal-fullscreen">
+
+    <div class="modal-content">
+
+        <div class="div-btn-close">
+            <button type="button" class="btn btn-close-modal" data-bs-dismiss="modal" aria-label="Close">
+                <i class="fa-solid fa-xmark fa-lg"></i>
+            </button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="div-content-modal">
+
+                <div class="div-modo">
+                    <i>Aleatoria</i> <!-- Esto tiene que venir en el viewmodel -->
+                </div>
+
+                <div class="div-result">
+
+                    <span>
+                        @Model.Intento&nbsp;
+                    </span>
+
+                    <span class="text-muted">
+                        @(Model.Result ? "ganaste" : "perdiste")
+                    </span>
+
+                </div>
+
+                <div class="div-word-def">
+
+                    <div>
+
+                        <div class="div-word">
+                            <span>@Model.Palabra<sup>ES</sup>&nbsp;/&nbsp;</span>
+                            <span>@Model.PalabraEn<sup>EN</sup></span>
+                        </div>
+
+                        <span class="span-def">
+                            @Html.Raw(Model.DefinicionRae.Replace("\n", "<br>"))
+                        </span>
+
+                    </div>
+
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.Sinonimos) || !string.IsNullOrEmpty(Model.Antonimos))
+                {
+                    <div class="div-sin-ant">
+
+                        @if (!string.IsNullOrEmpty(Model.Sinonimos))
+                        {
+                            <div class="row">
+                                <span>
+                                    <small class="text-muted">Sinónimos</small> @Model.Sinonimos
+                                </span>
+                            </div>
+                        }
+
+                        @if (!string.IsNullOrEmpty(Model.Antonimos))
+                        {
+                            <div class="row">
+                                <span>
+                                    <small class="text-muted">Antónimos</small> @Model.Antonimos
+                                </span>
+                            </div>
+                        }
+
+                    </div>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.EjemploUso))
+                {
+                    <div class="div-use">
+                        <span>
+                            <small class="text-muted">Ejemplo de uso </small> @Model.EjemploUso
+                        </span>
+                    </div>
+                }
+
+                <div class="div-modal-modos" style="display:flex;gap:.5rem;">
+                    <button type="button" class="btn-modo form-control form-control-lg">Tildes</button>
+                    <button type="button" class="btn-modo form-control form-control-lg">Científica</button>
+                    <button type="button" class="btn-modo form-control form-control-lg">Animales</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style type="text/css">
+
+
+
+</style>

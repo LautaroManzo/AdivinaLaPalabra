@@ -25,6 +25,9 @@ def wordDefinition(word):
     else:
         return str()
 
+def wordDefinitionRae(word):
+    return dle.search_by_word(word=word)
+
 def wordSynonyms(word):
     synonyms = []
 

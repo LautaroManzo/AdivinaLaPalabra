@@ -37,11 +37,11 @@
 
     function enter() {
         let url = '@Html.Raw(Url.Action("Enter", "Wordle"))';
-        let data = { @Model.GetType().Name: $('form').serializeObject() };
+        data = { @Model.GetType().Name: $('form').serializeObject() };
         let palabraIngresada = obtenerFila(data.WordleViewModel, data.WordleViewModel.Intentos);
 
         if (data.WordleViewModel.Resultado == 'true' || data.WordleViewModel.Resultado == 'false') {    // Ver otra forma de validar esto
-            modalResult($("#Resultado").val());
+            modalResult($("#Resultado").val(), $("#Intentos").val());
         }
         else if (palabraIngresada.length == data.WordleViewModel.Wordle.length) {   // Esta validacion hacerla tambien en el back
 
@@ -99,7 +99,7 @@
                                 inputFocus.removeClass("foco");
                                 inputFocus.blur();
 
-                                modalResult(false);
+                                modalResult(false, $("#Intentos").val());
 
                                 $(".resultado").modal('show');
                             }
@@ -138,7 +138,7 @@
             inputFocus.blur();
 
             filaFocus.find('input.foco').removeClass("foco"); // buscar en el div no en la filafocus
-            modalResult(true);
+            modalResult(true, $("#Intentos").val());
         }
         else {
             filaFocus.find('input').eq(posicion).addClass(classInput);
@@ -153,7 +153,7 @@
 
             if (result == false) {
                 filaFocus.find('input.foco').removeClass("foco"); // buscar en el div no en la filafocus
-                modalResult(false);
+                modalResult(false, $("#Intentos").val());
             }
 
         }
@@ -164,39 +164,31 @@
         divParent.toggleClass('rotated');
     }
 
-    function modalResult(result) {
+    function modalResult(result, intento) {
 
         $.ajax({
             url: '@Url.Action("Result", "Wordle")',
-            method: 'POST',
-            data: { result: result },
-            dataType: 'json',
+            method: 'GET',
+            data: { result: result, intento: intento },
             success: function (data) {
 
-                let modal = $('#resultModal');
+                // Controlar que exista un solo modal abierto para que no se dupliquen
 
-                var modalTitle = modal.find('.modal-title');
-                var modalBodyInput = modal.find('.modal-body input');
+                let divModal = $("#resultModal");
+                divModal.attr('role', 'dialog');
+                divModal.addClass('modal fade');
 
-                if (data.result == true) {
-                    modalTitle.text("Ganaste")
-                    modal.addClass("Win");
-                }
-                else {
-                    modalTitle.text("Perdiste");
-                    modal.addClass("Lost");
-                }
-                
-                modal.find('.modal-body #spanPalabra').text(data.palabra);
+                divModal.append(data);
 
-                modal.find('.modal-body #spanDef').text("Definición: " + data.definicion);
-                modal.find('.modal-body #spanSin').text("Sinónimos: " + data.sinonimos);
-                modal.find('.modal-body #spanAnt').text("Antónimos: " + data.antonimos);
-                modal.find('.modal-body #spanWordEn').text("Ingles: " + data.palabraEn);
-                modal.find('.modal-body #spanUse').text("Ejemplo de uso: " + data.ejemploUso);
+                $('#resultModal').one('show.bs.modal', function () {
+                    showConfetis();
+                });
 
-                modal.modal('show');
-                modal.addClass("modal-center");
+                document.getElementById('resultModal').addEventListener('hidden.bs.modal', function () {
+                    $(".modal-dialog").remove();
+                });
+
+                divModal.modal('show');
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.error('Error al realizar la solicitud AJAX:', errorThrown);
@@ -207,46 +199,7 @@
 
 </script>
 
-<div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-
-            <div class="modal-body">
-                
-                <div class="modal-div-button-end">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                
-                <div class="modal-div-content">
-
-                    <div style="display: flex;align-items: center;">
-                        <h3 class="modal-title" id="resultModalLabel"></h3>
-                        <img class="icon-size" src="~/Icons/gafas-de-sol.png">
-                    </div>
-
-                    <div style="display: flex;flex-direction: column;gap: 1rem;">
-                        <span id="spanPalabra" style="font-size: larger;"></span>
-                        <span id="spanDef" style="font-size: larger;"></span>
-                        <span id="spanSin" style="font-size: larger;"></span>
-                        <span id="spanAnt" style="font-size: larger;"></span>
-                        <span id="spanWordEn" style="font-size: larger;"></span>
-                        <span id="spanUse" style="font-size: larger;"></span>
-                    </div>
-
-                    <div class="div-modal-modos">
-                        <button type="button" class="form-control form-control-lg">Tres letras</button>
-                        <button type="button" class="form-control form-control-lg">Cuatro letras</button>
-                        <button type="button" class="form-control form-control-lg">Cinco letras</button>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-</div>
-
+<div id="resultModal"></div>
 
 <div class="divKeyboard">
 

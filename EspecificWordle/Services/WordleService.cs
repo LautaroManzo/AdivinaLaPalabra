@@ -2,6 +2,7 @@
 using EspecificWordle.Models.ConfigApp;
 using Newtonsoft.Json.Linq;
 using Python.Runtime;
+using System.Text.RegularExpressions;
 
 namespace EspecificWordle.Services
 {
@@ -61,6 +62,8 @@ namespace EspecificWordle.Services
                 var json = await response.Content.ReadAsStringAsync();
                 var listWords = JArray.Parse(json).ToObject<List<WordObject>>();
 
+                // Arreglar el problema con los acentos.
+
                 if (listWords != null && listWords.Count > 0)
                     return listWords.Any(w => w.Word.Equals(word.ToLower()));
                 else
@@ -99,6 +102,33 @@ namespace EspecificWordle.Services
             catch (Exception e)
             {
                 throw new Exception("Error " + e.Message);
+            }
+        }
+
+        public async Task<string> GetDefinitionRaeWord(string palabra)
+        {
+            try
+            {
+                dynamic sys = Py.Import("sys");
+                sys.path.append(@"C:\Users\USER\Documents\Projects\EspecificWordle\EspecificWordle\Python");
+
+                dynamic functionsWords = Py.Import("FunctionsWords");
+
+                dynamic def = functionsWords.wordDefinitionRae(palabra);
+
+                // Si viene el mensaje por default?
+
+                if (!string.IsNullOrEmpty(def.ToString()))
+                {
+                    var x = def.ToString();
+                    return Regex.Replace(x, @"(?<!^)(\d+\. )", "\n$1");
+                }
+                else
+                    return string.Empty;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error RAE" + e.Message);
             }
         }
 

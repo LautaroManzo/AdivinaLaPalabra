@@ -107,19 +107,6 @@ function changeMode() {
 
 }
 
-// Evento que se ejecuta al abrir el modal
-$('#resultModal').on('show.bs.modal', function () {
-
-    if ($('#resultModal').hasClass("Win"))
-        showConfetis();
-
-});
-
-// Evento que se ejecuta al cerrar el modal
-$('#resultModal').on('hidden.bs.modal', function () {
-    $('#resultModal').removeClass('modal-center');
-});
-
 function showConfetis() {
 
     var count = 200;

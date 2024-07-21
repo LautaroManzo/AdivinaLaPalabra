@@ -10,6 +10,8 @@ namespace EspecificWordle.Models.ConfigApp
         public string RandomWordEn { get; set; }
 
         public string RandomWordDef { get; set; }
+        
+        public string RandomWordDefRae { get; set; }
 
         public List<string> RandomWordSynonyms { get; set; }
 
