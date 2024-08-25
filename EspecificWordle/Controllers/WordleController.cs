@@ -3,7 +3,6 @@ using EspecificWordle.Models;
 using EspecificWordle.Models.ConfigApp;
 using EspecificWordle.Models.Wordle;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection;
 
 namespace EspecificWordle.Controllers
 {
@@ -106,15 +105,17 @@ namespace EspecificWordle.Controllers
         [HttpGet]
         public async Task<IActionResult> Result(bool result, int intento)
         {
+            var aleatoriaDTO = await _IWordleService.GetAleatoriaAsync(); // Diferenciar por modo
+
             var resultado = new ResultViewModel()
             {
                 Intento = result ? ResultadoSegunIntento(intento) : "Que mal..",
                 Palabra = _configApp.RandomWord,
-                Definicion = _configApp.RandomWordDef,
-                Sinonimos = string.Join(", ", _configApp.RandomWordSynonyms),
-                Antonimos = string.Join(", ", _configApp.RandomWordAntonyms),
-                PalabraEn = _configApp.RandomWordEn.ToLower(),
-                EjemploUso = _configApp.RandomWordUseExamples,
+                Definicion = aleatoriaDTO.Definicion,
+                Sinonimos = aleatoriaDTO.Sinonimos,
+                Antonimos = aleatoriaDTO.Antonimos,
+                PalabraEn = aleatoriaDTO.PalabraEn,
+                EjemploUso = aleatoriaDTO.EjemploUso,
                 Result = result ? result : false
             };
 
