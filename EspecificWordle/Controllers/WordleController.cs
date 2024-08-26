@@ -1,6 +1,5 @@
 ﻿using EspecificWordle.Interfaces;
 using EspecificWordle.Models;
-using EspecificWordle.Models.ConfigApp;
 using EspecificWordle.Models.Wordle;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,12 +9,10 @@ namespace EspecificWordle.Controllers
     {
         private readonly ILogger<WordleController> _logger;
         private readonly IWordleService _IWordleService;
-        private readonly ConfigApp _configApp;
 
-        public WordleController(ILogger<WordleController> logger, ConfigApp configApp, IWordleService iWordleService)
+        public WordleController(ILogger<WordleController> logger, IWordleService iWordleService)
         {
             _logger = logger;
-            _configApp = configApp;
             _IWordleService = iWordleService;
         }
 
@@ -23,10 +20,10 @@ namespace EspecificWordle.Controllers
         {
             var viewModel = new WordleViewModel
             {
-                Wordle = _configApp.RandomWord.ToUpper(),
+                // Wordle = (await _IWordleService.GetAleatoriaAsync()).Palabra.ToUpper(),
                 Tildes = false,
                 Intentos = 0,
-                Length = _configApp.RandomWord.Length
+                Length = (await _IWordleService.GetAleatoriaAsync()).Palabra.Length
             };
 
             return View(viewModel);
@@ -37,16 +34,17 @@ namespace EspecificWordle.Controllers
         public async Task<IActionResult> Enter(WordleViewModel wordleViewModel)
         {
             var exist = await _IWordleService.WordCheckingAsync(wordleViewModel.PalabraIngresada, "es");
+            var word = (await _IWordleService.GetAleatoriaAsync()).Palabra.ToUpper();
 
             if (exist)
             {
-                if (wordleViewModel.Wordle.Equals(wordleViewModel.PalabraIngresada))
+                if (word.Equals(wordleViewModel.PalabraIngresada))
                 {
                     wordleViewModel.Resultado = true;
                 }
                 else
                 {
-                    var palabraSecreta = wordleViewModel.Wordle;
+                    var palabraSecreta = word;
                     var palabraIngresada = wordleViewModel.PalabraIngresada;
 
                     // Letras donde la posicion es correcta/incorrecta
@@ -110,7 +108,7 @@ namespace EspecificWordle.Controllers
             var resultado = new ResultViewModel()
             {
                 Intento = result ? ResultadoSegunIntento(intento) : "Que mal..",
-                Palabra = _configApp.RandomWord,
+                Palabra = aleatoriaDTO.Palabra,
                 Definicion = aleatoriaDTO.Definicion,
                 Sinonimos = aleatoriaDTO.Sinonimos,
                 Antonimos = aleatoriaDTO.Antonimos,

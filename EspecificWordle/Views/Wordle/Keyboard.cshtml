@@ -43,7 +43,7 @@
         if (data.WordleViewModel.Resultado == 'true' || data.WordleViewModel.Resultado == 'false') {    // Ver otra forma de validar esto
             modalResult($("#Resultado").val(), $("#Intentos").val());
         }
-        else if (palabraIngresada.length == data.WordleViewModel.Wordle.length) {   // Esta validacion hacerla tambien en el back
+        else if (palabraIngresada.length == data.WordleViewModel.Length) {   // Esta validacion hacerla tambien en el back
 
             data.WordleViewModel.PalabraIngresada = obtenerFila(data.WordleViewModel, data.WordleViewModel.Intentos);
             data.__RequestVerificationToken = $('input[name="__RequestVerificationToken"]').val();

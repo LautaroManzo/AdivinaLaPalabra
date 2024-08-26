@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using EspecificWordle.Interfaces;
-using EspecificWordle.Models.ConfigApp;
 using Newtonsoft.Json.Linq;
 using System.Data;
 using System.Globalization;
@@ -13,16 +12,23 @@ namespace EspecificWordle.Services
     public class WordleService : IWordleService
     {
         private static readonly HttpClient _httpClient = new HttpClient();
-        private readonly ConfigApp _configApp;
         private readonly string _connectionString;
 
-        public WordleService(ConfigApp configApp, IConfiguration configuration)
+        public WordleService(IConfiguration configuration)
         {
-            _configApp = configApp;
             _connectionString = configuration.GetConnectionString("HangfireConnection");
         }
 
         #region BD
+
+        public async Task<bool> UpdateRandomWordDaily()
+        {
+            using (IDbConnection dbConnection = new SqlConnection(_connectionString))
+            {
+                var result = await dbConnection.ExecuteAsync("UpdateRandomWordDaily", commandType: CommandType.StoredProcedure);
+                return true;
+            }
+        }
 
         public async Task<AleatoriaDTO> GetAleatoriaAsync()
         {

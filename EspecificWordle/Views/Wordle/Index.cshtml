@@ -2,6 +2,23 @@
 
 @model WordleViewModel
 
+<script>
+
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/refreshHub")
+        .configureLogging(signalR.LogLevel.None)
+        .build();
+
+    connection.on("RefreshPage", function () {
+        location.reload();
+    });
+
+    connection.start().catch(function (err) {
+        console.error(err.toString());
+    });
+
+</script>
+
 <script type="text/javascript">
 
     let abcRegex = /^[a-zA-Z]+$/;   // Expresión regular para letras de la A-Z (mayúsculas y minúsculas)
@@ -10,8 +27,6 @@
     let filaFocus;
     
     $(document).ready(function () {
-
-        console.log("@Model.Wordle");
 
         // Habilita la fila que se esta usando segun el numero de intento.
         $('.divWordle').children().each(function (index) {
@@ -40,7 +55,6 @@
 
 </script>
 
-@Html.HiddenFor(x => x.Wordle)
 @Html.HiddenFor(x => x.Tildes)
 @Html.HiddenFor(x => x.Intentos)
 @Html.HiddenFor(x => x.Length)
@@ -55,7 +69,7 @@
         @for (int i = 0; i < 5; i++)    // FILAS
         {
             <div class="fila div-disable">
-                @for (int j = 0; j < Model.Wordle.Length; j++)  // COLUMNAS
+                @for (int j = 0; j < Model.Length; j++)  // COLUMNAS
                 {
                     <div>
                         <input name="@($"{i}_{j}")" type="text" class="form-control form-control-lg input" autocomplete="off" role="presentation"
