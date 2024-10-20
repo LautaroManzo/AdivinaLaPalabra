@@ -90,7 +90,7 @@ $.fn.serializeObject = function () {
 };
 
 // Funcion para mostrar un mensaje de error/info..
-function ShowMessage(message, color) {
+function ShowMessage(message, color, animated = true) {
 
     if ($("#message").length)
         return;
@@ -99,13 +99,17 @@ function ShowMessage(message, color) {
 
     $("#message").fadeIn(500);
 
-    filaFocus.addClass("animated-move"); // Se agrega la animación de movimiento lateral.
+    if (animated)
+        filaFocus.addClass("animated-move"); // Se agrega la animación de movimiento lateral.
 
     setTimeout(function () {
         $("#message").fadeOut(1000, function () {
             $(this).parent().remove();
         });
-        filaFocus.removeClass("animated-move");  // Se remueve la animación.
+
+        if (animated)
+            filaFocus.removeClass("animated-move");  // Se remueve la animación.
+
     }, 3000);
 }
 
