@@ -2,6 +2,7 @@
 using EspecificWordle.Models;
 using EspecificWordle.Models.Wordle;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace EspecificWordle.Controllers
 {
@@ -21,9 +22,10 @@ namespace EspecificWordle.Controllers
             var viewModel = new WordleViewModel
             {
                 // Wordle = (await _IWordleService.GetAleatoriaAsync()).Palabra.ToUpper(),
-                Tildes = false,
                 Intentos = 0,
-                Length = (await _IWordleService.GetAleatoriaAsync()).Palabra.Length
+                Length = (await _IWordleService.GetAleatoriaAsync()).Palabra.Length,
+                Juego = new Dictionary<string, List<Session>>(),
+                ModoId = 1
             };
 
             return View(viewModel);
@@ -34,61 +36,66 @@ namespace EspecificWordle.Controllers
         public async Task<IActionResult> Enter(WordleViewModel wordleViewModel)
         {
             var exist = await _IWordleService.WordCheckingAsync(wordleViewModel.PalabraIngresada, "es");
-            var word = (await _IWordleService.GetAleatoriaAsync()).Palabra.ToUpper();
+            var wordSecret = (await _IWordleService.GetAleatoriaAsync()).Palabra.ToUpper();
+
+            if (wordleViewModel.JuegoDictionaryJson != null)
+                wordleViewModel.Juego = JsonConvert.DeserializeObject<Dictionary<string, List<Session>>>(wordleViewModel.JuegoDictionaryJson);
+
+            if (!wordleViewModel.Juego.ContainsKey(wordleViewModel.ModoId.ToString()))  // Mas modos?
+                wordleViewModel.Juego.Add(wordleViewModel.ModoId.ToString(), new List<Session>());
 
             if (exist)
             {
-                if (word.Equals(wordleViewModel.PalabraIngresada))
+                if (wordSecret.Equals(wordleViewModel.PalabraIngresada))
                 {
+                    wordleViewModel.Juego[wordleViewModel.ModoId.ToString()].Add(new Session() { Intento = 1, WordInsert = wordleViewModel.PalabraIngresada });
                     wordleViewModel.Resultado = true;
                 }
                 else
                 {
-                    var palabraSecreta = word;
-                    var palabraIngresada = wordleViewModel.PalabraIngresada;
+                    // Letras donde la posicion es correcta/incorrecta                    
+                    List<Letter> letters = new List<Letter>();
 
-                    // Letras donde la posicion es correcta/incorrecta
-                    List<object> letras = new List<object>();
-
-                    for (int i = 0; i < palabraSecreta.Length; i++)
+                    for (int i = 0; i < wordSecret.Length; i++)
                     {
-                        if (palabraSecreta[i] == palabraIngresada[i])
+                        if (wordSecret[i] == wordleViewModel.PalabraIngresada[i])
                         {
-                            letras.Add(new
-                            {
-                                Letra = palabraIngresada[i].ToString(),
+                            letters.Add(new Letter() {
+                                Letra = wordleViewModel.PalabraIngresada[i].ToString(),
                                 Color = "Verde"
                             });
                         }
                         else
                         {
-                            if (palabraSecreta.Contains(palabraIngresada[i]))
+                            if (wordSecret.Contains(wordleViewModel.PalabraIngresada[i]))
                             {
                                 // Contiene la letra de la posicion [i]
-                                letras.Add(new
+                                letters.Add(new Letter()
                                 {
-                                    Letra = palabraIngresada[i].ToString(),
+                                    Letra = wordleViewModel.PalabraIngresada[i].ToString(),
                                     Color = "Amarillo"
                                 });
                             }
                             else
                             {
                                 // No contiene la letra
-                                letras.Add(new
+                                letters.Add(new Letter()
                                 {
-                                    Letra = palabraIngresada[i].ToString(),
+                                    Letra = wordleViewModel.PalabraIngresada[i].ToString(),
                                     Color = "Gris"
                                 });
                             }
                         }
                     }
 
-                    wordleViewModel.Letras = letras;
+                    wordleViewModel.Juego[wordleViewModel.ModoId.ToString()].Add(new Session() { 
+                        Intento = wordleViewModel.Intentos,
+                        WordInsert = wordleViewModel.PalabraIngresada,
+                        Letters = letters
+                    });
 
-                    if (wordleViewModel.Intentos != 4)
-                        wordleViewModel.Intentos++;
-                    else
-                        wordleViewModel.Resultado = false;
+                    if (wordleViewModel.Intentos != 4) wordleViewModel.Intentos++;
+                    else wordleViewModel.Resultado = false;
                 }
 
                 return Json(wordleViewModel);

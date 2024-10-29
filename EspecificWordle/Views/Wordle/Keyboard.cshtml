@@ -60,29 +60,28 @@
                     }
                     else {
                         console.log("SUCCESS");
+                        // console.log(response);
 
                         // 'Mapeo' de viewmodel
                         $("#Intentos").val(response.intentos);
+                        $("#ModoId").val(response.modoId);
+                        
+                        // Serializo el dictionary y lo guardo
+                        $("#JuegoDictionaryJson").val(JSON.stringify(response.juego));
 
-                        if (response.resultado == true) {
+                        if (response.resultado == true) {  // 1 es el modo de juego
                             $("#Resultado").val(true);
-
                             changeInputAndButton(undefined, undefined, "input-success", "button-success", true, palabraIngresada);
                         }
                         else {
                             // Se recorre la lista de letras
-                            $.each(response.letras, function (index, elemento) {
-
-                                if (elemento.color == "Verde") {
+                            $.each(response.juego[1][response.intentos - 1].letters, function (index, elemento) {
+                                if (elemento.color == "Verde")
                                     changeInputAndButton(index, elemento.letra, "input-success", "button-success");
-                                }
-                                else if (elemento.color == "Amarillo") {
+                                else if (elemento.color == "Amarillo")
                                     changeInputAndButton(index, elemento.letra, "input-medium", "button-medium");
-                                }
-                                else {
+                                else
                                     changeInputAndButton(index, elemento.letra, "input-grey", "button-grey");
-                                }
-
                             });
 
                             filaFocus.next("div").removeClass('div-disable'); // Se saca la class en el div siguiente
@@ -185,7 +184,8 @@
                     divModal.append(data);
 
                     $('#resultModal').one('show.bs.modal', function () {
-                        showConfetis();
+                        if(result)
+                            showConfetis();
                     });
 
                     document.getElementById('resultModal').addEventListener('hidden.bs.modal', function () {
@@ -209,7 +209,7 @@
 
 <div class="divKeyboard">
 
-    @if (Model.Tildes)
+@*     @if (Model.Tildes)
     {
         <div class="fila">
             <div>
@@ -228,7 +228,7 @@
                 <button type="button" class="form-control form-control-lg tildes">Ú</button>
             </div>
         </div>
-    }
+    } *@
 
     <div class="fila">
         <div>
