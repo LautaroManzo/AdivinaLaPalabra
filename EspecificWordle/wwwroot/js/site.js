@@ -11,7 +11,7 @@ $(document).on("keypress", function (e) {
 
 $(document).on("keydown", function (e) {
 
-    if (inputFocus) {
+    if ($(".loader").is(":hidden") && inputFocus) {
 
         // 13 Tecla de Enter
         if (e.keyCode == 13)
@@ -50,7 +50,6 @@ $(document).on("keydown", function (e) {
 
         inputFocus.focus();
     }
-
 });
 
 $(document).on('input', '.divWordle > div:not(.div-disable) input', function (e) {
@@ -162,4 +161,14 @@ function showConfetis() {
         spread: 120,
         startVelocity: 45,
     });
+}
+
+function showLoader() {
+    $(".loader").show();
+    $("body").css("pointer-events", "none");
+}
+
+function hideLoader() {
+    $(".loader").hide();
+    $("body form").css("pointer-events", "auto");
 }

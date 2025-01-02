@@ -39,6 +39,8 @@
     }
 
     function enter() {
+        showLoader();
+
         let url = '@Html.Raw(Url.Action("Enter", "Wordle"))';
         data = { @Model.GetType().Name: $('form').serializeObject() };
         let palabraIngresada = obtenerFila(data.WordleViewModel, data.WordleViewModel.Intentos);
@@ -120,14 +122,17 @@
 
                     }
 
+                    hideLoader();
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
+                    hideLoader();
                     console.error('Error al realizar la solicitud AJAX:', errorThrown);
                 }
             });
 
         }
         else {
+            hideLoader();
             ShowMessage("Debe ingresar todas las letras", "custom");
         }
     }
