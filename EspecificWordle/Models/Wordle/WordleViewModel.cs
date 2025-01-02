@@ -23,6 +23,10 @@
 
         public string WordInsert { get; set; }
 
+        public bool Pista { get; set; }
+
+        public string PistaDescripcion { get; set; }
+
         public List<Letter> Letters { get; set; }
     }
 
@@ -31,6 +35,8 @@
         public string Letra { get; set; }
 
         public string Color { get; set; }
+
+        public bool Acerted { get; set; }
     }
 
 }

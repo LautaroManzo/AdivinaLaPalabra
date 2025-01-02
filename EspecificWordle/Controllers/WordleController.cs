@@ -62,7 +62,8 @@ namespace EspecificWordle.Controllers
                         {
                             letters.Add(new Letter() {
                                 Letra = wordleViewModel.PalabraIngresada[i].ToString(),
-                                Color = "Verde"
+                                Color = "Verde",
+                                Acerted = true
                             });
                         }
                         else
@@ -73,7 +74,8 @@ namespace EspecificWordle.Controllers
                                 letters.Add(new Letter()
                                 {
                                     Letra = wordleViewModel.PalabraIngresada[i].ToString(),
-                                    Color = "Amarillo"
+                                    Color = "Amarillo",
+                                    Acerted = false
                                 });
                             }
                             else
@@ -82,7 +84,8 @@ namespace EspecificWordle.Controllers
                                 letters.Add(new Letter()
                                 {
                                     Letra = wordleViewModel.PalabraIngresada[i].ToString(),
-                                    Color = "Gris"
+                                    Color = "Gris",
+                                    Acerted = false
                                 });
                             }
                         }
@@ -93,6 +96,17 @@ namespace EspecificWordle.Controllers
                         WordInsert = wordleViewModel.PalabraIngresada,
                         Letters = letters
                     });
+
+                    if (wordleViewModel.Intentos == 2)
+                    {
+                        // [ModoId][0] cero ???????? Pensar en algo
+                        wordleViewModel.Juego[wordleViewModel.ModoId.ToString()][wordleViewModel.Intentos].Pista = PistaForUser(wordleViewModel.JuegoDictionaryJson, wordleViewModel.Length);
+
+                        if (wordleViewModel.Juego[wordleViewModel.ModoId.ToString()][wordleViewModel.Intentos].Pista)
+                            wordleViewModel.Juego[wordleViewModel.ModoId.ToString()][wordleViewModel.Intentos].PistaDescripcion = (await _IWordleService.GetAleatoriaAsync()).Pista;
+                    }
+
+                    wordleViewModel.JuegoDictionaryJson = System.Text.Json.JsonSerializer.Serialize(wordleViewModel.Juego);
 
                     if (wordleViewModel.Intentos != 4) wordleViewModel.Intentos++;
                     else wordleViewModel.Resultado = false;
@@ -105,6 +119,52 @@ namespace EspecificWordle.Controllers
                 return Json(new { error = true, message = "La palabra ingresada no existe." });
             }
 
+        }
+
+        public bool PistaForUser(string juegoDictionaryJson, int length)
+        {
+            Dictionary<string, List<Session>> juego;
+
+            try
+            {
+                juego = JsonConvert.DeserializeObject<Dictionary<string, List<Session>>>(juegoDictionaryJson);
+            }
+            catch (JsonException ex)
+            {
+                throw new Exception("Error en JSON.", ex);
+            }
+
+            // Letras acertadas únicas agrupadas por posición
+            var letrasAcertadasUnicas = juego
+                .SelectMany(juegoEntry => juegoEntry.Value)
+                .SelectMany(sesion => sesion.Letters
+                    .Select(
+                        (letra, index) => new { 
+                            Letra = letra, Index = index, sesion.Intento 
+                        }
+                    )
+                )
+                .Where(x => x.Letra.Acerted)
+                .GroupBy(x => new { x.Index, x.Letra.Letra })
+                .Select(g => g.First())
+                .ToList();
+
+            return EsNecesariaPista(letrasAcertadasUnicas.Count, length);
+        }
+
+        public bool EsNecesariaPista(int cantidadLetrasAcertadas, int wordLength)
+        {
+            bool debeMostrarPista = false;
+
+            switch (wordLength)
+            {
+                case 5:
+                    if (cantidadLetrasAcertadas <= 3)
+                        debeMostrarPista = true;
+                    break;
+            }
+
+            return debeMostrarPista;
         }
 
         [HttpGet]

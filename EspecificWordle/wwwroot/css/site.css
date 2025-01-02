@@ -225,8 +225,11 @@ nav {
     padding: .2em !important;
 }
 
-/* Messages */
+.pista {
+    
+}
 
+/* Messages */
 .div-messages {
     width: 100%;
     max-width: 600px;

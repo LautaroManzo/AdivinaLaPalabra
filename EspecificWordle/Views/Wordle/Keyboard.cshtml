@@ -16,6 +16,9 @@
                 else if ($(this).hasClass('enter')) {
                     return;
                 }
+                else if ($(this).hasClass('pista')) {
+                    return;
+                }
 
                 inputFocus.val($(this).text());
 
@@ -65,11 +68,10 @@
                         // 'Mapeo' de viewmodel
                         $("#Intentos").val(response.intentos);
                         $("#ModoId").val(response.modoId);
-                        
-                        // Serializo el dictionary y lo guardo
-                        $("#JuegoDictionaryJson").val(JSON.stringify(response.juego));
+                        $("#JuegoDictionaryJson").val(response.juegoDictionaryJson);
+                        $("#Pista").val(response.pista);
 
-                        if (response.resultado == true) {  // 1 es el modo de juego
+                        if (response.resultado == true) {
                             $("#Resultado").val(true);
                             changeInputAndButton(undefined, undefined, "input-success", "button-success", true, palabraIngresada);
                         }
@@ -88,6 +90,19 @@
                             filaFocus.addClass('div-disable');  // Se agrega la class en el div donde se ingresó la palabra
                             filaFocus = filaFocus.next("div");  // Se cambia la fila que tiene el foco
                             filaFocus.find("input").first().focus();  // Se da el foco al input de la fila siguiente
+
+                            // Código para la pista
+                            if (response.juego[1][response.intentos - 1].pista == true) {
+                                let divM = $(".fila div button:contains('M')").parent();
+
+                                divM.after(`
+                                    <div>
+                                        <button type='button' onclick="showPista('${response.juego[1][response.intentos - 1].pistaDescripcion}')" class='form-control form-control-lg letras pista' style='padding: 0;'>
+                                            <img src='/Icons/solution.png' alt='Pista' style='width: 100%; height: 100%; object-fit: contain;'>
+                                        </button>
+                                    </div>
+                                `);
+                            }
 
                             if (response.resultado == false) {
                                 $("#Resultado").val(false);
@@ -115,6 +130,11 @@
         else {
             ShowMessage("Debe ingresar todas las letras", "custom");
         }
+    }
+
+    function showPista(pistaDescripcion) {
+        ShowMessage(pistaDescripcion, "secondary", false);
+        $(".pista").parent().remove();
     }
 
     // Se cambia el aspecto de los inputs y buttons
