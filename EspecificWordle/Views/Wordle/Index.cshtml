@@ -48,10 +48,69 @@
 
         // 200 milisegundos para que haga enfoque en el primer input
         setTimeout(function () {
-            var inputFocus = filaFocus.find("input").first().focus();
+
+            if ('@Model.Intentos' == 0)
+                inputFocus = filaFocus.find("input").first().focus();
+            else
+                loadPage(); // Falta analizar si esta función iría acá
+                
         }, 200);
         
     });
+
+    function loadPage() {
+        let json = '@Html.Raw(Model.JuegoDictionaryJson)';
+        let data = "";
+
+        if (json) {
+            data = JSON.parse(json);
+            let intentos = data["1"].length;
+
+            $(".divWordle").children("div").slice(0, intentos).each(function (index) {
+
+                // Piso la variable en cada recorrido
+                filaFocus = $(this);
+
+                let dictionary = data["1"];   // "1" es el modo de juego
+                let obj = dictionary[index];
+                let list = obj.Letters;
+                
+                // Elementos html
+                let fila = $(this);
+                let filaDivs = fila.children("div");
+
+                filaDivs.each(function (indexInp) {
+                    
+                    // Actualiza valores del input
+                    let input = $(this).children("input");
+                    input.val(list[indexInp].Letra);
+
+                    // Actualiza el aspecto de inputs
+                    if (list[indexInp].Color == "Verde")
+                        changeInputAndButton(indexInp, list[indexInp].Letra, "input-success", "button-success", undefined, undefined);
+                    else if (list[indexInp].Color == "Amarillo")
+                        changeInputAndButton(indexInp, list[indexInp].Letra, "input-medium", "button-medium", undefined, undefined);
+                    else
+                        changeInputAndButton(indexInp, list[indexInp].Letra, "input-grey", "button-grey", undefined, undefined);
+                });
+
+                if ('@Model.Resultado' == '@true' || '@Model.Resultado' == '@false') {
+                    filaFocus.next().addClass('div-disable');
+                }
+                else 
+                {
+                    // Se hace foco en la fila que corresponde
+                    filaFocus.next("div").removeClass('div-disable'); // Se saca la class en el div siguiente
+                    filaFocus.addClass('div-disable');  // Se agrega la class en el div donde se ingresó la palabra
+                    filaFocus = filaFocus.next("div");  // Se cambia la fila que tiene el foco
+                    filaFocus.find("input").first().focus();  // Se da el foco al input de la fila siguiente
+                }
+
+            });
+
+        }
+
+    }
 
 </script>
 

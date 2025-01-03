@@ -45,8 +45,9 @@
         data = { @Model.GetType().Name: $('form').serializeObject() };
         let palabraIngresada = obtenerFila(data.WordleViewModel, data.WordleViewModel.Intentos);
 
-        if (data.WordleViewModel.Resultado == 'true' || data.WordleViewModel.Resultado == 'false') {    // Ver otra forma de validar esto
+        if (data.WordleViewModel.Resultado == '@true' || data.WordleViewModel.Resultado == '@false' || data.WordleViewModel.Resultado == 'true' || data.WordleViewModel.Resultado == 'false') {    // Ver otra forma de validar esto
             modalResult($("#Resultado").val(), $("#Intentos").val());
+            hideLoader();
         }
         else if (palabraIngresada.length == data.WordleViewModel.Length) {   // Esta validacion hacerla tambien en el back
 
@@ -209,8 +210,12 @@
                     divModal.append(data);
 
                     $('#resultModal').one('show.bs.modal', function () {
-                        if(result)
+                        
+                        if(result != '@false' || result != 'False')
                             showConfetis();
+
+                        if ($(".pista"))
+                            $(".pista").parent().remove();
                     });
 
                     document.getElementById('resultModal').addEventListener('hidden.bs.modal', function () {

@@ -19,14 +19,34 @@ namespace EspecificWordle.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var word = (await _IWordleService.GetAleatoriaAsync()).Palabra;
+
             var viewModel = new WordleViewModel
             {
-                // Wordle = (await _IWordleService.GetAleatoriaAsync()).Palabra.ToUpper(),
-                Intentos = 0,
-                Length = (await _IWordleService.GetAleatoriaAsync()).Palabra.Length,
-                Juego = new Dictionary<string, List<Session>>(),
+                Length = word.Length,
                 ModoId = 1
             };
+
+            var cookie = GetGameFromCookie();
+            viewModel.JuegoDictionaryJson = cookie == null ? string.Empty : cookie;
+            var game = JsonConvert.DeserializeObject<Dictionary<string, List<Session>>>(cookie);
+
+            if (game != null)
+            {
+                viewModel.Juego = game;
+                viewModel.Intentos = game["1"].Count;
+
+                // Buscar otra forma de hacer esto
+                if (game["1"].Last().WordInsert.ToUpper() == word.ToUpper())
+                    viewModel.Resultado = true;
+                else if (game["1"].Count == 5 && game["1"].Last().WordInsert.ToUpper() != word.ToUpper())
+                    viewModel.Resultado = false;
+            }
+            else
+            {
+                viewModel.Juego = new Dictionary<string, List<Session>>();
+                viewModel.Intentos = 0;
+            }
 
             return View(viewModel);
         }
@@ -46,71 +66,70 @@ namespace EspecificWordle.Controllers
 
             if (exist)
             {
-                if (wordSecret.Equals(wordleViewModel.PalabraIngresada))
-                {
-                    wordleViewModel.Juego[wordleViewModel.ModoId.ToString()].Add(new Session() { Intento = 1, WordInsert = wordleViewModel.PalabraIngresada });
-                    wordleViewModel.Resultado = true;
-                }
-                else
-                {
-                    // Letras donde la posicion es correcta/incorrecta                    
-                    List<Letter> letters = new List<Letter>();
+                // Letras donde la posicion es correcta/incorrecta                    
+                List<Letter> letters = new List<Letter>();
 
-                    for (int i = 0; i < wordSecret.Length; i++)
+                for (int i = 0; i < wordSecret.Length; i++)
+                {
+                    if (wordSecret[i] == wordleViewModel.PalabraIngresada[i])
                     {
-                        if (wordSecret[i] == wordleViewModel.PalabraIngresada[i])
+                        letters.Add(new Letter() {
+                            Letra = wordleViewModel.PalabraIngresada[i].ToString(),
+                            Color = "Verde",
+                            Acerted = true
+                        });
+                    }
+                    else
+                    {
+                        if (wordSecret.Contains(wordleViewModel.PalabraIngresada[i]))
                         {
-                            letters.Add(new Letter() {
+                            // Contiene la letra de la posicion [i]
+                            letters.Add(new Letter()
+                            {
                                 Letra = wordleViewModel.PalabraIngresada[i].ToString(),
-                                Color = "Verde",
-                                Acerted = true
+                                Color = "Amarillo",
+                                Acerted = false
                             });
                         }
                         else
                         {
-                            if (wordSecret.Contains(wordleViewModel.PalabraIngresada[i]))
+                            // No contiene la letra
+                            letters.Add(new Letter()
                             {
-                                // Contiene la letra de la posicion [i]
-                                letters.Add(new Letter()
-                                {
-                                    Letra = wordleViewModel.PalabraIngresada[i].ToString(),
-                                    Color = "Amarillo",
-                                    Acerted = false
-                                });
-                            }
-                            else
-                            {
-                                // No contiene la letra
-                                letters.Add(new Letter()
-                                {
-                                    Letra = wordleViewModel.PalabraIngresada[i].ToString(),
-                                    Color = "Gris",
-                                    Acerted = false
-                                });
-                            }
+                                Letra = wordleViewModel.PalabraIngresada[i].ToString(),
+                                Color = "Gris",
+                                Acerted = false
+                            });
                         }
                     }
-
-                    wordleViewModel.Juego[wordleViewModel.ModoId.ToString()].Add(new Session() { 
-                        Intento = wordleViewModel.Intentos,
-                        WordInsert = wordleViewModel.PalabraIngresada,
-                        Letters = letters
-                    });
-
-                    if (wordleViewModel.Intentos == 2)
-                    {
-                        // [ModoId][0] cero ???????? Pensar en algo
-                        wordleViewModel.Juego[wordleViewModel.ModoId.ToString()][wordleViewModel.Intentos].Pista = PistaForUser(wordleViewModel.JuegoDictionaryJson, wordleViewModel.Length);
-
-                        if (wordleViewModel.Juego[wordleViewModel.ModoId.ToString()][wordleViewModel.Intentos].Pista)
-                            wordleViewModel.Juego[wordleViewModel.ModoId.ToString()][wordleViewModel.Intentos].PistaDescripcion = (await _IWordleService.GetAleatoriaAsync()).Pista;
-                    }
-
-                    wordleViewModel.JuegoDictionaryJson = System.Text.Json.JsonSerializer.Serialize(wordleViewModel.Juego);
-
-                    if (wordleViewModel.Intentos != 4) wordleViewModel.Intentos++;
-                    else wordleViewModel.Resultado = false;
                 }
+
+                wordleViewModel.Juego[wordleViewModel.ModoId.ToString()].Add(new Session() { 
+                    Intento = wordleViewModel.Intentos,
+                    WordInsert = wordleViewModel.PalabraIngresada,
+                    Letters = letters
+                });
+
+                if (wordleViewModel.Intentos == 2)
+                {
+                    // [ModoId][0] cero ???????? Pensar en algo
+                    wordleViewModel.Juego[wordleViewModel.ModoId.ToString()][wordleViewModel.Intentos].Pista = PistaForUser(wordleViewModel.JuegoDictionaryJson, wordleViewModel.Length);
+
+                    if (wordleViewModel.Juego[wordleViewModel.ModoId.ToString()][wordleViewModel.Intentos].Pista)
+                        wordleViewModel.Juego[wordleViewModel.ModoId.ToString()][wordleViewModel.Intentos].PistaDescripcion = (await _IWordleService.GetAleatoriaAsync()).Pista;
+                }
+
+                wordleViewModel.JuegoDictionaryJson = System.Text.Json.JsonSerializer.Serialize(wordleViewModel.Juego);
+
+                if (wordleViewModel.Intentos != 4) wordleViewModel.Intentos++;
+                else wordleViewModel.Resultado = false;
+                
+                // Si la palabra ingresada es correcta
+                if (wordSecret.Equals(wordleViewModel.PalabraIngresada))
+                    wordleViewModel.Resultado = true;
+
+                // Acá guardaria en la cookie el json
+                SaveGameInCookie(wordleViewModel.JuegoDictionaryJson);
 
                 return Json(wordleViewModel);
             }
@@ -119,6 +138,42 @@ namespace EspecificWordle.Controllers
                 return Json(new { error = true, message = "La palabra ingresada no existe." });
             }
 
+        }
+
+        public void SaveGameInCookie(string juegoDictionaryJson)
+        {
+            try
+            {
+                if (Request.Cookies.ContainsKey("WordCookie"))
+                    Response.Cookies.Delete("WordCookie");
+
+                Response.Cookies.Append("WordCookie", juegoDictionaryJson, new CookieOptions
+                {
+                    Expires = DateTimeOffset.Now.AddHours(1),
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al guardar cookie: {ex.Message}");
+            }
+        }
+
+        public string GetGameFromCookie()
+        {
+            try
+            {
+                if (Request.Cookies.TryGetValue("WordCookie", out var juegoDictionaryJson))
+                    return juegoDictionaryJson;
+
+                return string.Empty;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al recuperar la cookie: {ex.Message}");
+            }
         }
 
         public bool PistaForUser(string juegoDictionaryJson, int length)
