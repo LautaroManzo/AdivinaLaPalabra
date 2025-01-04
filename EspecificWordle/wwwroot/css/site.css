@@ -327,6 +327,10 @@ nav {
 
 /* Modal */
 
+.modal-fullscreen .modal-body {
+    overflow-y:unset;
+}
+
 .modal-content {
     background-color: #E8E8E8;
 }
@@ -439,7 +443,9 @@ nav {
 }
 
 .div-content-modal {
+    width: 100%;
     max-width: 500px;
+    padding: 5px;
 }
 
 .btn-close-modal {
@@ -460,6 +466,8 @@ nav {
 .div-modal-modos button:focus {
     outline: none;
     box-shadow: none;
+    background-color: #6c757d;
+    color: white;
 }
 
 .div-modal-modos button {
@@ -482,7 +490,7 @@ sup {
     }
 
     button.form-control.form-control-lg {
-        font-size: 14px !important;
+        font-size: 12px !important;
     }
 
     .delete i {
@@ -507,6 +515,29 @@ sup {
         top: 7.5rem !important;
         font-size: smaller;
     }
+
+    /* Estilos dentro del modal */
+
+    .div-modal-modos {
+        flex-direction: column;
+    }
+
+    .div-result span {
+        font-size:25px;
+    }
+
+    .div-modo i {
+        font-size:10px;
+    }
+
+    .div-word span {
+        font-size: 14px;
+    }
+
+    .span-def, .div-sin-ant div span, .div-use span {
+        font-size: 12px;
+    }
+
 }
 
 @media (min-width: 320px) {
