@@ -196,3 +196,10 @@ function showInstrucciones() {
         }
     });
 }
+
+function sendEmail() {
+    let email = "test@test.com";
+    let subject = "Contacto - Adiviná la palabra";
+    let mailtoURL = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
+    window.location.href = mailtoURL;
+}
