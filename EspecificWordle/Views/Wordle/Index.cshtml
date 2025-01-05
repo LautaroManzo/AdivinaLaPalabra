@@ -3,6 +3,10 @@
 @model WordleViewModel
 
 <script>
+    const instruccionesUrl = '@Url.Action("Instrucciones", "Wordle")';
+</script>
+
+<script>
 
     const connection = new signalR.HubConnectionBuilder()
         .withUrl("/refreshHub")

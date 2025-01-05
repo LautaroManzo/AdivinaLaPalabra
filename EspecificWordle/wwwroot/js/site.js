@@ -172,3 +172,27 @@ function hideLoader() {
     $(".loader").hide();
     $("body form").css("pointer-events", "auto");
 }
+
+function showInstrucciones() {
+    $.ajax({
+        url: instruccionesUrl,
+        method: 'GET',
+        success: function (data) {
+
+            let divModal = $("#instruccionesModal");
+            divModal.attr('role', 'dialog');
+            divModal.addClass('modal fade');
+
+            divModal.append(data);
+
+            document.getElementById('instruccionesModal').addEventListener('hidden.bs.modal', function () {
+                $(".modal-dialog").remove();
+            });
+
+            divModal.modal('show');
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error al realizar la solicitud AJAX:', errorThrown);
+        }
+    });
+}

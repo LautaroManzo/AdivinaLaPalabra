@@ -1,4 +1,10 @@
 
+:root {
+    --success-color: #43a047;
+    --medium-color: #e4a81d;
+    --grey-color: #757575;
+}
+
 /* Page */
 
 html {
@@ -325,6 +331,18 @@ nav {
     border-color: #999999;
 }
 
+.icon-success {
+    color: var(--success-color);
+}
+
+.icon-medium {
+    color: var(--medium-color)
+}
+
+.icon-grey {
+    color: var(--grey-color)
+}
+
 /* Modal */
 
 .modal-fullscreen .modal-body {
@@ -481,7 +499,7 @@ sup {
     padding: 2px;
 }
 
-/* Resolución menor a 280px */
+/* Resolución menor a 320px */
 
 @media (max-width: 320px) {
 
@@ -522,8 +540,13 @@ sup {
         flex-direction: column;
     }
 
+    .div-result {
+        flex-direction:column;
+    }
+
     .div-result span {
         font-size:25px;
+        text-align:center;
     }
 
     .div-modo i {
@@ -536,6 +559,22 @@ sup {
 
     .span-def, .div-sin-ant div span, .div-use span {
         font-size: 12px;
+    }
+
+    /* Estilos para modal de instrucciones */
+
+    .title-game, .title-pista, .title-claves {
+        text-align:center;
+    }
+
+    .div-example {
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .div-btn-close {
+        justify-content:left;
     }
 
 }
@@ -610,4 +649,101 @@ sup {
 .icon-size {
     height:20px;
     width:20px;
+}
+
+/* Modal de instrucciones */
+
+.div-instrucciones {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.div-game div {
+    border-top: 1px solid #adb5bd;
+}
+
+    .div-game div p {
+        font-size: medium;
+        padding: 5px 0 5px 0;
+    }
+
+.title-game {
+    font-size: 25px;
+    font-weight: bold;
+    padding: 5px 0 5px 0;
+}
+
+.div-example {
+    display: flex;
+    border-bottom: 1px solid #adb5bd;
+    padding-bottom: 5px;
+    column-gap: 20px;
+}
+
+.div-example h2 {
+    font-size: 25px;
+    font-weight: bold;
+    display: flex;
+}
+
+.word-example {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.word-example div {
+    width: 20px;
+    text-align: center;
+    border-radius: 2px;
+}
+
+.ul-references {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    font-size: medium;
+    padding: 5px 0 5px 0;
+}
+
+.ul-references li {
+    display: flex;
+    column-gap: 5px;
+}
+
+.title-pista {
+    font-size: 25px;
+    font-weight: bold;
+    border-bottom: 1px solid #adb5bd;
+    padding-bottom: 5px;
+}
+
+.div-pista p {
+    font-size: medium;
+    padding: 5px 0 5px 0;
+}
+
+.title-claves {
+    font-size: 25px;
+    font-weight: bold;
+    border-bottom: 1px solid #adb5bd;
+    padding-bottom: 5px;
+}
+
+.ul-claves {
+    list-style-type: none;
+    margin: 0;
+    padding: 5px 0 5px 0;
+    font-size: medium;
+}
+
+/* Otros estilos */
+
+.div-content-modal p, h1, h2 {
+    margin: 0;
+}
+
+.fa-xs {
+    font-size: .50em;
 }

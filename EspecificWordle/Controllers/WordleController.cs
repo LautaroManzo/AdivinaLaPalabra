@@ -242,6 +242,12 @@ namespace EspecificWordle.Controllers
             return PartialView("_Result", resultado);
         }
 
+        [HttpGet]
+        public IActionResult Instrucciones()
+        {
+            return PartialView("_Instrucciones");
+        }
+
         private string ResultadoSegunIntento(int intento)
         {
             var result = string.Empty;
