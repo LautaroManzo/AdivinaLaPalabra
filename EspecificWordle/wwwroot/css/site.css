@@ -50,8 +50,12 @@ nav {
     margin: 0;
 }
 
+.div-countdown {
+    font-weight: 500;
+}
+
 .div-navbar-padding {
-    padding: .4rem;
+    padding: .4rem 1.2rem .4rem .4rem;
 }
 
 #navBar a {
@@ -499,13 +503,36 @@ sup {
     padding: 2px;
 }
 
-/* Resolución menor a 320px */
-
-@media (max-width: 320px) {
+@media (max-width: 380px) {
 
     #navBar {
         gap: 1rem;
+        justify-content:unset;
     }
+
+    .order-title {
+        order:3;
+        width:100%;
+    }
+
+    .order-countdown {
+        order: 2;
+    }
+
+    .div-menu {
+        order:1;
+        flex:1;
+    }
+
+    .titulo {
+        text-align:center;
+    }
+
+}
+
+/* Resolución menor a 320px */
+
+@media (max-width: 320px) {
 
     button.form-control.form-control-lg {
         font-size: 12px !important;
@@ -521,12 +548,6 @@ sup {
 
     .enter {
         padding: 0.1em !important;
-    }
-
-    .order-title {
-        order: 2;
-        width: 100%;
-        text-align: center;
     }
 
     .div-messages {
@@ -663,10 +684,10 @@ sup {
     border-top: 1px solid #adb5bd;
 }
 
-    .div-game div p {
-        font-size: medium;
-        padding: 5px 0 5px 0;
-    }
+.div-game div p {
+    font-size: medium;
+    padding: 5px 0 5px 0;
+}
 
 .title-game {
     font-size: 25px;

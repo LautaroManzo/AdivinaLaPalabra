@@ -1,4 +1,10 @@
 ﻿
+$(document).ready(function () {
+
+    setInterval(() => (updateCountdown(), updateCountdown()), 1000);
+
+});
+
 $(document).on("keypress", function (e) {
 
     let keyCode = e.keyCode || e.which;
@@ -112,12 +118,6 @@ function ShowMessage(message, color, animated = true) {
     }, 3000);
 }
 
-function changeMode() {
-
-
-
-}
-
 function showConfetis() {
 
     var count = 200;
@@ -202,4 +202,23 @@ function sendEmail() {
     let subject = "Contacto - Adiviná la palabra";
     let mailtoURL = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
     window.location.href = mailtoURL;
+}
+
+function updateCountdown() {
+    const now = new Date();
+    const midnight = new Date().setHours(24, 0, 0, 0);  // 00:00:00 del día siguiente
+
+    const timeRemaining = midnight - now;
+
+    const msInSecond = 1000;
+    const msInMinute = msInSecond * 60;
+    const msInHour = msInMinute * 60;
+
+    const hours = Math.floor(timeRemaining / msInHour);
+    const minutes = Math.floor((timeRemaining % msInHour) / msInMinute);
+    const seconds = Math.floor((timeRemaining % msInMinute) / msInSecond);
+
+    $('#countdown').text(
+        `${String(hours).padStart(2, '0')} : ${String(minutes).padStart(2, '0')} : ${String(seconds).padStart(2, '0')}`
+    );
 }
