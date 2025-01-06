@@ -35,55 +35,34 @@ html, body, form, main {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-/* Nav */
+/* Navbar */
 
-nav {
+#navBar {
     background-color: #C7C8CC;
     width: 100%;
 }
 
-.navbar-nav {
-    flex-direction: row;
-}
-
-.navbar-brand {
-    margin: 0;
-}
-
-.div-countdown {
-    font-weight: 500;
-}
-
-.div-navbar-padding {
-    padding: .4rem 1.2rem .4rem .4rem;
-}
-
-#navBar a {
-    padding: .5rem;
-}
-
 .menu {
-    color: black;
+    color:black;
+    padding:5px;
 }
 
 .menu:hover {
     background-color: #8f8f8f;
-    border-radius: 10%;
+    border-radius: 20%;
     color: black;
 }
 
 .titulo {
-    text-decoration: none;
-    font-weight: bold !important;
     font-size: 1.5rem;
-    line-height: 1.2 !important;
-    font-family: monospace !important;
-    margin: auto;
+    line-height: 1.2;
+    font-family: monospace;
 }
 
-.mode:hover {
-    background-color: #8f8f8f;
-    border-radius: 50%;
+.modo {
+    font-size: 0.8rem;
+    letter-spacing: 0.2rem;
+    font-family: monospace;
 }
 
 /* Sidebar */
@@ -369,8 +348,11 @@ nav {
 
 .div-btn-close {
     display: flex !important;
-    justify-content: end;
-    padding: 5px 5px 0 0;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    right: 0;
+    padding:5px;
 }
 
 .div-btn-close button:hover {
@@ -471,12 +453,17 @@ nav {
 }
 
 .btn-close-modal {
-    border-radius: 4rem;
+    padding: 0px 4px 0px 4px;
+    border-radius: 20%;
 }
 
 .btn-close-modal:focus {
     outline: none !important;
     box-shadow: none !important;
+}
+
+.div-modal-modos {
+    padding-bottom: 5px;
 }
 
 .div-modal-modos button {
@@ -503,29 +490,11 @@ sup {
     padding: 2px;
 }
 
-@media (max-width: 380px) {
+@media (max-width: 400px) {
 
-    #navBar {
-        gap: 1rem;
-        justify-content:unset;
-    }
-
-    .order-title {
-        order:3;
-        width:100%;
-    }
-
-    .order-countdown {
-        order: 2;
-    }
-
-    .div-menu {
-        order:1;
-        flex:1;
-    }
-
-    .titulo {
-        text-align:center;
+    .div-result span {
+        font-size: 25px;
+        text-align: center;
     }
 
 }
@@ -534,7 +503,15 @@ sup {
 
 @media (max-width: 320px) {
 
-    button.form-control.form-control-lg {
+    .titulo {
+        font-size:16px;
+    }
+
+    .modo {
+        font-size: 10px;
+    }
+
+    .button.form-control.form-control-lg {
         font-size: 12px !important;
     }
 
@@ -559,15 +536,6 @@ sup {
 
     .div-modal-modos {
         flex-direction: column;
-    }
-
-    .div-result {
-        flex-direction:column;
-    }
-
-    .div-result span {
-        font-size:25px;
-        text-align:center;
     }
 
     .div-modo i {
