@@ -83,13 +83,37 @@ namespace EspecificWordle.Controllers
                     {
                         if (wordSecret.Contains(wordleViewModel.PalabraIngresada[i]))
                         {
-                            // Contiene la letra de la posicion [i]
-                            letters.Add(new Letter()
+                            bool isLetterRepeatedInYellowOrGray = letters.Any(letter =>
+                                letter.Letra == wordleViewModel.PalabraIngresada[i].ToString() &&
+                                letter.Color != "Verde");
+
+                            bool isLetterRepeatedInGreen = letters.Any(letter =>
+                                letter.Letra == wordleViewModel.PalabraIngresada[i].ToString() &&
+                                letter.Color == "Verde");
+
+                            bool isLetterRepeatedInWordSecret = wordSecret.GroupBy(character => character).Any(group => group.Count() > 1);
+
+                            if ((!isLetterRepeatedInWordSecret && isLetterRepeatedInGreen) || isLetterRepeatedInYellowOrGray)
                             {
-                                Letra = wordleViewModel.PalabraIngresada[i].ToString(),
-                                Color = "Amarillo",
-                                Acerted = false
-                            });
+                                // 1er condición: Si la palabra oculta no repite alguna letra && Si el usuario ingresó una palabra que sí repite alguna letra y esta letra es correcta (Verde)
+                                // 2da condición: Si el usuario ingresó una palabra que sí repite alguna letra y ésta letra ya se marcó (Amarilla o Gris)
+                                letters.Add(new Letter()
+                                {
+                                    Letra = wordleViewModel.PalabraIngresada[i].ToString(),
+                                    Color = "Gris",
+                                    Acerted = false
+                                });
+                            }
+                            else
+                            {
+                                // Contiene la letra de la posición [i]
+                                letters.Add(new Letter()
+                                {
+                                    Letra = wordleViewModel.PalabraIngresada[i].ToString(),
+                                    Color = "Amarillo",
+                                    Acerted = false
+                                });
+                            }
                         }
                         else
                         {
@@ -121,8 +145,13 @@ namespace EspecificWordle.Controllers
 
                 wordleViewModel.JuegoDictionaryJson = System.Text.Json.JsonSerializer.Serialize(wordleViewModel.Juego);
 
+                // ?? Pensar
                 if (wordleViewModel.Intentos != 4) wordleViewModel.Intentos++;
-                else wordleViewModel.Resultado = false;
+                else
+                {
+                    wordleViewModel.Intentos++;
+                    wordleViewModel.Resultado = false;
+                }
                 
                 // Si la palabra ingresada es correcta
                 if (wordSecret.Equals(wordleViewModel.PalabraIngresada))
@@ -254,19 +283,19 @@ namespace EspecificWordle.Controllers
 
             switch (intento)
             {
-                case 0:
+                case 1:
                     result = EstadoResult.Excelente.ToString();
                     break;
-                case 1:
+                case 2:
                     result = EstadoResult.Buenisimo.ToString();
                     break;
-                case 2:
+                case 3:
                     result = EstadoResult.Aceptable.ToString();
                     break;
-                case 3:
+                case 4:
                     result = EstadoResult.Normal.ToString();
                     break;
-                case 4:
+                case 5:
                     result = EstadoResult.Mejorable.ToString();
                     break;
             }

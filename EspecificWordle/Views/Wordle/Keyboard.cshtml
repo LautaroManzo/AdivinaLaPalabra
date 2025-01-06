@@ -60,7 +60,7 @@
                 data: data,
                 dataType: 'json',
                 success: function (response) {
-                
+
                     if (response.error) {
                         ShowMessage(response.message, "custom");
                     }
@@ -211,8 +211,10 @@
 
                     $('#resultModal').one('show.bs.modal', function () {
                         
-                        if(result != '@false' || result != 'False')
-                            showConfetis();
+                        // Se comenta momentáneamente hasta reacomodar lógica de resultados.
+                        // console.log(typeof result);
+                        // if(result != 'false' || result != 'False' || result != false)
+                        //    showConfetis();
 
                         if ($(".pista"))
                             $(".pista").parent().remove();

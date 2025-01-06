@@ -218,7 +218,8 @@ function updateCountdown() {
     const minutes = Math.floor((timeRemaining % msInHour) / msInMinute);
     const seconds = Math.floor((timeRemaining % msInMinute) / msInSecond);
 
-    $('#countdown').text(
+    $('#countdown').html(
+        '<span class="text-muted">Próxima palabra en&nbsp;</span>' +
         `${String(hours).padStart(2, '0')} : ${String(minutes).padStart(2, '0')} : ${String(seconds).padStart(2, '0')}`
     );
 }
