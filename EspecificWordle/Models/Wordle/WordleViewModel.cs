@@ -10,7 +10,9 @@
 
         public string PalabraIngresada { get; set; }
 
-        public bool? Resultado { get; set; }
+        public int Resultado { get; set; }
+
+        public bool GameFinish { get; set; }
 
         public Dictionary<string, List<Session>> Juego { get; set; }
 

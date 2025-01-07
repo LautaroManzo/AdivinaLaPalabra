@@ -98,7 +98,7 @@
                         changeInputAndButton(indexInp, list[indexInp].Letra, "input-grey", "button-grey", undefined, undefined);
                 });
 
-                if ('@Model.Resultado' == '@true' || '@Model.Resultado' == '@false') {
+                if ($("#GameFinish").val() == "@true") {
                     filaFocus.next().addClass('div-disable');
                 }
                 else 
@@ -125,6 +125,7 @@
 @Html.HiddenFor(x => x.Juego)
 @Html.HiddenFor(x => x.JuegoDictionaryJson)
 @Html.HiddenFor(x => x.Resultado)
+@Html.HiddenFor(x => x.GameFinish)
 
 <div class="divConteiener">
 

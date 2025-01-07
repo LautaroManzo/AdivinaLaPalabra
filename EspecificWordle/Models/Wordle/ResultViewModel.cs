@@ -16,6 +16,6 @@
 
         public string EjemploUso { get; set; }
 
-        public bool Result { get; set; }
+        public int Result { get; set; }
     }
 }

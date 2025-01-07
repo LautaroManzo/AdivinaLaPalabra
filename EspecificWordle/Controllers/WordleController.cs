@@ -24,7 +24,8 @@ namespace EspecificWordle.Controllers
             var viewModel = new WordleViewModel
             {
                 Length = word.Length,
-                ModoId = 1
+                ModoId = 1,
+                GameFinish = false
             };
 
             var cookie = GetGameFromCookie();
@@ -38,9 +39,15 @@ namespace EspecificWordle.Controllers
 
                 // Buscar otra forma de hacer esto
                 if (game["1"].Last().WordInsert.ToUpper() == word.ToUpper())
-                    viewModel.Resultado = true;
+                {
+                    viewModel.Resultado = 1;
+                    viewModel.GameFinish = true;
+                }
                 else if (game["1"].Count == 5 && game["1"].Last().WordInsert.ToUpper() != word.ToUpper())
-                    viewModel.Resultado = false;
+                {
+                    viewModel.Resultado = 0;
+                    viewModel.GameFinish = true;
+                }
             }
             else
             {
@@ -145,17 +152,19 @@ namespace EspecificWordle.Controllers
 
                 wordleViewModel.JuegoDictionaryJson = System.Text.Json.JsonSerializer.Serialize(wordleViewModel.Juego);
 
-                // ?? Pensar
-                if (wordleViewModel.Intentos != 4) wordleViewModel.Intentos++;
-                else
-                {
-                    wordleViewModel.Intentos++;
-                    wordleViewModel.Resultado = false;
-                }
-                
+                wordleViewModel.Intentos++;
+
                 // Si la palabra ingresada es correcta
                 if (wordSecret.Equals(wordleViewModel.PalabraIngresada))
-                    wordleViewModel.Resultado = true;
+                {
+                    wordleViewModel.Resultado = 1;
+                    wordleViewModel.GameFinish = true;
+                }
+                else if (wordleViewModel.Intentos == 5)
+                {
+                    wordleViewModel.Resultado = 0;
+                    wordleViewModel.GameFinish = true;
+                }
 
                 // Acá guardaria en la cookie el json
                 SaveGameInCookie(wordleViewModel.JuegoDictionaryJson);
@@ -252,20 +261,20 @@ namespace EspecificWordle.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Result(bool result, int intento)
+        public async Task<IActionResult> Result(int result, int intento)
         {
             var aleatoriaDTO = await _IWordleService.GetAleatoriaAsync(); // Diferenciar por modo
 
             var resultado = new ResultViewModel()
             {
-                Intento = result ? ResultadoSegunIntento(intento) : "Que mal..",
+                Intento = result == 1 ? ResultadoSegunIntento(intento) : "Que mal..",
                 Palabra = aleatoriaDTO.Palabra,
                 Definicion = aleatoriaDTO.Definicion,
                 Sinonimos = aleatoriaDTO.Sinonimos,
                 Antonimos = aleatoriaDTO.Antonimos,
                 PalabraEn = aleatoriaDTO.PalabraEn,
                 EjemploUso = aleatoriaDTO.EjemploUso,
-                Result = result ? result : false
+                Result = result == 1 ? 1 : 0
             };
 
             return PartialView("_Result", resultado);
