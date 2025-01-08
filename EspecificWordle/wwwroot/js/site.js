@@ -187,6 +187,9 @@ function showInstrucciones() {
 
             document.getElementById('instruccionesModal').addEventListener('hidden.bs.modal', function () {
                 $(".modal-dialog").remove();
+
+                if (document.activeElement)
+                    document.activeElement.blur();
             });
 
             divModal.modal('show');

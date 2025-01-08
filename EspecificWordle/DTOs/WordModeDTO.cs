@@ -1,7 +1,9 @@
 ﻿namespace EspecificWordle.DTOs
 {
-    public class AleatoriaDTO
+    public class WordModeDTO
     {
+        public int ModeId { get; set; }
+
         public string Palabra { get; set; }
 
         public string Definicion { get; set; }

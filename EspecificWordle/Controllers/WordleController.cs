@@ -19,7 +19,7 @@ namespace EspecificWordle.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var word = (await _IWordleService.GetAleatoriaAsync()).Palabra;
+            var word = (await _IWordleService.GetModeWordDetailsAsync(1)).Palabra;
 
             var viewModel = new WordleViewModel
             {
@@ -63,7 +63,7 @@ namespace EspecificWordle.Controllers
         public async Task<IActionResult> Enter(WordleViewModel wordleViewModel)
         {
             var exist = await _IWordleService.WordCheckingAsync(wordleViewModel.PalabraIngresada, "es");
-            var wordSecret = (await _IWordleService.GetAleatoriaAsync()).Palabra.ToUpper();
+            var wordSecret = (await _IWordleService.GetModeWordDetailsAsync(1)).Palabra.ToUpper();   // ??
 
             if (wordleViewModel.JuegoDictionaryJson != null)
                 wordleViewModel.Juego = JsonConvert.DeserializeObject<Dictionary<string, List<Session>>>(wordleViewModel.JuegoDictionaryJson);
@@ -147,7 +147,7 @@ namespace EspecificWordle.Controllers
                     wordleViewModel.Juego[wordleViewModel.ModoId.ToString()][wordleViewModel.Intentos].Pista = PistaForUser(wordleViewModel.JuegoDictionaryJson, wordleViewModel.Length);
 
                     if (wordleViewModel.Juego[wordleViewModel.ModoId.ToString()][wordleViewModel.Intentos].Pista)
-                        wordleViewModel.Juego[wordleViewModel.ModoId.ToString()][wordleViewModel.Intentos].PistaDescripcion = (await _IWordleService.GetAleatoriaAsync()).Pista;
+                        wordleViewModel.Juego[wordleViewModel.ModoId.ToString()][wordleViewModel.Intentos].PistaDescripcion = (await _IWordleService.GetModeWordDetailsAsync(1)).Pista;  // ??
                 }
 
                 wordleViewModel.JuegoDictionaryJson = System.Text.Json.JsonSerializer.Serialize(wordleViewModel.Juego);
@@ -263,7 +263,7 @@ namespace EspecificWordle.Controllers
         [HttpGet]
         public async Task<IActionResult> Result(int result, int intento)
         {
-            var aleatoriaDTO = await _IWordleService.GetAleatoriaAsync(); // Diferenciar por modo
+            var aleatoriaDTO = await _IWordleService.GetModeWordDetailsAsync(1); // Diferenciar por modo
 
             var resultado = new ResultViewModel()
             {

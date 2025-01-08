@@ -30,13 +30,16 @@ namespace EspecificWordle.Services
             }
         }
 
-        public async Task<AleatoriaDTO> GetAleatoriaAsync()
+        public async Task<WordModeDTO> GetModeWordDetailsAsync(int modoId)
         {
             using (IDbConnection dbConnection = new SqlConnection(_connectionString))
             {
-                string sqlQuery = "SELECT * FROM GetAleatoria";
-                var result = await dbConnection.QueryAsync<AleatoriaDTO>(sqlQuery);
-                return result.First();
+                string sqlQuery = "SELECT * FROM GetModeWordDetails";
+                var result = await dbConnection.QueryAsync<WordModeDTO>(sqlQuery);
+
+                var model = result.FirstOrDefault(r => r.ModeId == modoId);
+
+                return model != null ? model : new WordModeDTO();
             }
         }
 
