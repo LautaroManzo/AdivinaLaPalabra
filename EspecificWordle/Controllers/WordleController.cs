@@ -17,33 +17,38 @@ namespace EspecificWordle.Controllers
             _IWordleService = iWordleService;
         }
 
-        public async Task<IActionResult> Index()
+        [Route("{modoDescripcion}")]
+        public async Task<IActionResult> Index(string modoDescripcion)
         {
-            var word = (await _IWordleService.GetModeWordDetailsAsync(1)).Palabra;
+            var modoId = (await _IWordleService.GetModoByDescripcion(modoDescripcion)).Id;
+            var word = (await _IWordleService.GetModeWordDetailsAsync(modoId)).Palabra;
 
             var viewModel = new WordleViewModel
             {
                 Length = word.Length,
-                ModoId = 1,
+                ModoId = modoId,
+                ModoDescripcion = modoDescripcion,
                 GameFinish = false
             };
+
+            #region Obtención de cookie
 
             var cookie = GetGameFromCookie();
             viewModel.JuegoDictionaryJson = cookie == null ? string.Empty : cookie;
             var game = JsonConvert.DeserializeObject<Dictionary<string, List<Session>>>(cookie);
 
-            if (game != null)
+            if (game != null && game.ContainsKey(modoId.ToString()))
             {
                 viewModel.Juego = game;
-                viewModel.Intentos = game["1"].Count;
+                viewModel.Intentos = game[modoId.ToString()].Count;
 
                 // Buscar otra forma de hacer esto
-                if (game["1"].Last().WordInsert.ToUpper() == word.ToUpper())
+                if (game[modoId.ToString()].Last().WordInsert.ToUpper() == word.ToUpper())
                 {
                     viewModel.Resultado = 1;
                     viewModel.GameFinish = true;
                 }
-                else if (game["1"].Count == 5 && game["1"].Last().WordInsert.ToUpper() != word.ToUpper())
+                else if (game[modoId.ToString()].Count == 5 && game[modoId.ToString()].Last().WordInsert.ToUpper() != word.ToUpper())
                 {
                     viewModel.Resultado = 0;
                     viewModel.GameFinish = true;
@@ -55,6 +60,8 @@ namespace EspecificWordle.Controllers
                 viewModel.Intentos = 0;
             }
 
+            #endregion
+
             return View(viewModel);
         }
 
@@ -63,12 +70,12 @@ namespace EspecificWordle.Controllers
         public async Task<IActionResult> Enter(WordleViewModel wordleViewModel)
         {
             var exist = await _IWordleService.WordCheckingAsync(wordleViewModel.PalabraIngresada, "es");
-            var wordSecret = (await _IWordleService.GetModeWordDetailsAsync(1)).Palabra.ToUpper();   // ??
+            var wordSecret = (await _IWordleService.GetModeWordDetailsAsync(wordleViewModel.ModoId)).Palabra.ToUpper();
 
             if (wordleViewModel.JuegoDictionaryJson != null)
                 wordleViewModel.Juego = JsonConvert.DeserializeObject<Dictionary<string, List<Session>>>(wordleViewModel.JuegoDictionaryJson);
 
-            if (!wordleViewModel.Juego.ContainsKey(wordleViewModel.ModoId.ToString()))  // Mas modos?
+            if (!wordleViewModel.Juego.ContainsKey(wordleViewModel.ModoId.ToString()))
                 wordleViewModel.Juego.Add(wordleViewModel.ModoId.ToString(), new List<Session>());
 
             if (exist)
@@ -143,7 +150,6 @@ namespace EspecificWordle.Controllers
 
                 if (wordleViewModel.Intentos == 2)
                 {
-                    // [ModoId][0] cero ???????? Pensar en algo
                     wordleViewModel.Juego[wordleViewModel.ModoId.ToString()][wordleViewModel.Intentos].Pista = PistaForUser(wordleViewModel.JuegoDictionaryJson, wordleViewModel.Length);
 
                     if (wordleViewModel.Juego[wordleViewModel.ModoId.ToString()][wordleViewModel.Intentos].Pista)
@@ -177,6 +183,8 @@ namespace EspecificWordle.Controllers
             }
 
         }
+
+        #region Cookies
 
         public void SaveGameInCookie(string juegoDictionaryJson)
         {
@@ -213,6 +221,8 @@ namespace EspecificWordle.Controllers
                 throw new Exception($"Error al recuperar la cookie: {ex.Message}");
             }
         }
+
+        #endregion
 
         public bool PistaForUser(string juegoDictionaryJson, int length)
         {
@@ -261,9 +271,9 @@ namespace EspecificWordle.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Result(int result, int intento)
+        public async Task<IActionResult> Result(int result, int intento, int modoId, string modoDescripcion)
         {
-            var aleatoriaDTO = await _IWordleService.GetModeWordDetailsAsync(1); // Diferenciar por modo
+            var aleatoriaDTO = await _IWordleService.GetModeWordDetailsAsync(modoId);
 
             var resultado = new ResultViewModel()
             {
@@ -274,6 +284,7 @@ namespace EspecificWordle.Controllers
                 Antonimos = aleatoriaDTO.Antonimos,
                 PalabraEn = aleatoriaDTO.PalabraEn,
                 EjemploUso = aleatoriaDTO.EjemploUso,
+                ModoDescripcion = modoDescripcion,
                 Result = result == 1 ? 1 : 0
             };
 

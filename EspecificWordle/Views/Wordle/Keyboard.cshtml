@@ -46,7 +46,7 @@
         let palabraIngresada = obtenerFila(data.WordleViewModel, data.WordleViewModel.Intentos);
 
         if ($("#GameFinish").val() == "@true" || $("#GameFinish").val() == "true") {    // Ver de hacer una sola validación.
-            modalResult($("#Resultado").val(), $("#Intentos").val());
+            modalResult($("#Resultado").val(), $("#Intentos").val(), @Model.ModoId, "@Html.Raw(Model.ModoDescripcion)");
             hideLoader();
         }
         else if (palabraIngresada.length == data.WordleViewModel.Length) {   // Esta validacion hacerla tambien en el back
@@ -65,9 +65,6 @@
                         ShowMessage(response.message, "custom");
                     }
                     else {
-                        console.log("SUCCESS");
-                        // console.log(response);
-
                         // 'Mapeo' de viewmodel
                         $("#Intentos").val(response.intentos);
                         $("#ModoId").val(response.modoId);
@@ -81,7 +78,7 @@
                         }
                         else {
                             // Se recorre la lista de letras
-                            $.each(response.juego[1][response.intentos - 1].letters, function (index, elemento) {
+                            $.each(response.juego[@Model.ModoId.ToString()][response.intentos - 1].letters, function (index, elemento) {
                                 if (elemento.color == "Verde")
                                     changeInputAndButton(index, elemento.letra, "input-success", "button-success");
                                 else if (elemento.color == "Amarillo")
@@ -96,12 +93,12 @@
                             filaFocus.find("input").first().focus();  // Se da el foco al input de la fila siguiente
 
                             // Código para la pista
-                            if (response.juego[1][response.intentos - 1].pista == true) {
+                            if (response.juego[@Model.ModoId.ToString()][response.intentos - 1].pista == true) {
                                 let divM = $(".fila div button:contains('M')").parent();
 
                                 divM.after(`
                                     <div>
-                                        <button type='button' onclick="showPista('${response.juego[1][response.intentos - 1].pistaDescripcion}')" class='form-control form-control-lg letras pista' style='padding: 0;'>
+                                        <button type='button' onclick="showPista('${response.juego[@Model.ModoId.ToString()][response.intentos - 1].pistaDescripcion}')" class='form-control form-control-lg letras pista' style='padding: 0;'>
                                             <img src='/Icons/solution.png' alt='Pista' style='width: 100%; height: 100%; object-fit: contain;'>
                                         </button>
                                     </div>
@@ -117,7 +114,7 @@
                                 inputFocus = null;
 
                                 setTimeout(function () {
-                                    modalResult(0, $("#Intentos").val());
+                                    modalResult(0, $("#Intentos").val(), @Model.ModoId, "@Html.Raw(Model.ModoDescripcion)");
                                 }, 1000);
                             }
                         }
@@ -165,7 +162,7 @@
             inputFocus = null;
 
             setTimeout(function () {
-                modalResult(1, $("#Intentos").val());
+                modalResult(1, $("#Intentos").val(), @Model.ModoId, "@Html.Raw(Model.ModoDescripcion)");
             }, 900);
         }
         else {
@@ -183,7 +180,7 @@
                 filaFocus.find('input.foco').removeClass("foco"); // buscar en el div no en la filafocus
                 
                 setTimeout(function () {
-                    modalResult(0, $("#Intentos").val());
+                    modalResult(0, $("#Intentos").val(), @Model.ModoId, "@Html.Raw(Model.ModoDescripcion)");
                 }, 900);
             }
 
@@ -195,12 +192,12 @@
         divParent.toggleClass('rotated');
     }
 
-    function modalResult(result, intento) {
+    function modalResult(result, intento, modoId, modoDescripcion) {
 
         $.ajax({
             url: '@Url.Action("Result", "Wordle")',
             method: 'GET',
-            data: { result: result, intento: intento },
+            data: { result: result, intento: intento, modoId: modoId, modoDescripcion: modoDescripcion },
             success: function (data) {
 
                 if (!$(".show").length > 0) { 

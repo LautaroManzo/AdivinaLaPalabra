@@ -16,6 +16,8 @@
 
         public string EjemploUso { get; set; }
 
+        public string ModoDescripcion { get; set; }
+
         public int Result { get; set; }
     }
 }

@@ -17,7 +17,7 @@
             <div class="div-content-modal">
 
                 <div class="div-modo">
-                    <i>Aleatoria</i> <!-- Esto tiene que venir en el viewmodel -->
+                    <i>@Model.ModoDescripcion</i>
                 </div>
 
                 <div class="div-result">
@@ -85,7 +85,7 @@
 
                 <div class="div-modal-modos" style="display:flex;gap:.5rem;">
                     <button type="button" class="btn-modo form-control form-control-lg">Tildes</button>
-                    <button type="button" class="btn-modo form-control form-control-lg">Científica</button>
+                    <button type="button" onclick="redirectByMode('Científica')" class="btn-modo form-control form-control-lg">Científica</button>
                     <button type="button" class="btn-modo form-control form-control-lg">Animales</button>
                 </div>
 

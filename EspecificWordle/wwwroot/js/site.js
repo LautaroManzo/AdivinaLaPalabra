@@ -226,3 +226,8 @@ function updateCountdown() {
         `${String(hours).padStart(2, '0')} : ${String(minutes).padStart(2, '0')} : ${String(seconds).padStart(2, '0')}`
     );
 }
+
+function redirectByMode(modoDescripcion) {
+    indexUrl = indexUrl.replace('__MODODESCRIPCION__', modoDescripcion);
+    window.location.href = indexUrl;
+}

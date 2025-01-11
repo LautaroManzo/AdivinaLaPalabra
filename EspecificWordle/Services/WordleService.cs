@@ -43,6 +43,16 @@ namespace EspecificWordle.Services
             }
         }
 
+        public async Task<ModoDTO> GetModoByDescripcion(string modoDescripcion)
+        {
+            using (IDbConnection dbConnection = new SqlConnection(_connectionString))
+            {
+                string sqlQuery = "SELECT * FROM GetModoByDescripcion(@ModoDescripcion)";
+                var result = await dbConnection.QueryAsync<ModoDTO>(sqlQuery, new { ModoDescripcion = modoDescripcion });
+                return result.FirstOrDefault();
+            }
+        }
+
         #endregion BD
 
         #region Apis

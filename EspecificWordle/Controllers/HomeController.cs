@@ -15,7 +15,7 @@ namespace EspecificWordle.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Wordle", new { modoDescripcion = "Aleatoria" });  // El modo por default es 'Aleatoria'
         }
 
         public IActionResult Privacy()

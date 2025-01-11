@@ -8,6 +8,8 @@
 
         public int ModoId { get; set; }
 
+        public string ModoDescripcion { get; set; }
+
         public string PalabraIngresada { get; set; }
 
         public int Resultado { get; set; }

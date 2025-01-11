@@ -4,6 +4,7 @@
 
 <script>
     const instruccionesUrl = '@Url.Action("Instrucciones", "Wordle")';
+    var indexUrl = '@Url.Action("Index", "Wordle", new { modoDescripcion = "__MODODESCRIPCION__" })';
 </script>
 
 <script>
@@ -56,26 +57,26 @@
             if ('@Model.Intentos' == 0)
                 inputFocus = filaFocus.find("input").first().focus();
             else
-                loadPage(); // Falta analizar si esta función iría acá
+                loadPage(@Model.ModoId.ToString()); // Falta analizar si esta función iría acá
                 
         }, 200);
         
     });
 
-    function loadPage() {
+    function loadPage(modoId) {
         let json = '@Html.Raw(Model.JuegoDictionaryJson)';
         let data = "";
 
         if (json) {
             data = JSON.parse(json);
-            let intentos = data["1"].length;
+            let intentos = data[modoId].length;
 
             $(".divWordle").children("div").slice(0, intentos).each(function (index) {
 
                 // Piso la variable en cada recorrido
                 filaFocus = $(this);
 
-                let dictionary = data["1"];   // "1" es el modo de juego
+                let dictionary = data[modoId];
                 let obj = dictionary[index];
                 let list = obj.Letters;
                 

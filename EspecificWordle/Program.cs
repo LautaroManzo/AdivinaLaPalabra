@@ -57,6 +57,6 @@ app.MapHub<RefreshHub>("/refreshHub");
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Wordle}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}");
 
 app.Run();
