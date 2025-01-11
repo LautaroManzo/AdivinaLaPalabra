@@ -172,8 +172,10 @@
             let button = $(".divKeyboard").find("button:contains('" + letra + "')").first();
          
             if (!button.hasClass("button-success")) {
-                button.removeClass("button-medium");
-                button.addClass(classButton);
+                if (!button.hasClass("button-medium")) {
+                    button.removeClass("button-medium");
+                    button.addClass(classButton);
+                }
             }
 
             if (result == 0) {
