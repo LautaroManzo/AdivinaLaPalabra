@@ -21,34 +21,38 @@ namespace EspecificWordle.Controllers
         public async Task<IActionResult> Index(string modoDescripcion)
         {
             var modoId = (await _IWordleService.GetModoByDescripcion(modoDescripcion)).Id;
-            var word = (await _IWordleService.GetModeWordDetailsAsync(modoId)).Palabra;
+            var word = CleanWord((await _IWordleService.GetModeWordDetailsAsync(modoId)).Palabra);
 
             var viewModel = new WordleViewModel
             {
                 Length = word.Length,
                 ModoId = modoId,
                 ModoDescripcion = modoDescripcion,
-                GameFinish = false
+                GameFinish = false,
+                Juego = new Dictionary<string, List<Session>>()
             };
 
             #region Obtención de cookie
 
-            var cookie = GetGameFromCookie();
-            viewModel.JuegoDictionaryJson = cookie == null ? string.Empty : cookie;
-            var game = JsonConvert.DeserializeObject<Dictionary<string, List<Session>>>(cookie);
+            var listSession = GetGameFromCookie(viewModel.ModoId);
 
-            if (game != null && game.ContainsKey(modoId.ToString()))
+            if (listSession.Count > 0)
+                viewModel.Juego.Add(viewModel.ModoId.ToString(), listSession);
+
+            viewModel.JuegoDictionaryJson = System.Text.Json.JsonSerializer.Serialize(viewModel.Juego);
+
+            if (viewModel.Juego != null && viewModel.Juego.ContainsKey(modoId.ToString()))
             {
-                viewModel.Juego = game;
-                viewModel.Intentos = game[modoId.ToString()].Count;
+                viewModel.Juego = viewModel.Juego;
+                viewModel.Intentos = viewModel.Juego[modoId.ToString()].Count;
 
                 // Buscar otra forma de hacer esto
-                if (game[modoId.ToString()].Last().WordInsert.ToUpper() == word.ToUpper())
+                if (viewModel.Juego[modoId.ToString()].Last().WordInsert.ToUpper() == word.ToUpper())
                 {
                     viewModel.Resultado = 1;
                     viewModel.GameFinish = true;
                 }
-                else if (game[modoId.ToString()].Count == 5 && game[modoId.ToString()].Last().WordInsert.ToUpper() != word.ToUpper())
+                else if (viewModel.Juego[modoId.ToString()].Count == 5 && viewModel.Juego[modoId.ToString()].Last().WordInsert.ToUpper() != word.ToUpper())
                 {
                     viewModel.Resultado = 0;
                     viewModel.GameFinish = true;
@@ -56,7 +60,6 @@ namespace EspecificWordle.Controllers
             }
             else
             {
-                viewModel.Juego = new Dictionary<string, List<Session>>();
                 viewModel.Intentos = 0;
             }
 
@@ -70,7 +73,7 @@ namespace EspecificWordle.Controllers
         public async Task<IActionResult> Enter(WordleViewModel wordleViewModel)
         {
             var exist = await _IWordleService.WordCheckingAsync(wordleViewModel.PalabraIngresada, "es");
-            var wordSecret = (await _IWordleService.GetModeWordDetailsAsync(wordleViewModel.ModoId)).Palabra.ToUpper();
+            var wordSecret = CleanWord((await _IWordleService.GetModeWordDetailsAsync(wordleViewModel.ModoId)).Palabra.ToUpper());
 
             if (wordleViewModel.JuegoDictionaryJson != null)
                 wordleViewModel.Juego = JsonConvert.DeserializeObject<Dictionary<string, List<Session>>>(wordleViewModel.JuegoDictionaryJson);
@@ -173,7 +176,7 @@ namespace EspecificWordle.Controllers
                 }
 
                 // Acá guardaria en la cookie el json
-                SaveGameInCookie(wordleViewModel.JuegoDictionaryJson);
+                SaveGameInCookie(wordleViewModel.Juego, wordleViewModel.ModoId);
 
                 return Json(wordleViewModel);
             }
@@ -183,46 +186,6 @@ namespace EspecificWordle.Controllers
             }
 
         }
-
-        #region Cookies
-
-        public void SaveGameInCookie(string juegoDictionaryJson)
-        {
-            try
-            {
-                if (Request.Cookies.ContainsKey("WordCookie"))
-                    Response.Cookies.Delete("WordCookie");
-
-                Response.Cookies.Append("WordCookie", juegoDictionaryJson, new CookieOptions
-                {
-                    Expires = DateTimeOffset.Now.AddHours(1),
-                    HttpOnly = true,
-                    Secure = true,
-                    SameSite = SameSiteMode.Strict
-                });
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error al guardar cookie: {ex.Message}");
-            }
-        }
-
-        public string GetGameFromCookie()
-        {
-            try
-            {
-                if (Request.Cookies.TryGetValue("WordCookie", out var juegoDictionaryJson))
-                    return juegoDictionaryJson;
-
-                return string.Empty;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error al recuperar la cookie: {ex.Message}");
-            }
-        }
-
-        #endregion
 
         public bool PistaForUser(string juegoDictionaryJson, int length)
         {
@@ -265,6 +228,10 @@ namespace EspecificWordle.Controllers
                     if (cantidadLetrasAcertadas <= 3)
                         debeMostrarPista = true;
                     break;
+                case 7:
+                    if (cantidadLetrasAcertadas <= 4)
+                        debeMostrarPista = true;
+                    break;
             }
 
             return debeMostrarPista;
@@ -297,6 +264,17 @@ namespace EspecificWordle.Controllers
             return PartialView("_Instrucciones");
         }
 
+        private string CleanWord(string word)
+        {
+            var replacements = new Dictionary<char, char>
+            {
+                {'á', 'a'}, {'é', 'e'}, {'í', 'i'}, {'ó', 'o'}, {'ú', 'u'}, {'ä', 'a'}, {'ë', 'e'}, {'ï', 'i'}, {'ü', 'u'}, {'ö', 'o'},
+                {'Á', 'A'}, {'É', 'E'}, {'Í', 'I'}, {'Ó', 'O'}, {'Ú', 'U'}, {'Ä', 'A'}, {'Ë', 'E'}, {'Ï', 'I'}, {'Ü', 'U'}, {'Ö', 'O'}
+            };
+
+            return new string(word.Select(c => replacements.ContainsKey(c) ? replacements[c] : c).ToArray());
+        }
+
         private string ResultadoSegunIntento(int intento)
         {
             var result = string.Empty;
@@ -327,6 +305,49 @@ namespace EspecificWordle.Controllers
         {
             Excelente, Buenisimo, Aceptable, Normal, Mejorable
         }
+
+        #region Cookies
+
+        public void SaveGameInCookie(Dictionary<string, List<Session>> juegoDictionary, int modoId)
+        {
+            try
+            {
+                var listSession = juegoDictionary[modoId.ToString()];
+                var listSessionJson = JsonConvert.SerializeObject(listSession);
+
+                Response.Cookies.Append($"GameByModo_{modoId}", listSessionJson, new CookieOptions
+                {
+                    Expires = DateTimeOffset.Now.AddHours(1),
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al guardar cookie: {ex.Message}");
+            }
+        }
+
+        public List<Session> GetGameFromCookie(int modoId)
+        {
+            try
+            {
+                if (Request.Cookies.TryGetValue($"GameByModo_{modoId}", out var listSessionJson))
+                {
+                    var listSession = JsonConvert.DeserializeObject<List<Session>>(listSessionJson);
+                    return listSession;
+                }
+
+                return new List<Session>();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al recuperar la cookie: {ex.Message}");
+            }
+        }
+
+        #endregion
 
     }
 }
