@@ -1,55 +1,115 @@
-﻿using Dapper;
-using EspecificWordle.Interfaces;
+﻿using EspecificWordle.Interfaces;
 using Newtonsoft.Json.Linq;
 using System.Data;
 using System.Globalization;
 using System.Text;
-using System.Data.SqlClient;
 using EspecificWordle.DTOs;
+using Microsoft.EntityFrameworkCore;
+using DataBase.Models;
 
 namespace EspecificWordle.Services
 {
     public class WordleService : IWordleService
     {
         private static readonly HttpClient _httpClient = new HttpClient();
-        private readonly string _connectionString;
+        private readonly WordGameContext _context;
 
-        public WordleService(IConfiguration configuration)
+        public WordleService(IConfiguration configuration, WordGameContext context)
         {
-            _connectionString = configuration.GetConnectionString("HangfireConnection");
+            _context = context;
         }
 
         #region BD
 
-        public async Task<bool> UpdateRandomWordDaily()
+        public async Task UpdateRandomWordDaily()
         {
-            using (IDbConnection dbConnection = new SqlConnection(_connectionString))
+            try
             {
-                var result = await dbConnection.ExecuteAsync("UpdateRandomWordDaily", commandType: CommandType.StoredProcedure);
-                return true;
+                var modos = _context.Modo.ToList();
+
+                foreach (var modo in modos)
+                {
+                    var word = _context.Word.Where(x => x.Usada == false && x.ModoId == modo.Id).FirstOrDefault();
+
+                    if (word != null)
+                    {
+                        word.Usada = true;
+
+                        var wordMode = _context.WordMode.Where(x => x.ModoId == modo.Id).FirstOrDefault();
+
+                        if (wordMode == null)
+                        {
+                            _context.WordMode.Add(new WordMode
+                            {
+                                ModoId = modo.Id,
+                                WordId = word.Id,
+                                Fecha = DateTime.Now
+                            });
+                        }
+                        else
+                        {
+                            wordMode.WordId = word.Id;
+                            wordMode.Fecha = DateTime.Now;
+                        }
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 
         public async Task<WordModeDTO> GetModeWordDetailsAsync(int modoId)
         {
-            using (IDbConnection dbConnection = new SqlConnection(_connectionString))
-            {
-                string sqlQuery = "SELECT * FROM GetModeWordDetails";
-                var result = await dbConnection.QueryAsync<WordModeDTO>(sqlQuery);
+            var wordMode = _context.WordMode.Where(x => x.ModoId == modoId).FirstOrDefault();
+            
+            var dto = _context.Word.Where(wm => wm.ModoId == modoId && wm.Id == wordMode.WordId)
+                .Select(wm => new WordModeDTO
+                {
+                    ModeId = wm.ModoId.Value,
+                    Palabra = wm.Descripcion,
+                    Definicion = wm.Definicion.Descripcion,
+                    PalabraEn = wm.PalabraEn.Descripcion,
+                    Pista = wm.Pista.Descripcion,
+                    EjemploUso = wm.Uso.Descripcion,
+                    Sinonimos = string.Join(", ", wm.Sinonimo.Select(s => s.Descripcion.ToLower())),
+                    Antonimos = string.Join(", ", wm.Antonimo.Select(a => a.Descripcion.ToLower()))
+                }).FirstOrDefault();
 
-                var model = result.FirstOrDefault(r => r.ModeId == modoId);
-
-                return model != null ? model : new WordModeDTO();
-            }
+            return dto;
         }
 
-        public async Task<ModoDTO> GetModoByDescripcion(string modoDescripcion)
+        public async Task<Modo> GetModoByDescripcion(string modoDescripcion)
         {
-            using (IDbConnection dbConnection = new SqlConnection(_connectionString))
+            return await _context.Modo.FirstOrDefaultAsync(m => m.Descripcion == modoDescripcion);
+        }
+
+        private void AddWord(string word, int modoId, string descripcion, string usoEjemplo, string pista, string wordEn, List<string> sinonimos, List<string> antonimos)
+        {
+            try
             {
-                string sqlQuery = "SELECT * FROM GetModoByDescripcion(@ModoDescripcion)";
-                var result = await dbConnection.QueryAsync<ModoDTO>(sqlQuery, new { ModoDescripcion = modoDescripcion });
-                return result.FirstOrDefault();
+                var newWord = new Word
+                {
+                    Descripcion = word,
+                    ModoId = modoId,
+                    Usada = false,
+                    Definicion = new Definicion { Descripcion = descripcion },
+                    PalabraEn = new PalabraEn { Descripcion = wordEn },
+                    Pista = new Pista { Descripcion = pista },
+                    Uso = new Uso { Descripcion = usoEjemplo },
+                    Sinonimo = sinonimos.Select(s => new Sinonimo { Descripcion = s }).ToList(),
+                    Antonimo = antonimos.Select(a => new Antonimo { Descripcion = a }).ToList()
+                };
+
+                _context.Word.Add(newWord);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
         }
 
