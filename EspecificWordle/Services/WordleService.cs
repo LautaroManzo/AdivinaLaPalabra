@@ -6,6 +6,7 @@ using System.Text;
 using EspecificWordle.DTOs;
 using Microsoft.EntityFrameworkCore;
 using DataBase.Models;
+using System;
 
 namespace EspecificWordle.Services
 {
@@ -29,7 +30,9 @@ namespace EspecificWordle.Services
 
                 foreach (var modo in modos)
                 {
-                    var word = _context.Word.Where(x => x.Usada == false && x.ModoId == modo.Id).FirstOrDefault();
+                    var word = _context.Word.Where(x => x.Usada == false && x.ModoId == modo.Id)
+                        .OrderBy(x => Guid.NewGuid())   // Selecciona una Word random
+                        .FirstOrDefault();
 
                     if (word != null)
                     {
@@ -62,12 +65,12 @@ namespace EspecificWordle.Services
             }
         }
 
-        public async Task<WordModeDTO> GetModeWordDetailsAsync(int modoId)
+        public async Task<WordDTO> GetModeWordDetailsAsync(int modoId)
         {
             var wordMode = _context.WordMode.Where(x => x.ModoId == modoId).FirstOrDefault();
             
             var dto = _context.Word.Where(wm => wm.ModoId == modoId && wm.Id == wordMode.WordId)
-                .Select(wm => new WordModeDTO
+                .Select(wm => new WordDTO
                 {
                     ModeId = wm.ModoId.Value,
                     Palabra = wm.Descripcion,

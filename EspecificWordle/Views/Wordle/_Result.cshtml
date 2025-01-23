@@ -6,48 +6,66 @@
 
     <div class="modal-content">
 
-        <div class="div-btn-close">
-            <button type="button" class="btn btn-close-modal" data-bs-dismiss="modal" aria-label="Close">
-                <i class="fa-solid fa-xmark fa-lg"></i>
-            </button>
-        </div>
-
         <div class="modal-body">
 
             <div class="div-content-modal">
 
-                <div class="div-modo">
-                    <i>@Model.ModoDescripcion</i>
-                </div>
+                <div>
 
-                <div class="div-result">
+                    <div class="div-btn-close">
+                        <button type="button" class="btn btn-close-modal" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="fa-solid fa-xmark fa-lg"></i>
+                        </button>
+                    </div>
 
-                    <span>
-                        @Model.Intento&nbsp;
-                    </span>
+                    <div class="div-result">
 
-                    <span class="text-muted">
-                        @(Model.Result == 1 ? "ganaste" : "perdiste")
-                    </span>
+                        <div class="col-6">
+                            <span>
+                                @Model.Intento&nbsp;
+                            </span>
+
+                            <span class="text-muted">
+                                @(Model.Result == 1 ? "ganaste" : "perdiste")
+                            </span>
+                        </div>
+
+                        <div class="div-modo col-6">
+                            <i>@Model.ModoDescripcion</i>
+                        </div>
+
+                    </div>
 
                 </div>
 
                 <div class="div-word-def">
 
-                    <div>
+                    <div class="div-content-word-def">
 
                         <div class="div-word">
-                            <span>@Model.Palabra<sup>ES</sup>&nbsp;/&nbsp;</span>
-                            <span>@Model.PalabraEn<sup>EN</sup></span>
+                            <span class="col-6">@Model.Palabra<sup>ES</sup></span>
+                            <span class="col-6">@Model.PalabraEn<sup>EN</sup></span>
                         </div>
 
-                        <span class="span-def">
-                            @Html.Raw(Model.Definicion.Replace("\n", "<br>"))
-                        </span>
+                        <div class="div-def">
+                            <span class="span-def">
+                                @Html.Raw(Model.Definicion.Replace("\n", "<br>"))
+                            </span>
+                        </div>
 
                     </div>
 
                 </div>
+
+                @if (!string.IsNullOrEmpty(Model.EjemploUso))
+                {
+                    <div class="div-use">
+                        <div class="text-muted info-small">Ejemplo de uso</div>
+                        <span>
+                            @Model.EjemploUso
+                        </span>
+                    </div>
+                }
 
                 @if (!string.IsNullOrEmpty(Model.Sinonimos) || !string.IsNullOrEmpty(Model.Antonimos))
                 {
@@ -55,18 +73,20 @@
 
                         @if (!string.IsNullOrEmpty(Model.Sinonimos))
                         {
-                            <div class="row">
+                            <div class="col-6">
+                                <div class="text-muted info-small">Sinónimos</div>
                                 <span>
-                                    <small class="text-muted">Sinónimos</small> @Model.Sinonimos
+                                    @Model.Sinonimos
                                 </span>
                             </div>
                         }
 
                         @if (!string.IsNullOrEmpty(Model.Antonimos))
                         {
-                            <div class="row">
+                            <div class="col-6">
+                                <div class="text-muted info-small">Antónimos</div>
                                 <span>
-                                    <small class="text-muted">Antónimos</small> @Model.Antonimos
+                                    @Model.Antonimos
                                 </span>
                             </div>
                         }
@@ -74,23 +94,17 @@
                     </div>
                 }
 
-                @if (!string.IsNullOrEmpty(Model.EjemploUso))
-                {
-                    <div class="div-use">
-                        <span>
-                            <small class="text-muted">Ejemplo de uso </small> @Model.EjemploUso
-                        </span>
-                    </div>
-                }
-
-                <div class="div-modal-modos" style="display:flex;gap:.5rem;">
-                    <button type="button" class="btn-modo form-control form-control-lg">Tildes</button>
+                <div class="div-buttons">
+                    <button type="button" onclick="redirectByMode('Aleatoria')" class="btn-modo form-control form-control-lg">Aleatoria</button>
                     <button type="button" onclick="redirectByMode('Ciencia')" class="btn-modo form-control form-control-lg">Ciencia</button>
                     <button type="button" onclick="redirectByMode('Naturaleza')" class="btn-modo form-control form-control-lg">Naturaleza</button>
                 </div>
 
                 <div title="Cuenta regresiva" class="div-parent-countdown">
-                    <div id="countdown" class="div-countdown"></div>
+                    <div id="countdown" class="text-muted">
+                        <span>Próxima palabra en</span>
+                        <span id="time-remaining"></span>
+                    </div>
                 </div>
 
             </div>

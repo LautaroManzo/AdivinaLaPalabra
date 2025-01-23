@@ -1,4 +1,5 @@
-﻿using EspecificWordle.Interfaces;
+﻿using EspecificWordle.Helpers;
+using EspecificWordle.Interfaces;
 using EspecificWordle.Models;
 using EspecificWordle.Models.Wordle;
 using Microsoft.AspNetCore.Mvc;
@@ -37,31 +38,29 @@ namespace EspecificWordle.Controllers
             var listSession = GetGameFromCookie(viewModel.ModoId);
 
             if (listSession.Count > 0)
-                viewModel.Juego.Add(viewModel.ModoId.ToString(), listSession);
+                viewModel.Juego[viewModel.ModoId.ToString()] = listSession;
 
             viewModel.JuegoDictionaryJson = System.Text.Json.JsonSerializer.Serialize(viewModel.Juego);
 
-            if (viewModel.Juego != null && viewModel.Juego.ContainsKey(modoId.ToString()))
+            if (viewModel.Juego?.ContainsKey(modoId.ToString()) == true)
             {
-                viewModel.Juego = viewModel.Juego;
-                viewModel.Intentos = viewModel.Juego[modoId.ToString()].Count;
+                var juego = viewModel.Juego[modoId.ToString()];
+                viewModel.Intentos = juego.Count;
 
-                // Buscar otra forma de hacer esto
-                if (viewModel.Juego[modoId.ToString()].Last().WordInsert.ToUpper() == word.ToUpper())
+                var ultimaPalabra = juego.Last().WordInsert.ToUpper();
+
+                var resultado = ultimaPalabra == word.ToUpper() || (juego.Count == 5 && ultimaPalabra != word.ToUpper()) ?
+                                (ultimaPalabra == word.ToUpper() ? 1 : 0) :
+                                (int?)null;
+
+                if (resultado.HasValue)
                 {
-                    viewModel.Resultado = 1;
-                    viewModel.GameFinish = true;
-                }
-                else if (viewModel.Juego[modoId.ToString()].Count == 5 && viewModel.Juego[modoId.ToString()].Last().WordInsert.ToUpper() != word.ToUpper())
-                {
-                    viewModel.Resultado = 0;
+                    viewModel.Resultado = resultado.Value;
                     viewModel.GameFinish = true;
                 }
             }
             else
-            {
                 viewModel.Intentos = 0;
-            }
 
             #endregion
 
@@ -89,24 +88,18 @@ namespace EspecificWordle.Controllers
                 for (int i = 0; i < wordSecret.Length; i++)
                 {
                     if (wordSecret[i] == wordleViewModel.PalabraIngresada[i])
-                    {
-                        letters.Add(new Letter() {
-                            Letra = wordleViewModel.PalabraIngresada[i].ToString(),
-                            Color = "Verde",
-                            Acerted = true
-                        });
-                    }
+                        letters.Add(new Letter(){ Letra = wordleViewModel.PalabraIngresada[i].ToString(), Color = SystemConstants.ColorLetra.Verde, Acerted = true });
                     else
                     {
                         if (wordSecret.Contains(wordleViewModel.PalabraIngresada[i]))
                         {
                             bool isLetterRepeatedInYellowOrGray = letters.Any(letter =>
                                 letter.Letra == wordleViewModel.PalabraIngresada[i].ToString() &&
-                                letter.Color != "Verde");
+                                letter.Color != SystemConstants.ColorLetra.Verde);
 
                             bool isLetterRepeatedInGreen = letters.Any(letter =>
                                 letter.Letra == wordleViewModel.PalabraIngresada[i].ToString() &&
-                                letter.Color == "Verde");
+                                letter.Color == SystemConstants.ColorLetra.Verde);
 
                             bool isLetterRepeatedInWordSecret = wordSecret.GroupBy(character => character).Any(group => group.Count() > 1);
 
@@ -114,34 +107,13 @@ namespace EspecificWordle.Controllers
                             {
                                 // 1er condición: Si la palabra oculta no repite alguna letra && Si el usuario ingresó una palabra que sí repite alguna letra y esta letra es correcta (Verde)
                                 // 2da condición: Si el usuario ingresó una palabra que sí repite alguna letra y ésta letra ya se marcó (Amarilla o Gris)
-                                letters.Add(new Letter()
-                                {
-                                    Letra = wordleViewModel.PalabraIngresada[i].ToString(),
-                                    Color = "Gris",
-                                    Acerted = false
-                                });
+                                letters.Add(new Letter(){ Letra = wordleViewModel.PalabraIngresada[i].ToString(), Color = SystemConstants.ColorLetra.Gris });
                             }
-                            else
-                            {
-                                // Contiene la letra de la posición [i]
-                                letters.Add(new Letter()
-                                {
-                                    Letra = wordleViewModel.PalabraIngresada[i].ToString(),
-                                    Color = "Amarillo",
-                                    Acerted = false
-                                });
-                            }
+                            else    // Contiene la letra de la posición [i]
+                                letters.Add(new Letter(){ Letra = wordleViewModel.PalabraIngresada[i].ToString(), Color = SystemConstants.ColorLetra.Amarillo });
                         }
-                        else
-                        {
-                            // No contiene la letra
-                            letters.Add(new Letter()
-                            {
-                                Letra = wordleViewModel.PalabraIngresada[i].ToString(),
-                                Color = "Gris",
-                                Acerted = false
-                            });
-                        }
+                        else    // No contiene la letra
+                            letters.Add(new Letter(){ Letra = wordleViewModel.PalabraIngresada[i].ToString(), Color = SystemConstants.ColorLetra.Gris });
                     }
                 }
 
@@ -153,10 +125,9 @@ namespace EspecificWordle.Controllers
 
                 if (wordleViewModel.Intentos == 2)
                 {
-                    wordleViewModel.Juego[wordleViewModel.ModoId.ToString()][wordleViewModel.Intentos].Pista = PistaForUser(wordleViewModel.JuegoDictionaryJson, wordleViewModel.Length);
-
-                    if (wordleViewModel.Juego[wordleViewModel.ModoId.ToString()][wordleViewModel.Intentos].Pista)
-                        wordleViewModel.Juego[wordleViewModel.ModoId.ToString()][wordleViewModel.Intentos].PistaDescripcion = (await _IWordleService.GetModeWordDetailsAsync(1)).Pista;  // ??
+                    var juegoActual = wordleViewModel.Juego[wordleViewModel.ModoId.ToString()][wordleViewModel.Intentos];
+                    juegoActual.Pista = PistaForUser(wordleViewModel.JuegoDictionaryJson, wordleViewModel.Length);
+                    juegoActual.PistaDescripcion = juegoActual.Pista ? (await _IWordleService.GetModeWordDetailsAsync(wordleViewModel.ModoId)).Pista : string.Empty;
                 }
 
                 wordleViewModel.JuegoDictionaryJson = System.Text.Json.JsonSerializer.Serialize(wordleViewModel.Juego);
@@ -164,18 +135,10 @@ namespace EspecificWordle.Controllers
                 wordleViewModel.Intentos++;
 
                 // Si la palabra ingresada es correcta
-                if (wordSecret.Equals(wordleViewModel.PalabraIngresada))
-                {
-                    wordleViewModel.Resultado = 1;
-                    wordleViewModel.GameFinish = true;
-                }
-                else if (wordleViewModel.Intentos == 5)
-                {
-                    wordleViewModel.Resultado = 0;
-                    wordleViewModel.GameFinish = true;
-                }
+                wordleViewModel.GameFinish = wordSecret.Equals(wordleViewModel.PalabraIngresada) || wordleViewModel.Intentos == 5;
+                wordleViewModel.Resultado = wordSecret.Equals(wordleViewModel.PalabraIngresada) ? 1 : (wordleViewModel.Intentos == 5 ? 0 : wordleViewModel.Resultado);
 
-                // Acá guardaria en la cookie el json
+                // Guarda en la cookie el json
                 SaveGameInCookie(wordleViewModel.Juego, wordleViewModel.ModoId);
 
                 return Json(wordleViewModel);
@@ -220,21 +183,15 @@ namespace EspecificWordle.Controllers
 
         public bool EsNecesariaPista(int cantidadLetrasAcertadas, int wordLength)
         {
-            bool debeMostrarPista = false;
-
-            switch (wordLength)
+            var letrasAcertadasPorLongitud = new Dictionary<int, int>
             {
-                case 5:
-                    if (cantidadLetrasAcertadas <= 3)
-                        debeMostrarPista = true;
-                    break;
-                case 7:
-                    if (cantidadLetrasAcertadas <= 4)
-                        debeMostrarPista = true;
-                    break;
-            }
+                { 3, 1 }, { 4, 2 }, { 5, 3 }, { 6, 4 }, { 7, 5 }, { 8, 5 }, { 9, 6 }, { 10, 6 }
+            };
 
-            return debeMostrarPista;
+            if (letrasAcertadasPorLongitud.ContainsKey(wordLength))
+                return cantidadLetrasAcertadas <= letrasAcertadasPorLongitud[wordLength];
+
+            return false;
         }
 
         [HttpGet]
@@ -277,33 +234,14 @@ namespace EspecificWordle.Controllers
 
         private string ResultadoSegunIntento(int intento)
         {
-            var result = string.Empty;
-
-            switch (intento)
+            var resultados = new Dictionary<int, string>
             {
-                case 1:
-                    result = EstadoResult.Excelente.ToString();
-                    break;
-                case 2:
-                    result = EstadoResult.Buenisimo.ToString();
-                    break;
-                case 3:
-                    result = EstadoResult.Aceptable.ToString();
-                    break;
-                case 4:
-                    result = EstadoResult.Normal.ToString();
-                    break;
-                case 5:
-                    result = EstadoResult.Mejorable.ToString();
-                    break;
-            }
+                { 1, SystemConstants.EstadoResult.Excelente }, { 2, SystemConstants.EstadoResult.Buenisimo },
+                { 3, SystemConstants.EstadoResult.Aceptable }, { 4, SystemConstants.EstadoResult.Normal },
+                { 5, SystemConstants.EstadoResult.Mejorable }
+            };
 
-            return result;
-        }
-
-        private enum EstadoResult
-        {
-            Excelente, Buenisimo, Aceptable, Normal, Mejorable
+            return resultados[intento];
         }
 
         #region Cookies
@@ -315,9 +253,17 @@ namespace EspecificWordle.Controllers
                 var listSession = juegoDictionary[modoId.ToString()];
                 var listSessionJson = JsonConvert.SerializeObject(listSession);
 
+                #region Cálculo del tiempo de expiración de la cookie, hasta las 00:00
+
+                var fechaActual = DateTimeOffset.Now;
+                var proximaMedianoche = new DateTimeOffset(fechaActual.Year, fechaActual.Month, fechaActual.Day, 0, 0, 0, fechaActual.Offset).AddDays(1);
+                var duracionHastaMedianoche = proximaMedianoche - fechaActual;
+
+                #endregion
+
                 Response.Cookies.Append($"GameByModo_{modoId}", listSessionJson, new CookieOptions
                 {
-                    Expires = DateTimeOffset.Now.AddHours(1),
+                    Expires = fechaActual.Add(duracionHastaMedianoche),
                     HttpOnly = true,
                     Secure = true,
                     SameSite = SameSiteMode.Strict

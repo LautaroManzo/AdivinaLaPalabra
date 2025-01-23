@@ -26,7 +26,6 @@
 
 <script type="text/javascript">
 
-    let abcRegex = /^[a-zA-Z]+$/;   // Expresión regular para letras de la A-Z (mayúsculas y minúsculas)
     var data;
     let inputFocus;
     let filaFocus;
@@ -96,7 +95,7 @@
                     else if (list[indexInp].Color == "Amarillo")
                         changeInputAndButton(indexInp, list[indexInp].Letra, "input-medium", "button-medium", undefined, undefined);
                     else
-                        changeInputAndButton(indexInp, list[indexInp].Letra, "input-grey", "button-grey", undefined, undefined);
+                        changeInputAndButton(indexInp, list[indexInp].Letra, "input-gray", "button-gray", undefined, undefined);
                 });
 
                 if ($("#GameFinish").val() == "@true") {

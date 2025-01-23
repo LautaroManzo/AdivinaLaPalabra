@@ -1,6 +1,6 @@
 ﻿namespace EspecificWordle.DTOs
 {
-    public class WordModeDTO
+    public class WordDTO
     {
         public int ModeId { get; set; }
 

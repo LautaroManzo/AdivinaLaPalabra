@@ -1,4 +1,7 @@
 ﻿
+// Expresión regular para letras de la A-Z (mayúsculas y minúsculas)
+const abcRegex = /^[a-zA-Z]+$/; 
+
 $(document).ready(function () {
 
     setInterval(() => (updateCountdown(), updateCountdown()), 1000);
@@ -95,7 +98,7 @@ $.fn.serializeObject = function () {
 };
 
 // Funcion para mostrar un mensaje de error/info..
-function ShowMessage(message, color, animated = true) {
+function ShowMessage(message, color, animated = true, time = 3000) {
 
     if ($("#message").length)
         return;
@@ -115,7 +118,17 @@ function ShowMessage(message, color, animated = true) {
         if (animated)
             filaFocus.removeClass("animated-move");  // Se remueve la animación.
 
-    }, 3000);
+    }, time);
+}
+
+function addAnimation(divParent) {
+    divParent.addClass("animated-flip");
+    divParent.toggleClass('rotated');
+}
+
+function showPista(pistaDescripcion) {
+    ShowMessage(pistaDescripcion, "secondary", false, 5000);
+    $(".pista").parent().remove();
 }
 
 function showConfetis() {
@@ -221,8 +234,7 @@ function updateCountdown() {
     const minutes = Math.floor((timeRemaining % msInHour) / msInMinute);
     const seconds = Math.floor((timeRemaining % msInMinute) / msInSecond);
 
-    $('#countdown').html(
-        '<span class="text-muted">Próxima palabra en&nbsp;</span>' +
+    $('#time-remaining').text(
         `${String(hours).padStart(2, '0')} : ${String(minutes).padStart(2, '0')} : ${String(seconds).padStart(2, '0')}`
     );
 }

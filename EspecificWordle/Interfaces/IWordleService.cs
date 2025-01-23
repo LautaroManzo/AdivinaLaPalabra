@@ -7,7 +7,7 @@ namespace EspecificWordle.Interfaces
     {
         Task UpdateRandomWordDaily();
 
-        Task<WordModeDTO> GetModeWordDetailsAsync(int modoId);
+        Task<WordDTO> GetModeWordDetailsAsync(int modoId);
 
         Task<bool> WordCheckingAsync(string word, string language);
 

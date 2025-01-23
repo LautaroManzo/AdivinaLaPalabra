@@ -84,7 +84,7 @@
                                 else if (elemento.color == "Amarillo")
                                     changeInputAndButton(index, elemento.letra, "input-medium", "button-medium");
                                 else
-                                    changeInputAndButton(index, elemento.letra, "input-grey", "button-grey");
+                                    changeInputAndButton(index, elemento.letra, "input-gray", "button-gray");
                             });
 
                             filaFocus.next("div").removeClass('div-disable'); // Se saca la class en el div siguiente
@@ -136,11 +136,6 @@
         }
     }
 
-    function showPista(pistaDescripcion) {
-        ShowMessage(pistaDescripcion, "secondary", false);
-        $(".pista").parent().remove();
-    }
-
     // Se cambia el aspecto de los inputs y buttons
     function changeInputAndButton(posicion, letra, classInput, classButton, result, palabraIngresada) {
 
@@ -187,11 +182,6 @@
             }
 
         }
-    }
-
-    function addAnimation(divParent) {
-        divParent.addClass("animated-flip");
-        divParent.toggleClass('rotated');
     }
 
     function modalResult(result, intento, modoId, modoDescripcion) {
@@ -333,7 +323,7 @@
     <div class="fila" style="margin-top: 1px;">
         <div>
             <button type="button" title="Intro" onclick="enter()" class="form-control form-control-lg letras enter">
-                <span class="d-none d-sm-inline">Enviar</span>
+                <span class="d-none d-sm-inline">Intro</span>
                 <span class="d-inline d-sm-none"><i class="fa-solid fa-circle-check"></i></span>
             </button>
         </div>

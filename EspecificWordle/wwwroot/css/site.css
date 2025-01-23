@@ -1,20 +1,24 @@
 
 :root {
+    --background-color: #E8E8E8;
     --success-color: #43a047;
     --medium-color: #e4a81d;
-    --grey-color: #757575;
+    --gray-color: #757575;
+    --hover-color: #C7C8CC;
+    --foco-color: #6c757d;
+    --border-color: #adb5bd;
 }
 
 /* Page */
 
 html {
-    background-color: #E8E8E8;
+    background-color: var(--background-color);
     font-size: 14px;
     user-select: none;
 }
 
 body {
-    background-color: #E8E8E8;
+    background-color: var(--background-color);
     display: flex;
     flex-direction: column;
 }
@@ -38,37 +42,33 @@ html, body, form, main {
 /* Navbar */
 
 #navBar {
-    background-color: #C7C8CC;
+    background-color: var(--hover-color);
     width: 100%;
 }
 
 .menu {
-    color:black;
+    color: var(--gray-color);
     padding:5px;
 }
 
 .menu:hover {
-    background-color: #8f8f8f;
-    border-radius: 20%;
-    color: black;
+    color:black;
 }
 
 .titulo {
     font-size: 1.5rem;
-    line-height: 1.2;
-    font-family: monospace;
+    line-height: 1.5;
 }
 
 .modo {
     font-size: 0.8rem;
-    letter-spacing: 0.2rem;
-    font-family: monospace;
+    letter-spacing: 1px;
 }
 
 /* Sidebar */
 
 #sidebar {
-    background-color: #E8E8E8;
+    background-color: var(--background-color);
 }
 
 #sidebar a {
@@ -78,11 +78,10 @@ html, body, form, main {
     font-size: 1.3rem;
     font-weight: 400;
     line-height: 2;
-    font-family: monospace;
 }
 
 #sidebar a:hover {
-    background-color: #C7C8CC;
+    background-color: var(--hover-color);
 }
 
 .div-separator {
@@ -131,7 +130,6 @@ html, body, form, main {
     max-width: 58px;
     padding: 0;
     font-size: 1.8rem !important;
-    font-family: monospace !important;
 }
 
 .div-disable {
@@ -139,7 +137,7 @@ html, body, form, main {
 }
 
 .foco {
-    border-color: #6c757d !important;
+    border-color: var(--foco-color) !important;
 }
 
 .fila div {
@@ -154,7 +152,7 @@ html, body, form, main {
 .fila div .form-control {
     border-width: 1px;
     text-align: center;
-    font-weight: bold;
+    font-weight: 600;
     font-size: 18px;
 }
 
@@ -184,17 +182,17 @@ html, body, form, main {
 }
 
 .divKeyboard button:hover {
-    background-color: #C7C8CC;
-    border-color: #C7C8CC;
+    background-color: var(--hover-color);
+    border-color: var(--hover-color);
 }
 
 .divKeyboard .fila button:focus {
-    border-color: #C7C8CC;
+    border-color: var(--hover-color);
 }
 
 .divKeyboard .fila button {
     font-size: 1.5rem;
-    font-weight: 500;
+    font-weight: 400;
 }
 
 .divKeyboard .fila {
@@ -211,7 +209,6 @@ html, body, form, main {
     height: 60px;
     padding: 0;
     font-size: 13px;
-    font-family: monospace !important;
 }
 
 .enter {
@@ -249,31 +246,31 @@ html, body, form, main {
 /* Custom class */
 
 .input-success {
-    background-color: #43a047 !important;
+    background-color: var(--success-color) !important;
     color: #fff !important;
-    border-color: #43a047 !important;
+    border-color: var(--success-color) !important;
 }
 
 .input-medium {
-    background-color: #e4a81d;
+    background-color: var(--medium-color);
     color: #fff;
-    border-color: #e4a81d;
+    border-color: var(--medium-color);
 }
 
-.input-grey {
-    background-color: #757575;
+.input-gray {
+    background-color: var(--gray-color);
     color: #fff;
-    border-color: #757575;
+    border-color: var(--gray-color);
 }
 
 .button-success {
-    background-color: #43a047 !important;
+    background-color: var(--success-color) !important;
     color: #fff !important;
-    border-color: #43a047 !important;
+    border-color: var(--success-color) !important;
 }
 
 .button-success:hover {
-    background-color: #43a047 !important;
+    background-color: var(--success-color) !important;
 }
 
 .button-success:active {
@@ -281,36 +278,36 @@ html, body, form, main {
 }
 
 .button-medium {
-    background-color: #e4a81d !important;
+    background-color: var(--medium-color) !important;
     color: #fff !important;
-    border-color: #e4a81d !important;
+    border-color: var(--medium-color) !important;
 }
 
 .button-medium:hover {
-    background-color: #e4a81d !important;
+    background-color: var(--medium-color) !important;
 }
 
 .button-medium:active {
     color: #fff;
 }
 
-.button-grey {
-    background-color: #757575 !important;
+.button-gray {
+    background-color: var(--gray-color) !important;
     color: #fff !important;
-    border-color: #757575 !important;
+    border-color: var(--gray-color) !important;
 }
 
-.button-grey:hover {
-    background-color: #757575 !important;
+.button-gray:hover {
+    background-color: var(--gray-color) !important;
 }
 
-.button-grey:active {
+.button-gray:active {
     color: #fff;
 }
 
 .alert-custom {
     color: #FFFFFF;
-    background-color: #757575;
+    background-color: var(--gray-color);
     border-color: #999999;
 }
 
@@ -322,18 +319,18 @@ html, body, form, main {
     color: var(--medium-color)
 }
 
-.icon-grey {
-    color: var(--grey-color)
+.icon-gray {
+    color: var(--gray-color)
 }
 
 /* Modal */
 
 .modal-fullscreen .modal-body {
-    overflow-y:unset;
+    overflow-y: unset;
 }
 
 .modal-content {
-    background-color: #E8E8E8;
+    background-color: var(--background-color);
 }
 
 .modal-body {
@@ -342,21 +339,21 @@ html, body, form, main {
     justify-content: center;
     align-items: center;
     padding: 0;
-    background-color: #E8E8E8;
-    font-family: monospace;
+    background-color: var(--background-color);
 }
 
 .div-btn-close {
     display: flex !important;
-    position: fixed;
-    z-index: 1000;
-    top: 0;
-    right: 0;
-    padding:5px;
+    justify-content: end;
+    margin-bottom: 2em;
+}
+
+.div-btn-close button {
+    color: var(--gray-color);
 }
 
 .div-btn-close button:hover {
-    background-color: #8f8f8f;
+    color:black;
 }
 
 .div-modo {
@@ -365,54 +362,71 @@ html, body, form, main {
 }
 
 .div-modo i {
-    font-size: 15px;
-    letter-spacing: 2px;
-    line-height: 20px;
+    font-size: 14px;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.info-small {
+    font-size: x-small;
+    padding-bottom: 10px;
 }
 
 .div-result {
     display: flex;
-    border-top: 1px solid #adb5bd;
-    border-bottom: 1px solid #adb5bd;
 }
 
 .div-result span {
-    font-size: 40px;
-    font-weight: bold;
+    font-size:14px;
+    color: black;
 }
 
 .div-word-def {
     display: flex;
     flex-direction: column;
-    padding-top: .5rem;
-    padding-bottom: 1rem;
+    border-bottom: 1px solid #C7C8CC;
+    border-top: 1px solid #C7C8CC;
+    padding: 20px 0px;
+}
+
+.div-content-word-def {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
 }
 
 .span-def {
-    font-size: 16px;
+    font-size: 20px;
 }
 
 .div-word {
     display: flex;
-    padding-bottom: .5rem;
+    font-weight: 500;
+}
+
+.div-box {
+    background-color: white;
+    padding: 2%;
+    border-radius: 5px;
 }
 
 .div-word span {
-    font-size: 18px;
+    font-size: 40px;
     letter-spacing: 5px;
     line-height: 40px;
-    font-weight: bold;
+    text-wrap: auto;
 }
 
 .div-sin-ant {
-    padding-top: 1rem;
-    border-top: 1px solid #adb5bd;
-    padding-bottom: 1rem;
+    display: flex;
+    gap: 1em;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #C7C8CC;
 }
 
 .div-sin-ant div span {
     font-size: 14px;
-    font-weight: bold;
+    color: black;
 }
 
 .div-sin-ant div span small {
@@ -421,35 +435,55 @@ html, body, form, main {
 }
 
 .div-use {
-    padding-top: 1rem;
-    border-top: 1px solid #adb5bd;
-    padding-bottom: 1rem;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #C7C8CC;
 }
 
 .div-use span {
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 16px;
+    color: black;
 }
 
 .div-use span small {
     font-weight: initial;
+}
+
+#countdown {
+    display: flex;
+    font-size: 10px;
+    letter-spacing: 1px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.div-buttons {
+    display: flex;
+    gap: .5rem;
+    padding-top: 1em;
     letter-spacing: 1px;
 }
 
 .btn-modo {
-    background-color: #6c757d;
+    background-color: var(--foco-color);
     color: white;
 }
 
-.btn-modo:hover {
-    background-color: #adb5bd !important;
+.btn-modo:hover, .btn-modo:focus {
+    background-color: var(--border-color) !important;
     color: black !important;
+    box-shadow: none;
+    border-color: var(--border-color);
 }
 
 .div-content-modal {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background-color);
     width: 100%;
-    max-width: 500px;
-    padding: 5px;
+    max-width: 600px;
+    padding: 2%;
+    gap: 1em;
+    letter-spacing: 1px;
 }
 
 .btn-close-modal {
@@ -462,20 +496,15 @@ html, body, form, main {
     box-shadow: none !important;
 }
 
-.div-modal-modos {
-    padding-bottom: 5px;
-}
-
 .div-modal-modos button {
     border: none;
-    font-family: monospace;
     text-wrap: nowrap;
 }
 
 .div-modal-modos button:focus {
     outline: none;
     box-shadow: none;
-    background-color: #6c757d;
+    background-color: var(--foco-color);
     color: white;
 }
 
@@ -490,18 +519,9 @@ sup {
     padding: 2px;
 }
 
-@media (max-width: 400px) {
+/* Resolución menor a 576px */
 
-    .div-result span {
-        font-size: 25px;
-        text-align: center;
-    }
-
-}
-
-/* Resolución menor a 320px */
-
-@media (max-width: 320px) {
+@media (max-width: 576px) {
 
     .titulo {
         font-size:16px;
@@ -539,15 +559,30 @@ sup {
     }
 
     .div-modo i {
-        font-size:10px;
+        font-size:12px;
+    }
+
+    .div-word {
+        flex-direction: column;
+        gap: 1em;
     }
 
     .div-word span {
-        font-size: 14px;
+        font-size: 30px;
+        width: 100%;
+        text-align: center;
     }
 
-    .span-def, .div-sin-ant div span, .div-use span {
-        font-size: 12px;
+    .div-def {
+        text-align: center;
+    }
+
+    .span-def span {
+        font-size: 16px;
+    }
+
+    .div-sin-ant div span, .div-use span {
+        font-size: 14px;
     }
 
     /* Estilos para modal de instrucciones */
@@ -560,10 +595,6 @@ sup {
         flex-direction: column;
         align-items: center;
         gap: 5px;
-    }
-
-    .div-btn-close {
-        justify-content:left;
     }
 
 }
@@ -645,11 +676,11 @@ sup {
 .div-instrucciones {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 1em;
 }
 
 .div-game div {
-    border-top: 1px solid #adb5bd;
+    border-top: 1px solid var(--border-color);
 }
 
 .div-game div p {
@@ -665,7 +696,7 @@ sup {
 
 .div-example {
     display: flex;
-    border-bottom: 1px solid #adb5bd;
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 5px;
     column-gap: 20px;
 }
@@ -704,7 +735,7 @@ sup {
 .title-pista {
     font-size: 25px;
     font-weight: bold;
-    border-bottom: 1px solid #adb5bd;
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 5px;
 }
 
@@ -716,7 +747,7 @@ sup {
 .title-claves {
     font-size: 25px;
     font-weight: bold;
-    border-bottom: 1px solid #adb5bd;
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 5px;
 }
 

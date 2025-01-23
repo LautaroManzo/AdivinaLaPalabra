@@ -40,7 +40,7 @@
 
         public string Color { get; set; }
 
-        public bool Acerted { get; set; }
+        public bool Acerted { get; set; } = false;
     }
 
 }
