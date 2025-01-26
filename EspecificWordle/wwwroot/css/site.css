@@ -46,12 +46,12 @@ html, body, form, main {
     width: 100%;
 }
 
-.menu {
+.menu, .nav-info {
     color: var(--gray-color);
     padding:5px;
 }
 
-.menu:hover {
+.menu:hover, .nav-info:hover {
     color:black;
 }
 
@@ -219,8 +219,14 @@ html, body, form, main {
     padding: .2em !important;
 }
 
-.pista {
-    
+.btn-pista {
+    padding: 0;
+}
+
+.div-pista button img {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
 }
 
 /* Messages */
@@ -766,4 +772,32 @@ sup {
 
 .fa-xs {
     font-size: .50em;
+}
+
+/* Vista de error */
+
+.div-exception-errors {
+    letter-spacing: 1px;
+    max-width:600px;
+    gap: 1em;
+}
+
+.div-exception-errors h1 {
+    font-size: 2em;
+}
+
+.div-exception-errors h2 {
+    font-size: 1.5em;
+}
+
+.div-exception-errors h3 {
+    font-size: 1em;
+}
+
+#stackTrace pre {
+    font-size: smaller;
+}
+
+.div-report span, .div-report span a {
+    font-weight: 500;
 }

@@ -3,16 +3,19 @@
 <div id="sidebar" class="offcanvas offcanvas-start" style="width:auto;">
     <div class="offcanvas-body" style="padding:0; display: flex; flex-direction: column;">
 
-        <a href="javascript:void(0);" onclick="redirectByMode('Aleatoria')">Aleatoria</a>
-        <a href="javascript:void(0);" onclick="redirectByMode('Ciencia')">Ciencia</a>
-        <a href="javascript:void(0);" onclick="redirectByMode('Naturaleza')">Naturaleza</a>
-        <a href="#">Tildes</a>
-        <a href="#">Inglés</a>
+        <a role="button" onclick="redirectByMode('Aleatoria')">Aleatoria</a>
+        <a role="button" onclick="redirectByMode('Ciencia')">Ciencia</a>
+        <a role="button" onclick="redirectByMode('Naturaleza')">Naturaleza</a>
+        
+        @*  
+            <a role="button">Tildes</a>
+            <a role="button">Inglés</a> 
+        *@
 
         <div class="div-separator">
             <hr />
-            <a href="javascript:void(0);" onclick="showInstrucciones()">Como jugar</a>
-            <a href="javascript:void(0);" onclick="sendEmail()">Contacto</a>
+            <a role="button" onclick="showInstrucciones()">Como jugar</a>
+            <a role="button" onclick="sendEmail()">Contacto</a>
         </div>
 
     </div>

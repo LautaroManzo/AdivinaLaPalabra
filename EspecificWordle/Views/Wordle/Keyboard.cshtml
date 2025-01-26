@@ -16,9 +16,6 @@
                 else if ($(this).hasClass('enter')) {
                     return;
                 }
-                else if ($(this).hasClass('pista')) {
-                    return;
-                }
 
                 inputFocus.val($(this).text());
 
@@ -97,12 +94,16 @@
                                 let divM = $(".fila div button:contains('M')").parent();
 
                                 divM.after(`
-                                    <div>
-                                        <button type='button' onclick="showPista('${response.juego[@Model.ModoId.ToString()][response.intentos - 1].pistaDescripcion}')" class='form-control form-control-lg letras pista' style='padding: 0;'>
-                                            <img src='/Icons/solution.png' alt='Pista' style='width: 100%; height: 100%; object-fit: contain;'>
+                                    <div class='div-pista'>
+                                        <button type='button' onclick="showPista('${response.juego[@Model.ModoId.ToString()][response.intentos - 1].pistaDescripcion}')" class='form-control form-control-lg letras btn-pista'>
+                                            <img src='/Icons/solution.png' alt='Pista'>
                                         </button>
                                     </div>
                                 `);
+
+                                setTimeout(function () {
+                                    addAnimation($(".div-pista"));
+                                }, 200);
                             }
 
                             if (response.intentos == 5) {
@@ -204,8 +205,8 @@
                         if(result != 0)
                             showConfetis();
 
-                        if ($(".pista"))
-                            $(".pista").parent().remove();
+                        if ($(".btn-pista"))
+                            $(".btn-pista").parent().remove();
                     });
 
                     document.getElementById('resultModal').addEventListener('hidden.bs.modal', function () {

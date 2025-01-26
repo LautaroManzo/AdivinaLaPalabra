@@ -1,4 +1,5 @@
 using EspecificWordle.Models;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -26,7 +27,19 @@ namespace EspecificWordle.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var exceptionDetails = HttpContext.Features.Get<IExceptionHandlerFeature>();
+
+            var errorViewModel = new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                ExceptionMessage = exceptionDetails?.Error.Message,
+                StackTrace = exceptionDetails?.Error.StackTrace,
+                StackTraceByEmail = exceptionDetails?.Error.StackTrace?.Split('\n')[0],
+                Path = exceptionDetails?.Path
+            };
+
+            return View("~/Views/Shared/Error.cshtml", errorViewModel);
         }
+
     }
 }

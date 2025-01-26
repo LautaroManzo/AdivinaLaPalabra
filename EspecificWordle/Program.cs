@@ -26,6 +26,11 @@ builder.Services.AddDbContext<WordGameContext>(options =>
 
 var app = builder.Build();
 
+// Middleware de manejo de excepciones global
+app.UseExceptionHandler("/Home/Error");
+app.UseHsts();
+app.UseHttpsRedirection();
+
 async Task InitializeConfigApp(IServiceProvider services)
 {
     var wordService = services.GetRequiredService<IWordleService>();

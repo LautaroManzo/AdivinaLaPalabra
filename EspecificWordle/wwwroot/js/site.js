@@ -27,7 +27,7 @@ $(document).on("keydown", function (e) {
             enter();
 
         // Se asigna evento de borrado a las teclas delete y suprimir
-        if (e.keyCode === 8) {
+        if (e.keyCode === 8 || e.keyCode === 46) {
             e.preventDefault();
             onDeleteClick();
         }
@@ -128,7 +128,7 @@ function addAnimation(divParent) {
 
 function showPista(pistaDescripcion) {
     ShowMessage(pistaDescripcion, "secondary", false, 5000);
-    $(".pista").parent().remove();
+    $(".btn-pista").parent().remove();
 }
 
 function showConfetis() {
@@ -213,10 +213,15 @@ function showInstrucciones() {
     });
 }
 
-function sendEmail() {
+function sendEmail(body) {
     let email = "test@test.com";
-    let subject = "Contacto - Adiviná la palabra";
+    let subject = body ? "Reporte de error - Adiviná la palabra" : "Contacto - Adiviná la palabra";
+
     let mailtoURL = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
+
+    if (body)
+        mailtoURL += `&body=${encodeURIComponent(body)}`;
+
     window.location.href = mailtoURL;
 }
 

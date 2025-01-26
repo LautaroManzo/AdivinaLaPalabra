@@ -1,25 +1,71 @@
 ﻿@model ErrorViewModel
-@{
-    ViewData["Title"] = "Error";
-}
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<script type="text/javascript">
 
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
+    $(document).ready(function () {
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
+        $('#stackTrace').on('show.bs.collapse', function () {
+            $('#collapseIcon').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+        });
+
+
+        $('#stackTrace').on('hide.bs.collapse', function () {
+            $('#collapseIcon').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+        });
+
+    });
+
+    function sendError() {
+        let exceptionMessage = "@Model.ExceptionMessage";
+        let path = "@Model.Path";
+        let stackTrace = "@Model.StackTraceByEmail";
+
+        let body = `Mensaje: ${exceptionMessage}\n\n` +
+            `Ruta: ${path}\n\n` +
+            `Stack Trace:\n\n ${stackTrace}`;
+
+        sendEmail(body);
+    }
+
+</script>
+
+<div class="div-exception-errors container min-vh-100 d-flex flex-column justify-content-center align-items-center text-left">
+
+    <div class="p-1 pb-2 w-100" style="border-bottom: 1px solid #C7C8CC;">
+        <h1 class="text-danger">Ocurrió un error inesperado</h1>    
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.ExceptionMessage))
+    {
+        <div class="d-flex flex-column p-1 w-100 gap-3">
+
+            <div class="d-flex flex-column gap-2 pb-4" style="border-bottom: 1px solid #C7C8CC;">
+                <h2 class="text-muted">Detalles del Error</h2>
+                <span><strong class="text-muted">Mensaje</strong>&nbsp;&nbsp; @Model.ExceptionMessage</span>
+                <span><strong class="text-muted">Ruta</strong>&nbsp;&nbsp; @Model.Path</span>
+            </div>
+
+            <div>
+                <h3 role="button" class="text-muted d-flex justify-content-between m-0" data-bs-toggle="collapse" data-bs-target="#stackTrace" aria-expanded="false" aria-controls="stackTrace">
+                    Más información
+                    <i id="collapseIcon" class="fa-solid fa-chevron-down"></i>
+                </h3>
+
+                <div id="stackTrace" class="collapse mt-3">
+                    <pre class="bg-light text-danger p-2 rounded">@Model.StackTrace</pre>
+                </div>
+            </div>
+
+            <div class="div-report">
+                <span>
+                    Reporta el error presionando
+                    <a role="button" onclick="sendError()" class="btn btn-secondary ms-1">
+                        acá &nbsp;&nbsp; <i class="fa-solid fa-envelope"></i>
+                    </a>
+                </span>
+            </div>
+
+        </div>
+    }
+
+</div>

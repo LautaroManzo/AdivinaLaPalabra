@@ -1,9 +1,11 @@
-﻿using EspecificWordle.Helpers;
+﻿using DataBase.Models;
+using EspecificWordle.Helpers;
 using EspecificWordle.Interfaces;
 using EspecificWordle.Models;
 using EspecificWordle.Models.Wordle;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace EspecificWordle.Controllers
 {
@@ -116,6 +118,26 @@ namespace EspecificWordle.Controllers
                             letters.Add(new Letter(){ Letra = wordleViewModel.PalabraIngresada[i].ToString(), Color = SystemConstants.ColorLetra.Gris });
                     }
                 }
+
+                #region Manejo de letras repetidas
+
+                var letrasRepetidasPalabraIngresada = wordleViewModel.PalabraIngresada
+                    .GroupBy(letra => letra)
+                    .Where(grupoLetras => grupoLetras.Count() > 1)
+                    .Select(grupoLetras => grupoLetras.Key.ToString())
+                    .ToHashSet();
+
+                var tieneLetrasRepetidasWordSecret = wordSecret
+                    .GroupBy(letra => letra)
+                    .Any(grupoLetras => grupoLetras.Count() > 1);
+
+                if (letrasRepetidasPalabraIngresada.Count > 0 && !tieneLetrasRepetidasWordSecret)
+                    foreach (var item in letters)
+                        if (letrasRepetidasPalabraIngresada.Contains(item.Letra) && item.Color == SystemConstants.ColorLetra.Amarillo
+                            && letters.Any(l => l.Letra == item.Letra && l.Color == SystemConstants.ColorLetra.Verde))
+                            item.Color = SystemConstants.ColorLetra.Gris;
+
+                #endregion
 
                 wordleViewModel.Juego[wordleViewModel.ModoId.ToString()].Add(new Session() { 
                     Intento = wordleViewModel.Intentos,
