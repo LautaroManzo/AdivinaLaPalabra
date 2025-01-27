@@ -1,21 +1,21 @@
 ﻿
-<nav id="navBar" class="navbar navbar-toggleable-sm navbar-light box-shadow justify-content-center pb-0 pt-0">
+<nav id="navBar" class="navbar navbar-toggleable-sm navbar-light box-shadow justify-content-center pb-0 pt-0 w-100">
 
     <div class="d-flex p-1" style="max-width: 600px; width: 100%;">
 
         <div title="Menú" class="d-flex align-items-center p-1">
-            <a class="menu" data-bs-toggle="offcanvas" data-bs-target="#sidebar" role="button">
+            <a class="menu p-1" data-bs-toggle="offcanvas" data-bs-target="#sidebar" role="button">
                 <i class="fa-solid fa-ellipsis-vertical fa-lg"></i>
             </a>
         </div>
 
         <div class="d-flex flex-column flex-grow-1 justify-content-center align-items-center text-center">
             <h1 class="titulo text-dark fw-bold">Adiviná la palabra</h1>
-            <h2 class="modo text-muted fw-semibold mb-0">@Model.ModoDescripcion.ToUpper()</h2>
+            <h2 class="modo text-muted mb-0">@Model.ModoDescripcion.ToUpper()</h2>
         </div>
 
         <div title="¿Cómo jugar?" class="d-flex align-items-center p-1">
-            <a class="nav-info" role="button" onclick="showInstrucciones()">
+            <a class="nav-info p-1" role="button" onclick="showInstrucciones()">
                 <i class="fa-regular fa-circle-question fa-lg"></i>
             </a>
         </div>

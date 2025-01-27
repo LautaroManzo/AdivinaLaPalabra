@@ -33,7 +33,7 @@
     $(document).ready(function () {
 
         // Habilita la fila que se esta usando segun el numero de intento.
-        $('.divWordle').children().each(function (index) {
+        $('.div-wordle').children().each(function (index) {
             if (index === (@Model.Intentos - 0)) {
                 $(this).removeClass('div-disable');
                 filaFocus = $(this);    // Foco de la fila
@@ -41,7 +41,7 @@
         });
 
         // Guardo en todo momento el input que tiene focus
-        $(document).on('focus', '.divWordle > div:not(.div-disable) input', function () {
+        $(document).on('focus', '.div-wordle > div:not(.div-disable) input', function () {
             
             if (inputFocus)
                 inputFocus.removeClass("foco");
@@ -70,7 +70,7 @@
             data = JSON.parse(json);
             let intentos = data[modoId].length;
 
-            $(".divWordle").children("div").slice(0, intentos).each(function (index) {
+            $(".div-wordle").children("div").slice(0, intentos).each(function (index) {
 
                 // Piso la variable en cada recorrido
                 filaFocus = $(this);
@@ -127,18 +127,18 @@
 @Html.HiddenFor(x => x.Resultado)
 @Html.HiddenFor(x => x.GameFinish)
 
-<div class="divConteiener">
+<div class="div-contenedor d-flex flex-column align-items-center justify-content-center">
 
     @await Html.PartialAsync("Navbar")
 
-    <div class="divWordle">
+    <div class="div-wordle d-flex flex-column gap-1 mw-100 mx-5 flex-fill justify-content-center">
         @for (int i = 0; i < 5; i++)    // FILAS
         {
-            <div class="fila div-disable">
+            <div class="fila div-disable gap-1">
                 @for (int j = 0; j < Model.Length; j++)  // COLUMNAS
                 {
-                    <div>
-                        <input name="@($"{i}_{j}")" type="text" class="form-control form-control-lg input" autocomplete="off" role="presentation"
+                    <div class="flex-fill">
+                        <input name="@($"{i}_{j}")" type="text" class="form-control form-control-lg input p-0 rounded-1" autocomplete="off" role="presentation"
                                maxlength="1" oninput="this.value = this.value.toUpperCase()" />
                     </div>
                 }

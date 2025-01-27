@@ -3,13 +3,13 @@
 
     <div class="modal-content">
 
-        <div class="modal-body">
+        <div class="modal-body d-flex flex-column justify-content-center align-items-center p-0">
 
-            <div class="div-content-modal">
+            <div class="div-content-modal d-flex flex-column w-100 gap-3">
                 
-                <div class="div-instrucciones">
+                <div class="div-instrucciones d-flex flex-column gap-3">
 
-                    <div class="div-btn-close">
+                    <div class="div-btn-close d-flex justify-content-end mb-4">
                         <button type="button" class="btn btn-close-modal" data-bs-dismiss="modal" aria-label="Close">
                             <i class="fa-solid fa-xmark fa-lg"></i>
                         </button>
@@ -23,32 +23,32 @@
                     </div>
 
                     <div>
-                        <div class="text-muted div-example">
+                        <div class="text-muted div-example d-flex">
                             <h2>Ejemplo</h2>
-                            <div class="word-example">
-                                <div class="input-success">P</div>
-                                <div class="input-medium">U</div>
-                                <div class="input-gray">E</div>
-                                <div class="input-gray">R</div>
-                                <div class="input-medium">T</div>
-                                <div class="input-gray">A</div>
+                            <div class="word-example d-flex align-items-center gap-2">
+                                <div class="input-success text-center">P</div>
+                                <div class="input-medium text-center">U</div>
+                                <div class="input-gray text-center">E</div>
+                                <div class="input-gray text-center">R</div>
+                                <div class="input-medium text-center">T</div>
+                                <div class="input-gray text-center">A</div>
                             </div>
                         </div>
 
-                        <ul class="ul-references">
-                            <li>
+                        <ul class="ul-references p-0 m-0">
+                            <li class="d-flex">
                                 <div>
                                     <i class="fa-solid fa-circle fa-xs icon-success">&nbsp;</i>
                                 </div>
                                 La letra está en la palabra y en la posición correcta.
                             </li>
-                            <li>
+                            <li class="d-flex">
                                 <div>
                                     <i class="fa-solid fa-circle fa-xs icon-medium">&nbsp;</i>
                                 </div>
                                 La letra está en la palabra pero en una posición incorrecta.
                             </li>
-                            <li>
+                            <li class="d-flex">
                                 <div>
                                     <i class="fa-solid fa-circle fa-xs icon-gray">&nbsp;</i>
                                 </div>
@@ -64,7 +64,7 @@
 
                     <div class="div-claves">
                         <h2 class="text-muted title-claves">Datos claves</h2>
-                        <ul class="ul-claves">
+                        <ul class="ul-claves m-0">
                             <li>La palabra a adivinar depende del modo de juego.</li>
                             <li>Solo se permiten palabras que existan.</li>
                             <li>Cada modo de juego actualiza la palabra diaria a las 00:00.</li>

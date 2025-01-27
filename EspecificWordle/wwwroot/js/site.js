@@ -61,7 +61,7 @@ $(document).on("keydown", function (e) {
     }
 });
 
-$(document).on('input', '.divWordle > div:not(.div-disable) input', function (e) {
+$(document).on('input', '.div-wordle > div:not(.div-disable) input', function (e) {
     // Avanza de input cada vez que se modifica el input
     inputFocus.parent().next('div').find('input').focus();
 });
@@ -103,7 +103,7 @@ function ShowMessage(message, color, animated = true, time = 3000) {
     if ($("#message").length)
         return;
 
-    $(".divConteiener").prepend(`<div class="div-messages"><div id="message" class="alert alert-${color}" role="alert">${message}</div></div>`);
+    $(".div-contenedor").prepend(`<div class="div-messages w-100"><div id="message" class="alert alert-${color} mb-0" role="alert">${message}</div></div>`);
 
     $("#message").fadeIn(500);
 

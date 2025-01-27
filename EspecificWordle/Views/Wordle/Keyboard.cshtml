@@ -5,7 +5,7 @@
 
     $(document).ready(function () {
 
-        $(document).on("click", '.divKeyboard button', function () {
+        $(document).on("click", '.div-keyboard button', function () {
             
             if ($("#GameFinish").val() == "@false" || $("#GameFinish").val() == "false") {
     
@@ -95,7 +95,7 @@
 
                                 divM.after(`
                                     <div class='div-pista'>
-                                        <button type='button' onclick="showPista('${response.juego[@Model.ModoId.ToString()][response.intentos - 1].pistaDescripcion}')" class='form-control form-control-lg letras btn-pista'>
+                                            <button type='button' onclick="showPista('${response.juego[@Model.ModoId.ToString()][response.intentos - 1].pistaDescripcion}')" class='form-control form-control-lg letras btn-pista rounded-1 p-0'>
                                             <img src='/Icons/solution.png' alt='Pista'>
                                         </button>
                                     </div>
@@ -147,7 +147,7 @@
             var letras = palabraIngresada.split('');
 
             for (var i = 0; i < letras.length; i++) {
-                let button = $(".divKeyboard").find("button:contains('" + letras[i] + "')").first();
+                let button = $(".div-keyboard").find("button:contains('" + letras[i] + "')").first();
                 button.removeClass("button-medium");
                 button.addClass(classButton);
             }
@@ -165,7 +165,7 @@
             filaFocus.find('input').eq(posicion).addClass(classInput);
             addAnimation(filaFocus.find('input').parent());
 
-            let button = $(".divKeyboard").find("button:contains('" + letra + "')").first();
+            let button = $(".div-keyboard").find("button:contains('" + letra + "')").first();
          
             if (!button.hasClass("button-success")) {
                 if (!button.hasClass("button-medium") || (button.hasClass("button-medium") && classButton == "button-success")) {
@@ -229,128 +229,130 @@
 <div id="resultModal"></div>
 <div id="instruccionesModal"></div>
 
-<div class="divKeyboard">
+<div class="div-keyboard d-flex flex-column w-100 gap-2">
 
-@*     @if (Model.Tildes)
+@*  
+    @if (Model.Tildes)
     {
-        <div class="fila">
-            <div>
-                <button type="button" class="form-control form-control-lg tildes">Á</button>
+        <div class="fila gap-2">
+            <div class="flex-fill">
+                <button type="button" class="form-control form-control-lg tildes rounded-1 p-0">Á</button>
             </div>
-            <div>
-                <button type="button" class="form-control form-control-lg tildes">É</button>
+            <div class="flex-fill">
+                <button type="button" class="form-control form-control-lg tildes rounded-1 p-0">É</button>
             </div>
-            <div>
-                <button type="button" class="form-control form-control-lg tildes">Í</button>
+            <div class="flex-fill">
+                <button type="button" class="form-control form-control-lg tildes rounded-1 p-0">Í</button>
             </div>
-            <div>
-                <button type="button" class="form-control form-control-lg tildes">Ó</button>
+            <div class="flex-fill">
+                <button type="button" class="form-control form-control-lg tildes rounded-1 p-0">Ó</button>
             </div>
-            <div>
-                <button type="button" class="form-control form-control-lg tildes">Ú</button>
+            <div class="flex-fill">
+                <button type="button" class="form-control form-control-lg tildes rounded-1 p-0">Ú</button>
             </div>
         </div>
-    } *@
+    } 
+*@
 
-    <div class="fila">
-        <div>
-            <button type="button" class="form-control form-control-lg letras">Q</button>
+    <div class="fila gap-2">
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">Q</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">W</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">W</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">E</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">E</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">R</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">R</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">T</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">T</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">Y</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">Y</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">U</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">U</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">I</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">I</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">O</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">O</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">P</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">P</button>
         </div>
     </div>
 
-    <div class="fila">
-        <div>
-            <button type="button" class="form-control form-control-lg letras">A</button>
+    <div class="fila gap-2">
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">A</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">S</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">S</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">D</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">D</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">F</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">F</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">G</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">G</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">H</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">H</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">Y</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">Y</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">J</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">J</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">K</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">K</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">L</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">L</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">Ñ</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">Ñ</button>
         </div>
     </div>
 
-    <div class="fila" style="margin-top: 1px;">
-        <div>
-            <button type="button" title="Intro" onclick="enter()" class="form-control form-control-lg letras enter">
+    <div class="fila gap-2 mt-1">
+        <div class="flex-fill">
+            <button type="button" title="Intro" onclick="enter()" class="form-control form-control-lg letras enter rounded-1 p-0">
                 <span class="d-none d-sm-inline">Intro</span>
                 <span class="d-inline d-sm-none"><i class="fa-solid fa-circle-check"></i></span>
             </button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">Z</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">Z</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">X</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">X</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">C</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">C</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">V</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">V</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">B</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">B</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">N</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">N</button>
         </div>
-        <div>
-            <button type="button" class="form-control form-control-lg letras">M</button>
+        <div class="flex-fill">
+            <button type="button" class="form-control form-control-lg letras rounded-1 p-0">M</button>
         </div>
-        <div>
-            <button type="button" title="Delete" class="form-control form-control-lg letras delete"><i class="fa-solid fa-delete-left fa-lg"></i></button>
+        <div class="flex-fill">
+            <button type="button" title="Delete" class="form-control form-control-lg letras delete rounded-1 p-0"><i class="fa-solid fa-delete-left fa-lg"></i></button>
         </div>
     </div>
 

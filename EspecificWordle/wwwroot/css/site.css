@@ -19,11 +19,9 @@ html {
 
 body {
     background-color: var(--background-color);
-    display: flex;
-    flex-direction: column;
 }
 
-html, body, form, main {
+html, body, form, main, .div-contenedor {
     height: 100%;
 }
 
@@ -43,12 +41,10 @@ html, body, form, main {
 
 #navBar {
     background-color: var(--hover-color);
-    width: 100%;
 }
 
 .menu, .nav-info {
     color: var(--gray-color);
-    padding:5px;
 }
 
 .menu:hover, .nav-info:hover {
@@ -84,51 +80,21 @@ html, body, form, main {
     background-color: var(--hover-color);
 }
 
-.div-separator {
-    display: flex;
-    flex-direction: column;
-    margin-top: auto;
-}
-
-/* Conteiner */
-
-.divConteiener {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
 /* Wordle */
 
-.divWordle {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    max-width: 500px;
-    margin-left: 5%;
-    margin-right: 5%;
-    flex: 1;
-    justify-content: center;
-}
-
-.divWordle .fila {
+.div-wordle .fila {
     height: 58px;
-    gap: 4px;
 }
 
 .fila {
     display: flex;
     height: 60px;
-    gap: 4px;
     position: relative;
 }
 
 .input {
     height: 58px;
     max-width: 58px;
-    padding: 0;
     font-size: 1.8rem !important;
 }
 
@@ -138,10 +104,6 @@ html, body, form, main {
 
 .foco {
     border-color: var(--foco-color) !important;
-}
-
-.fila div {
-    flex: 1;
 }
 
 .fila div .form-control:focus {
@@ -161,53 +123,34 @@ html, body, form, main {
     cursor: pointer;
 }
 
-.form-control-lg {
-    border-radius: .2rem;
-}
-
 /* Keyboard */
 
-.divKeyboard {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+.div-keyboard {
     max-width: 600px;
     margin: 0 3px 6px 3px;
     padding: 0 6px 0px 6px;
 }
 
-.divKeyboard button {
+.div-keyboard button {
     border: none;
 }
 
-.divKeyboard button:hover {
+.div-keyboard button:hover {
     background-color: var(--hover-color);
     border-color: var(--hover-color);
 }
 
-.divKeyboard .fila button:focus {
+.div-keyboard .fila button:focus {
     border-color: var(--hover-color);
-}
-
-.divKeyboard .fila button {
-    font-size: 1.5rem;
-    font-weight: 400;
-}
-
-.divKeyboard .fila {
-    gap: 6px;
 }
 
 .tildes {
     height: 50px;
-    padding: 0;
     font-size: 13px;
 }
 
 .letras {
     height: 60px;
-    padding: 0;
     font-size: 13px;
 }
 
@@ -219,10 +162,6 @@ html, body, form, main {
     padding: .2em !important;
 }
 
-.btn-pista {
-    padding: 0;
-}
-
 .div-pista button img {
     width: 70%;
     height: 70%;
@@ -230,23 +169,18 @@ html, body, form, main {
 }
 
 /* Messages */
+
 .div-messages {
-    width: 100%;
     max-width: 600px;
     position: absolute;
     top: 1rem;
-    z-index: 1;
+    z-index: 9999;
 }
 
 #message {
     display: none;
     text-align: center;
-    margin-left: 4px;
-    margin-right: 4px;
-}
-
-.alert {
-    margin-bottom: 0;
+    margin: 0 4px 0 4px;
 }
 
 /* Custom class */
@@ -340,18 +274,7 @@ html, body, form, main {
 }
 
 .modal-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0;
     background-color: var(--background-color);
-}
-
-.div-btn-close {
-    display: flex !important;
-    justify-content: end;
-    margin-bottom: 2em;
 }
 
 .div-btn-close button {
@@ -360,11 +283,6 @@ html, body, form, main {
 
 .div-btn-close button:hover {
     color:black;
-}
-
-.div-modo {
-    display: flex;
-    justify-content: right;
 }
 
 .div-modo i {
@@ -378,27 +296,15 @@ html, body, form, main {
     padding-bottom: 10px;
 }
 
-.div-result {
-    display: flex;
-}
-
 .div-result span {
     font-size:14px;
     color: black;
 }
 
 .div-word-def {
-    display: flex;
-    flex-direction: column;
-    border-bottom: 1px solid #C7C8CC;
-    border-top: 1px solid #C7C8CC;
+    border-bottom: 1px solid var(--hover-color);
+    border-top: 1px solid var(--hover-color);
     padding: 20px 0px;
-}
-
-.div-content-word-def {
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
 }
 
 .span-def {
@@ -406,7 +312,6 @@ html, body, form, main {
 }
 
 .div-word {
-    display: flex;
     font-weight: 500;
 }
 
@@ -424,10 +329,7 @@ html, body, form, main {
 }
 
 .div-sin-ant {
-    display: flex;
-    gap: 1em;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #C7C8CC;
+    border-bottom: 1px solid var(--hover-color);
 }
 
 .div-sin-ant div span {
@@ -441,8 +343,7 @@ html, body, form, main {
 }
 
 .div-use {
-    padding-bottom: 10px;
-    border-bottom: 1px solid #C7C8CC;
+    border-bottom: 1px solid var(--hover-color);
 }
 
 .div-use span {
@@ -455,17 +356,11 @@ html, body, form, main {
 }
 
 #countdown {
-    display: flex;
     font-size: 10px;
     letter-spacing: 1px;
-    flex-direction: column;
-    align-items: center;
 }
 
 .div-buttons {
-    display: flex;
-    gap: .5rem;
-    padding-top: 1em;
     letter-spacing: 1px;
 }
 
@@ -482,14 +377,10 @@ html, body, form, main {
 }
 
 .div-content-modal {
-    display: flex;
-    flex-direction: column;
-    background-color: var(--background-color);
-    width: 100%;
-    max-width: 600px;
     padding: 2%;
-    gap: 1em;
+    max-width: 600px;
     letter-spacing: 1px;
+    background-color: var(--background-color);
 }
 
 .btn-close-modal {
@@ -525,12 +416,124 @@ sup {
     padding: 2px;
 }
 
+/* Iconos */
+
+.icon-size {
+    height:20px;
+    width:20px;
+}
+
+/* Modal de instrucciones */
+
+.div-game div {
+    border-top: 1px solid var(--border-color);
+}
+
+.div-game div p {
+    font-size: medium;
+    padding: 5px 0 5px 0;
+}
+
+.title-game {
+    font-size: 25px;
+    font-weight: bold;
+    padding: 5px 0 5px 0;
+}
+
+.div-example {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+    column-gap: 20px;
+}
+
+.div-example h2 {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.word-example div {
+    width: 20px;
+    border-radius: 2px;
+}
+
+.ul-references {
+    list-style-type: none;
+    font-size: medium;
+    padding: 5px 0 5px 0;
+}
+
+.ul-references li {
+    column-gap: 5px;
+}
+
+.title-pista {
+    font-size: 25px;
+    font-weight: bold;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+}
+
+.div-pista p {
+    font-size: medium;
+    padding: 5px 0 5px 0;
+}
+
+.title-claves {
+    font-size: 25px;
+    font-weight: bold;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+}
+
+.ul-claves {
+    list-style-type: none;
+    padding: 5px 0 5px 0;
+    font-size: medium;
+}
+
+/* Otros estilos */
+
+.div-content-modal p, h1, h2 {
+    margin: 0;
+}
+
+.fa-xs {
+    font-size: .50em;
+}
+
+/* Vista de error */
+
+.div-exception-errors {
+    letter-spacing: 1px;
+    max-width:600px;
+}
+
+.div-exception-errors h1 {
+    font-size: 2em;
+}
+
+.div-exception-errors h2 {
+    font-size: 1.5em;
+}
+
+.div-exception-errors h3 {
+    font-size: 1em;
+}
+
+#stackTrace pre {
+    font-size: smaller;
+}
+
+.div-report span, .div-report span a {
+    font-weight: 500;
+}
+
 /* Resolución menor a 576px */
 
 @media (max-width: 576px) {
 
     .titulo {
-        font-size:16px;
+        font-size: 16px;
     }
 
     .modo {
@@ -565,7 +568,7 @@ sup {
     }
 
     .div-modo i {
-        font-size:12px;
+        font-size: 12px;
     }
 
     .div-word {
@@ -594,7 +597,7 @@ sup {
     /* Estilos para modal de instrucciones */
 
     .title-game, .title-pista, .title-claves {
-        text-align:center;
+        text-align: center;
     }
 
     .div-example {
@@ -602,7 +605,6 @@ sup {
         align-items: center;
         gap: 5px;
     }
-
 }
 
 @media (min-width: 320px) {
@@ -668,136 +670,4 @@ sup {
 
 .rotated input {
     transform: rotateY(-180deg);
-}
-
-/* Iconos */
-
-.icon-size {
-    height:20px;
-    width:20px;
-}
-
-/* Modal de instrucciones */
-
-.div-instrucciones {
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-}
-
-.div-game div {
-    border-top: 1px solid var(--border-color);
-}
-
-.div-game div p {
-    font-size: medium;
-    padding: 5px 0 5px 0;
-}
-
-.title-game {
-    font-size: 25px;
-    font-weight: bold;
-    padding: 5px 0 5px 0;
-}
-
-.div-example {
-    display: flex;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 5px;
-    column-gap: 20px;
-}
-
-.div-example h2 {
-    font-size: 25px;
-    font-weight: bold;
-    display: flex;
-}
-
-.word-example {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.word-example div {
-    width: 20px;
-    text-align: center;
-    border-radius: 2px;
-}
-
-.ul-references {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    font-size: medium;
-    padding: 5px 0 5px 0;
-}
-
-.ul-references li {
-    display: flex;
-    column-gap: 5px;
-}
-
-.title-pista {
-    font-size: 25px;
-    font-weight: bold;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 5px;
-}
-
-.div-pista p {
-    font-size: medium;
-    padding: 5px 0 5px 0;
-}
-
-.title-claves {
-    font-size: 25px;
-    font-weight: bold;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 5px;
-}
-
-.ul-claves {
-    list-style-type: none;
-    margin: 0;
-    padding: 5px 0 5px 0;
-    font-size: medium;
-}
-
-/* Otros estilos */
-
-.div-content-modal p, h1, h2 {
-    margin: 0;
-}
-
-.fa-xs {
-    font-size: .50em;
-}
-
-/* Vista de error */
-
-.div-exception-errors {
-    letter-spacing: 1px;
-    max-width:600px;
-    gap: 1em;
-}
-
-.div-exception-errors h1 {
-    font-size: 2em;
-}
-
-.div-exception-errors h2 {
-    font-size: 1.5em;
-}
-
-.div-exception-errors h3 {
-    font-size: 1em;
-}
-
-#stackTrace pre {
-    font-size: smaller;
-}
-
-.div-report span, .div-report span a {
-    font-weight: 500;
 }

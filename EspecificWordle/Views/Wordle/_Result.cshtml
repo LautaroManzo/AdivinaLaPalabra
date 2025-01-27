@@ -6,19 +6,19 @@
 
     <div class="modal-content">
 
-        <div class="modal-body">
+        <div class="modal-body d-flex flex-column justify-content-center align-items-center p-0">
 
-            <div class="div-content-modal">
+            <div class="div-content-modal d-flex flex-column w-100 gap-3">
 
                 <div>
 
-                    <div class="div-btn-close">
+                    <div class="div-btn-close d-flex justify-content-end mb-4">
                         <button type="button" class="btn btn-close-modal" data-bs-dismiss="modal" aria-label="Close">
                             <i class="fa-solid fa-xmark fa-lg"></i>
                         </button>
                     </div>
 
-                    <div class="div-result">
+                    <div class="div-result d-flex">
 
                         <div class="col-6">
                             <span>
@@ -30,7 +30,7 @@
                             </span>
                         </div>
 
-                        <div class="div-modo col-6">
+                        <div class="div-modo col-6 d-flex justify-content-end">
                             <i>@Model.ModoDescripcion</i>
                         </div>
 
@@ -38,11 +38,11 @@
 
                 </div>
 
-                <div class="div-word-def">
+                <div class="div-word-def d-flex flex-column">
 
-                    <div class="div-content-word-def">
+                    <div class="div-content-word-def d-flex flex-column gap-3">
 
-                        <div class="div-word">
+                        <div class="div-word d-flex">
                             <span class="col-6">@Model.Palabra<sup>ES</sup></span>
                             <span class="col-6">@Model.PalabraEn<sup>EN</sup></span>
                         </div>
@@ -59,7 +59,7 @@
 
                 @if (!string.IsNullOrEmpty(Model.EjemploUso))
                 {
-                    <div class="div-use">
+                    <div class="div-use pb-2">
                         <div class="text-muted info-small">Ejemplo de uso</div>
                         <span>
                             @Model.EjemploUso
@@ -69,7 +69,7 @@
 
                 @if (!string.IsNullOrEmpty(Model.Sinonimos) || !string.IsNullOrEmpty(Model.Antonimos))
                 {
-                    <div class="div-sin-ant">
+                    <div class="div-sin-ant d-flex gap-3 pb-2">
 
                         @if (!string.IsNullOrEmpty(Model.Sinonimos))
                         {
@@ -94,14 +94,14 @@
                     </div>
                 }
 
-                <div class="div-buttons">
-                    <button type="button" onclick="redirectByMode('Aleatoria')" class="btn-modo form-control form-control-lg">Aleatoria</button>
-                    <button type="button" onclick="redirectByMode('Ciencia')" class="btn-modo form-control form-control-lg">Ciencia</button>
-                    <button type="button" onclick="redirectByMode('Naturaleza')" class="btn-modo form-control form-control-lg">Naturaleza</button>
+                <div class="div-buttons d-flex gap-2 pt-3">
+                    <button type="button" onclick="redirectByMode('Aleatoria')" class="btn-modo form-control form-control-lg rounded-1">Aleatoria</button>
+                    <button type="button" onclick="redirectByMode('Ciencia')" class="btn-modo form-control form-control-lg rounded-1">Ciencia</button>
+                    <button type="button" onclick="redirectByMode('Naturaleza')" class="btn-modo form-control form-control-lg rounded-1">Naturaleza</button>
                 </div>
 
                 <div title="Cuenta regresiva" class="div-parent-countdown">
-                    <div id="countdown" class="text-muted">
+                    <div id="countdown" class="text-muted d-flex flex-column align-items-center">
                         <span>Próxima palabra en</span>
                         <span id="time-remaining"></span>
                     </div>
