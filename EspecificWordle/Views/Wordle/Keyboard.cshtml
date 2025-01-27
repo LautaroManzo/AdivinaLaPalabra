@@ -1,59 +1,27 @@
-﻿@using Newtonsoft.Json
-@using System.Collections
+﻿@using Newtonsoft.Json;
+@using System.Collections;
+@using EspecificWordle.Helpers;
 
 <script type="text/javascript">
-
-    $(document).ready(function () {
-
-        $(document).on("click", '.div-keyboard button', function () {
-            
-            if ($("#GameFinish").val() == "@false" || $("#GameFinish").val() == "false") {
-    
-                if ($(this).hasClass('delete')) {
-                    onDeleteClick();
-                    return;
-                }
-                else if ($(this).hasClass('enter')) {
-                    return;
-                }
-
-                inputFocus.val($(this).text());
-
-                inputFocus.parent().next('div').find('input').focus();
-            }
-
-        });
-
-    });
-
-    function obtenerFila(model, intento) {
-        let palabraIngresada = "";
-        for (let col = 0; col < @Model.Length; col++) {
-            let key = `${intento}_${col}`;
-            palabraIngresada += model[key];
-        }
-        return palabraIngresada;
-    }
 
     function enter() {
         showLoader();
 
-        let url = '@Html.Raw(Url.Action("Enter", "Wordle"))';
         data = { @Model.GetType().Name: $('form').serializeObject() };
-        let palabraIngresada = obtenerFila(data.WordleViewModel, data.WordleViewModel.Intentos);
+        let palabraIngresada = obtenerFila(data.WordleViewModel, data.WordleViewModel.Intentos, @Model.Length);
 
-        if ($("#GameFinish").val() == "@true" || $("#GameFinish").val() == "true") {    // Ver de hacer una sola validación.
+        if ($("#GameFinish").val() == "@true" || $("#GameFinish").val() == "true") {
             modalResult($("#Resultado").val(), $("#Intentos").val(), @Model.ModoId, "@Html.Raw(Model.ModoDescripcion)");
             hideLoader();
         }
-        else if (palabraIngresada.length == data.WordleViewModel.Length) {   // Esta validacion hacerla tambien en el back
+        else if (palabraIngresada.length == data.WordleViewModel.Length) {
 
-            data.WordleViewModel.PalabraIngresada = obtenerFila(data.WordleViewModel, data.WordleViewModel.Intentos);
+            data.WordleViewModel.PalabraIngresada = obtenerFila(data.WordleViewModel, data.WordleViewModel.Intentos, @Model.Length);
             data.__RequestVerificationToken = $('input[name="__RequestVerificationToken"]').val();
 
             $.ajax({
                 type: 'POST',
-                url: url,
+                url: enterUrl,
                 data: data,
                 dataType: 'json',
                 success: function (response) {
@@ -76,35 +44,18 @@
                         else {
                             // Se recorre la lista de letras
                             $.each(response.juego[@Model.ModoId.ToString()][response.intentos - 1].letters, function (index, elemento) {
-                                if (elemento.color == "Verde")
+                                if (elemento.color == "@SystemConstants.ColorLetra.Verde")
                                     changeInputAndButton(index, elemento.letra, "input-success", "button-success");
-                                else if (elemento.color == "Amarillo")
+                                else if (elemento.color == "@SystemConstants.ColorLetra.Amarillo")
                                     changeInputAndButton(index, elemento.letra, "input-medium", "button-medium");
                                 else
                                     changeInputAndButton(index, elemento.letra, "input-gray", "button-gray");
                             });
 
-                            filaFocus.next("div").removeClass('div-disable'); // Se saca la class en el div siguiente
-                            filaFocus.addClass('div-disable');  // Se agrega la class en el div donde se ingresó la palabra
-                            filaFocus = filaFocus.next("div");  // Se cambia la fila que tiene el foco
-                            filaFocus.find("input").first().focus();  // Se da el foco al input de la fila siguiente
+                            moveFocusAndEnableNext();
 
-                            // Código para la pista
-                            if (response.juego[@Model.ModoId.ToString()][response.intentos - 1].pista == true) {
-                                let divM = $(".fila div button:contains('M')").parent();
-
-                                divM.after(`
-                                    <div class='div-pista'>
-                                            <button type='button' onclick="showPista('${response.juego[@Model.ModoId.ToString()][response.intentos - 1].pistaDescripcion}')" class='form-control form-control-lg letras btn-pista rounded-1 p-0'>
-                                            <img src='/Icons/solution.png' alt='Pista'>
-                                        </button>
-                                    </div>
-                                `);
-
-                                setTimeout(function () {
-                                    addAnimation($(".div-pista"));
-                                }, 200);
-                            }
+                            if (response.juego[@Model.ModoId.ToString()][response.intentos - 1].pista == true)
+                                showButtonPista(response.juego[@Model.ModoId.ToString()][response.intentos - 1].pistaDescripcion);
 
                             if (response.intentos == 5) {
                                 $("#Resultado").val(0);
@@ -119,9 +70,7 @@
                                 }, 1000);
                             }
                         }
-
                     }
-
                     hideLoader();
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -129,7 +78,6 @@
                     console.error('Error al realizar la solicitud AJAX:', errorThrown);
                 }
             });
-
         }
         else {
             hideLoader();
@@ -154,7 +102,7 @@
 
             filaFocus.addClass('div-disable');
 
-            filaFocus.find('input.foco').removeClass("foco"); // buscar en el div no en la filafocus
+            filaFocus.find('input.foco').removeClass("foco");
             inputFocus = null;
 
             setTimeout(function () {
@@ -175,7 +123,7 @@
             }
 
             if (result == 0) {
-                filaFocus.find('input.foco').removeClass("foco"); // buscar en el div no en la filafocus
+                filaFocus.find('input.foco').removeClass("foco");
                 
                 setTimeout(function () {
                     modalResult(0, $("#Intentos").val(), @Model.ModoId, "@Html.Raw(Model.ModoDescripcion)");
@@ -185,55 +133,14 @@
         }
     }
 
-    function modalResult(result, intento, modoId, modoDescripcion) {
-
-        $.ajax({
-            url: '@Url.Action("Result", "Wordle")',
-            method: 'GET',
-            data: { result: result, intento: intento, modoId: modoId, modoDescripcion: modoDescripcion },
-            success: function (data) {
-
-                if (!$(".show").length > 0) { 
-                    let divModal = $("#resultModal");
-                    divModal.attr('role', 'dialog');
-                    divModal.addClass('modal fade');
-
-                    divModal.append(data);
-
-                    $('#resultModal').one('show.bs.modal', function () {
-                                                
-                        if(result != 0)
-                            showConfetis();
-
-                        if ($(".btn-pista"))
-                            $(".btn-pista").parent().remove();
-                    });
-
-                    document.getElementById('resultModal').addEventListener('hidden.bs.modal', function () {
-                        $(".modal-dialog").remove();
-                    });
-
-                    divModal.modal('show');
-                }
-
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error('Error al realizar la solicitud AJAX:', errorThrown);
-            }
-        });
-
-    }
-
 </script>
 
 <div id="resultModal"></div>
 <div id="instruccionesModal"></div>
 
 <div class="div-keyboard d-flex flex-column w-100 gap-2">
-
-@*  
-    @if (Model.Tildes)
-    {
+ 
+    @*  
         <div class="fila gap-2">
             <div class="flex-fill">
                 <button type="button" class="form-control form-control-lg tildes rounded-1 p-0">Á</button>
@@ -250,9 +157,8 @@
             <div class="flex-fill">
                 <button type="button" class="form-control form-control-lg tildes rounded-1 p-0">Ú</button>
             </div>
-        </div>
-    } 
-*@
+        </div> 
+    *@
 
     <div class="fila gap-2">
         <div class="flex-fill">
@@ -323,7 +229,7 @@
         </div>
     </div>
 
-    <div class="fila gap-2 mt-1">
+    <div class="fila gap-2">
         <div class="flex-fill">
             <button type="button" title="Intro" onclick="enter()" class="form-control form-control-lg letras enter rounded-1 p-0">
                 <span class="d-none d-sm-inline">Intro</span>

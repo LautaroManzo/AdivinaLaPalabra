@@ -2,119 +2,24 @@
 
 @model WordleViewModel
 
-<script>
-    const instruccionesUrl = '@Url.Action("Instrucciones", "Wordle")';
-    var indexUrl = '@Url.Action("Index", "Wordle", new { modoDescripcion = "__MODODESCRIPCION__" })';
-</script>
-
-<script>
-
-    const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/refreshHub")
-        .configureLogging(signalR.LogLevel.None)
-        .build();
-
-    connection.on("RefreshPage", function () {
-        location.reload();
-    });
-
-    connection.start().catch(function (err) {
-        console.error(err.toString());
-    });
-
-</script>
-
 <script type="text/javascript">
-
-    var data;
-    let inputFocus;
-    let filaFocus;
     
     $(document).ready(function () {
 
-        // Habilita la fila que se esta usando segun el numero de intento.
-        $('.div-wordle').children().each(function (index) {
-            if (index === (@Model.Intentos - 0)) {
-                $(this).removeClass('div-disable');
-                filaFocus = $(this);    // Foco de la fila
-            }
-        });
+        // Habilita la fila que se esta usando según el número de intento.
+        enableRowByAttempt(@Model.Intentos);
 
-        // Guardo en todo momento el input que tiene focus
-        $(document).on('focus', '.div-wordle > div:not(.div-disable) input', function () {
-            
-            if (inputFocus)
-                inputFocus.removeClass("foco");
-
-            inputFocus = $(this);
-            inputFocus.addClass("foco");
-        });
-
-        // 200 milisegundos para que haga enfoque en el primer input
+        // Da foco al primer input o recarga la página.
         setTimeout(function () {
 
             if ('@Model.Intentos' == 0)
-                inputFocus = filaFocus.find("input").first().focus();
+                filaFocus.find("input").first().focus();
             else
-                loadPage(@Model.ModoId.ToString()); // Falta analizar si esta función iría acá
-                
+                loadPage('@Html.Raw(Model.JuegoDictionaryJson)', @Model.ModoId.ToString(), $("#GameFinish").val());
+
         }, 200);
         
     });
-
-    function loadPage(modoId) {
-        let json = '@Html.Raw(Model.JuegoDictionaryJson)';
-        let data = "";
-
-        if (json) {
-            data = JSON.parse(json);
-            let intentos = data[modoId].length;
-
-            $(".div-wordle").children("div").slice(0, intentos).each(function (index) {
-
-                // Piso la variable en cada recorrido
-                filaFocus = $(this);
-
-                let dictionary = data[modoId];
-                let obj = dictionary[index];
-                let list = obj.Letters;
-                
-                // Elementos html
-                let fila = $(this);
-                let filaDivs = fila.children("div");
-
-                filaDivs.each(function (indexInp) {
-                    
-                    // Actualiza valores del input
-                    let input = $(this).children("input");
-                    input.val(list[indexInp].Letra);
-
-                    // Actualiza el aspecto de inputs
-                    if (list[indexInp].Color == "Verde")
-                        changeInputAndButton(indexInp, list[indexInp].Letra, "input-success", "button-success", undefined, undefined);
-                    else if (list[indexInp].Color == "Amarillo")
-                        changeInputAndButton(indexInp, list[indexInp].Letra, "input-medium", "button-medium", undefined, undefined);
-                    else
-                        changeInputAndButton(indexInp, list[indexInp].Letra, "input-gray", "button-gray", undefined, undefined);
-                });
-
-                if ($("#GameFinish").val() == "@true") {
-                    filaFocus.next().addClass('div-disable');
-                }
-                else 
-                {
-                    // Se hace foco en la fila que corresponde
-                    filaFocus.next("div").removeClass('div-disable'); // Se saca la class en el div siguiente
-                    filaFocus.addClass('div-disable');  // Se agrega la class en el div donde se ingresó la palabra
-                    filaFocus = filaFocus.next("div");  // Se cambia la fila que tiene el foco
-                    filaFocus.find("input").first().focus();  // Se da el foco al input de la fila siguiente
-                }
-
-            });
-
-        }
-
-    }
 
 </script>
 

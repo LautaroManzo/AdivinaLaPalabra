@@ -48,3 +48,10 @@
 
 </body>
 </html>
+
+<script>
+    let enterUrl = '@Html.Raw(Url.Action("Enter", "Wordle"))';
+    const instruccionesUrl = '@Url.Action("Instrucciones", "Wordle")';
+    var indexUrl = '@Url.Action("Index", "Wordle", new { modoDescripcion = "__MODODESCRIPCION__" })';
+    var resultModalUrl = '@Url.Action("Result", "Wordle")';
+</script>

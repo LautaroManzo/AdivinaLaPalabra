@@ -1,10 +1,59 @@
 ﻿
+var data;
+let inputFocus;
+let filaFocus;
+
 // Expresión regular para letras de la A-Z (mayúsculas y minúsculas)
-const abcRegex = /^[a-zA-Z]+$/; 
+const abcRegex = /^[a-zA-Z]+$/;
+
+const connection = new signalR.HubConnectionBuilder()
+    .withUrl("/refreshHub")
+    .configureLogging(signalR.LogLevel.None)
+    .build();
+
+connection.on("RefreshPage", function () {
+    location.reload();
+});
+
+connection.start().catch(function (err) {
+    console.error(err.toString());
+});
+
+// Función serializeObject
+$.fn.serializeObject = function () {
+    var obj = {};
+    var arr = this.serializeArray();
+    $.each(arr, function () {
+        if (obj[this.name] !== undefined) {
+            if (!obj[this.name].push) {
+                obj[this.name] = [obj[this.name]];
+            }
+            obj[this.name].push(this.value || '');
+        } else {
+            obj[this.name] = this.value || '';
+        }
+    });
+    return obj;
+};
 
 $(document).ready(function () {
 
     setInterval(() => (updateCountdown(), updateCountdown()), 1000);
+
+    // Guardo en todo momento el input que tiene focus
+    $(document).on('focus', '.div-wordle > div:not(.div-disable) input', function () {
+
+        if (inputFocus)
+            inputFocus.removeClass("foco");
+
+        inputFocus = $(this);
+        inputFocus.addClass("foco");
+    });
+
+    // Maneja keyboard app
+    $(document).on("click", '.div-keyboard button', function () {
+        handleKeyboard($("#GameFinish").val(), this);
+    });
 
 });
 
@@ -66,6 +115,40 @@ $(document).on('input', '.div-wordle > div:not(.div-disable) input', function (e
     inputFocus.parent().next('div').find('input').focus();
 });
 
+function enableRowByAttempt(intento) {
+    $('.div-wordle').children().each(function (index) {
+        if (index === intento) {
+            $(this).removeClass('div-disable');
+            filaFocus = $(this);    // Foco de la fila
+        }
+    });
+}
+
+function obtenerFila(model, intento, length) {
+    let palabraIngresada = "";
+    for (let col = 0; col < length; col++) {
+        let key = `${intento}_${col}`;
+        palabraIngresada += model[key];
+    }
+    return palabraIngresada;
+}
+
+function handleKeyboard(gameFinish, clickedButton) {
+
+    if (gameFinish == "False") {
+
+        if ($(clickedButton).hasClass('delete')) {
+            onDeleteClick();
+            return;
+        } else if ($(clickedButton).hasClass('enter'))
+            return;
+
+        inputFocus.val($(clickedButton).text());
+        inputFocus.parent().next('div').find('input').focus();
+    }
+
+}
+
 // funcion para manejar el borrado en inputs
 function onDeleteClick() {
 
@@ -79,23 +162,6 @@ function onDeleteClick() {
         inputFocus.parent().prev('div').find('input').focus();    // Busco el input previo al borrado para pasarle el focus.
     }
 }
-
-// Función serializeObject
-$.fn.serializeObject = function () {
-    var obj = {};
-    var arr = this.serializeArray();
-    $.each(arr, function () {
-        if (obj[this.name] !== undefined) {
-            if (!obj[this.name].push) {
-                obj[this.name] = [obj[this.name]];
-            }
-            obj[this.name].push(this.value || '');
-        } else {
-            obj[this.name] = this.value || '';
-        }
-    });
-    return obj;
-};
 
 // Funcion para mostrar un mensaje de error/info..
 function ShowMessage(message, color, animated = true, time = 3000) {
@@ -129,6 +195,22 @@ function addAnimation(divParent) {
 function showPista(pistaDescripcion) {
     ShowMessage(pistaDescripcion, "secondary", false, 5000);
     $(".btn-pista").parent().remove();
+}
+
+function showButtonPista(pistaDescripcion) {
+    let divM = $(".fila div button:contains('M')").parent();
+
+    divM.after(`
+        <div class='div-pista'>
+                <button type='button' onclick="showPista('${pistaDescripcion}')" class='form-control form-control-lg letras btn-pista rounded-1 p-0'>
+                <img src='/Icons/solution.png' alt='Pista'>
+            </button>
+        </div>
+    `);
+
+    setTimeout(function () {
+        addAnimation($(".div-pista"));
+    }, 200);
 }
 
 function showConfetis() {
@@ -247,4 +329,91 @@ function updateCountdown() {
 function redirectByMode(modoDescripcion) {
     indexUrl = indexUrl.replace('__MODODESCRIPCION__', modoDescripcion);
     window.location.href = indexUrl;
+}
+
+function modalResult(result, intento, modoId, modoDescripcion) {
+
+    $.ajax({
+        url: resultModalUrl,
+        method: 'GET',
+        data: { result: result, intento: intento, modoId: modoId, modoDescripcion: modoDescripcion },
+        success: function (data) {
+
+            if (!$(".show").length > 0) {
+                let divModal = $("#resultModal");
+                divModal.attr('role', 'dialog');
+                divModal.addClass('modal fade');
+
+                divModal.append(data);
+
+                $('#resultModal').one('show.bs.modal', function () {
+
+                    if (result != 0)
+                        showConfetis();
+
+                    if ($(".btn-pista"))
+                        $(".btn-pista").parent().remove();
+                });
+
+                document.getElementById('resultModal').addEventListener('hidden.bs.modal', function () {
+                    $(".modal-dialog").remove();
+                });
+
+                divModal.modal('show');
+            }
+
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error al realizar la solicitud AJAX:', errorThrown);
+        }
+    });
+
+}
+
+function moveFocusAndEnableNext() {
+    filaFocus.next("div").removeClass('div-disable'); // Se saca la class en el div siguiente
+    filaFocus.addClass('div-disable');  // Se agrega la class en el div donde se ingresó la palabra
+    filaFocus = filaFocus.next("div");  // Se cambia la fila que tiene el foco
+    filaFocus.find("input").first().focus();  // Se da el foco al input de la fila siguiente
+}
+
+function loadPage(json, modoId, gameFinish) {
+    let data = "";
+
+    if (json) {
+        data = JSON.parse(json);
+        let intentos = data[modoId].length;
+
+        $(".div-wordle").children("div").slice(0, intentos).each(function (index) {
+
+            // Piso la variable en cada recorrido
+            filaFocus = $(this);
+
+            let dictionary = data[modoId];
+            let obj = dictionary[index];
+            let list = obj.Letters;
+
+            // Elementos html
+            let fila = $(this);
+            let filaDivs = fila.children("div");
+
+            filaDivs.each(function (indexInp) {
+
+                // Actualiza valores del input
+                let input = $(this).children("input");
+                input.val(list[indexInp].Letra);
+
+                // Actualiza el aspecto de inputs
+                if (list[indexInp].Color == "Verde")
+                    changeInputAndButton(indexInp, list[indexInp].Letra, "input-success", "button-success", undefined, undefined);
+                else if (list[indexInp].Color == "Amarillo")
+                    changeInputAndButton(indexInp, list[indexInp].Letra, "input-medium", "button-medium", undefined, undefined);
+                else
+                    changeInputAndButton(indexInp, list[indexInp].Letra, "input-gray", "button-gray", undefined, undefined);
+            });
+
+            if (gameFinish == "True") filaFocus.next().addClass('div-disable');
+            else moveFocusAndEnableNext();  // Se hace foco en la fila que corresponde 
+        });
+    }
 }

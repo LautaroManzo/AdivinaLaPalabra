@@ -82,9 +82,9 @@ namespace EspecificWordle.Controllers
             if (!wordleViewModel.Juego.ContainsKey(wordleViewModel.ModoId.ToString()))
                 wordleViewModel.Juego.Add(wordleViewModel.ModoId.ToString(), new List<Session>());
 
-            if (exist)
+            if (exist && wordleViewModel.PalabraIngresada.Length == wordSecret.Length)
             {
-                // Letras donde la posicion es correcta/incorrecta                    
+                // Letras donde la posicion es correcta/incorrecta
                 List<Letter> letters = new List<Letter>();
 
                 for (int i = 0; i < wordSecret.Length; i++)
