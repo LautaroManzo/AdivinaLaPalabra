@@ -46,13 +46,13 @@ namespace EspecificWordle.Services
                             {
                                 ModoId = modo.Id,
                                 WordId = word.Id,
-                                Fecha = DateTime.Now
+                                Fecha = DateTime.UtcNow
                             });
                         }
                         else
                         {
                             wordMode.WordId = word.Id;
-                            wordMode.Fecha = DateTime.Now;
+                            wordMode.Fecha = DateTime.UtcNow;
                         }
                     }
                 }

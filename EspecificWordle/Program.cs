@@ -3,6 +3,7 @@ using EspecificWordle.Hubs;
 using EspecificWordle.Interfaces;
 using EspecificWordle.Services;
 using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +14,7 @@ builder.Services.AddScoped<IWordleService, WordleService>();
 builder.Services.AddSingleton<IRefreshService, RefreshService>();
 
 // Hangfire
-builder.Services.AddHangfire(config => config.UseSqlServerStorage(builder.Configuration.GetConnectionString("DatabaseConnection")));
+builder.Services.AddHangfire(config => config.UsePostgreSqlStorage(builder.Configuration.GetConnectionString("DatabaseConnection")));
 builder.Services.AddHangfireServer();
 
 // SignalR
@@ -21,7 +22,7 @@ builder.Services.AddSignalR();
 
 // Conexion a la BD
 builder.Services.AddDbContext<WordGameContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnection"))
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DatabaseConnection"))
 );
 
 var app = builder.Build();
