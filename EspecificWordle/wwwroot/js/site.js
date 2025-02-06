@@ -115,6 +115,10 @@ $(document).on('input', '.div-wordle > div:not(.div-disable) input', function (e
     inputFocus.parent().next('div').find('input').focus();
 });
 
+$(document).on("touchstart", "input, button", function (event) {
+    event.preventDefault();
+});
+
 function enableRowByAttempt(intento) {
     $('.div-wordle').children().each(function (index) {
         if (index === intento) {
@@ -166,10 +170,10 @@ function onDeleteClick() {
 // Funcion para mostrar un mensaje de error/info..
 function ShowMessage(message, color, animated = true, time = 3000) {
 
-    if ($("#message").length)
+    if ($("#message").text() != "")
         return;
 
-    $(".div-contenedor").prepend(`<div class="div-messages w-100"><div id="message" class="alert alert-${color} mb-0" role="alert">${message}</div></div>`);
+    $("#message").addClass(`alert alert-${color} mb-0`).text(message);
 
     $("#message").fadeIn(500);
 
@@ -177,8 +181,9 @@ function ShowMessage(message, color, animated = true, time = 3000) {
         filaFocus.addClass("animated-move"); // Se agrega la animación de movimiento lateral.
 
     setTimeout(function () {
+
         $("#message").fadeOut(1000, function () {
-            $(this).parent().remove();
+            $(this).text("");
         });
 
         if (animated)
@@ -193,12 +198,12 @@ function addAnimation(divParent) {
 }
 
 function showPista(pistaDescripcion) {
-    ShowMessage(pistaDescripcion, "secondary", false, 5000);
+    ShowMessage(pistaDescripcion, "success", false, 5000);
     $(".btn-pista").parent().remove();
 }
 
 function showButtonPista(pistaDescripcion) {
-    let divM = $(".fila div button:contains('M')").parent();
+    let divM = $(".div-keyboard div button:contains('M')").parent();
 
     divM.after(`
         <div class='div-pista'>
