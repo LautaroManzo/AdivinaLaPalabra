@@ -55,6 +55,12 @@ $(document).ready(function () {
         handleKeyboard($("#GameFinish").val(), this);
     });
 
+    if ('virtualKeyboard' in navigator) {
+        $(document).on("focus", 'input', function () {
+            navigator.virtualKeyboard.hide();
+        });
+    }
+
 });
 
 $(document).on("keypress", function (e) {
@@ -115,10 +121,6 @@ $(document).on('input', '.div-wordle > div:not(.div-disable) input', function (e
     inputFocus.parent().next('div').find('input').focus();
 });
 
-$(document).on("touchstart", "input, button", function (event) {
-    event.preventDefault();
-});
-
 function enableRowByAttempt(intento) {
     $('.div-wordle').children().each(function (index) {
         if (index === intento) {
@@ -139,7 +141,7 @@ function obtenerFila(model, intento, length) {
 
 function handleKeyboard(gameFinish, clickedButton) {
 
-    if (gameFinish == "False") {
+    if (gameFinish == "False" || gameFinish == "false") {   // Ver otra manera de hacer esto
 
         if ($(clickedButton).hasClass('delete')) {
             onDeleteClick();
@@ -173,7 +175,7 @@ function ShowMessage(message, color, animated = true, time = 3000) {
     if ($("#message").text() != "")
         return;
 
-    $("#message").addClass(`alert alert-${color} mb-0`).text(message);
+    $("#message").removeClass().addClass(`alert alert-${color} mb-0`).text(message);
 
     $("#message").fadeIn(500);
 

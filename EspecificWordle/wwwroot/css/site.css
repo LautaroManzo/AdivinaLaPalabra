@@ -189,6 +189,7 @@ html, body, form, main, .div-contenedor {
 .div-messages {
     max-width: 600px;
     min-height: 50px;
+    width: 98%;
 }
 
 #message {
