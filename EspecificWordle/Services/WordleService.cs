@@ -91,6 +91,11 @@ namespace EspecificWordle.Services
             return await _context.Modo.FirstOrDefaultAsync(m => m.Descripcion == modoDescripcion);
         }
 
+        public async Task<List<Modo>> GetModosAsync()
+        {
+            return await _context.Modo.ToListAsync();
+        }
+
         private void AddWord(string word, int modoId, string descripcion, string usoEjemplo, string pista, string wordEn, List<string> sinonimos, List<string> antonimos)
         {
             try

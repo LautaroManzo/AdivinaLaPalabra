@@ -304,6 +304,20 @@ namespace EspecificWordle.Controllers
             }
         }
 
+        public async Task<IActionResult> ResetGame()
+        {
+            var modos = await _IWordleService.GetModosAsync();
+
+            foreach (var modo in modos)
+            {
+                var cookieKey = $"GameByModo_{modo.Id}";
+                if (Request.Cookies.ContainsKey(cookieKey))
+                    Response.Cookies.Delete(cookieKey);
+            }
+
+            return Ok();
+        }
+
         #endregion
 
     }

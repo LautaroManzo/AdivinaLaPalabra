@@ -12,5 +12,7 @@ namespace EspecificWordle.Interfaces
         Task<bool> WordCheckingAsync(string word, string language);
 
         Task<Modo> GetModoByDescripcion(string modoDescripcion);
+
+        Task<List<Modo>> GetModosAsync();
     }
 }

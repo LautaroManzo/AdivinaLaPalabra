@@ -419,3 +419,16 @@ function loadPage(json, modoId, gameFinish) {
         });
     }
 }
+
+function resetGame() {
+    $.ajax({
+        url: resetGameUrl,
+        type: 'POST',
+        success: function () {
+            location.reload();
+        },
+        error: function (xhr, status, error) {
+            console.error("Error al reiniciar:", error);
+        }
+    });    
+}
