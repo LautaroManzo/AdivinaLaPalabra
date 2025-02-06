@@ -24,7 +24,7 @@ namespace EspecificWordle.Controllers
         public async Task<IActionResult> Index(string modoDescripcion)
         {
             var modoId = (await _IWordleService.GetModoByDescripcion(modoDescripcion)).Id;
-            var word = CleanWord((await _IWordleService.GetModeWordDetailsAsync(modoId)).Palabra);
+            var word = SystemConstants.CleanWord((await _IWordleService.GetModeWordDetailsAsync(modoId)).Palabra);
 
             var viewModel = new WordleViewModel
             {
@@ -74,7 +74,7 @@ namespace EspecificWordle.Controllers
         public async Task<IActionResult> Enter(WordleViewModel wordleViewModel)
         {
             var exist = await _IWordleService.WordCheckingAsync(wordleViewModel.PalabraIngresada, "es");
-            var wordSecret = CleanWord((await _IWordleService.GetModeWordDetailsAsync(wordleViewModel.ModoId)).Palabra.ToUpper());
+            var wordSecret = SystemConstants.CleanWord((await _IWordleService.GetModeWordDetailsAsync(wordleViewModel.ModoId)).Palabra.ToUpper());
 
             if (wordleViewModel.JuegoDictionaryJson != null)
                 wordleViewModel.Juego = JsonConvert.DeserializeObject<Dictionary<string, List<Session>>>(wordleViewModel.JuegoDictionaryJson);
@@ -241,17 +241,6 @@ namespace EspecificWordle.Controllers
         public IActionResult Instrucciones()
         {
             return PartialView("_Instrucciones");
-        }
-
-        private string CleanWord(string word)
-        {
-            var replacements = new Dictionary<char, char>
-            {
-                {'á', 'a'}, {'é', 'e'}, {'í', 'i'}, {'ó', 'o'}, {'ú', 'u'}, {'ä', 'a'}, {'ë', 'e'}, {'ï', 'i'}, {'ü', 'u'}, {'ö', 'o'},
-                {'Á', 'A'}, {'É', 'E'}, {'Í', 'I'}, {'Ó', 'O'}, {'Ú', 'U'}, {'Ä', 'A'}, {'Ë', 'E'}, {'Ï', 'I'}, {'Ü', 'U'}, {'Ö', 'O'}
-            };
-
-            return new string(word.Select(c => replacements.ContainsKey(c) ? replacements[c] : c).ToArray());
         }
 
         private string ResultadoSegunIntento(int intento)

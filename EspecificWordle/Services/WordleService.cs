@@ -7,6 +7,7 @@ using EspecificWordle.DTOs;
 using Microsoft.EntityFrameworkCore;
 using DataBase.Models;
 using System;
+using EspecificWordle.Helpers;
 
 namespace EspecificWordle.Services
 {
@@ -133,7 +134,10 @@ namespace EspecificWordle.Services
                 var listWords = JArray.Parse(json).ToObject<List<WordObject>>();
 
                 if (listWords != null && listWords.Count > 0)
-                    return listWords.Any(w => RemoveAcentos(w.Word).Equals(word.ToLower()));
+                    if (listWords.FirstOrDefault().Word.Equals(word.ToLower()) || SystemConstants.CleanWord(listWords.FirstOrDefault().Word).Equals(word.ToLower())) 
+                        return true;
+                    else
+                        return listWords.Any(w => SystemConstants.CleanWord(w.Word).Equals(word.ToLower()));
                 else
                     return false;
             }
@@ -141,23 +145,6 @@ namespace EspecificWordle.Services
             {
                 throw new Exception("Error al verificar si la palabra existe.", ex);
             }
-        }
-
-        public string RemoveAcentos(string text)
-        {
-            var normalizedString = text.Normalize(NormalizationForm.FormD);
-            var stringBuilder = new StringBuilder();
-
-            foreach (var c in normalizedString)
-            {
-                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
-                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
-                {
-                    stringBuilder.Append(c);
-                }
-            }
-
-            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
 
         public class WordObject

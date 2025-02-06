@@ -4,7 +4,7 @@ let inputFocus;
 let filaFocus;
 
 // Expresión regular para letras de la A-Z (mayúsculas y minúsculas)
-const abcRegex = /^[a-zA-Z]+$/;
+const abcRegex = /^[a-zA-ZñÑ]+$/;
 
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/refreshHub")
@@ -140,7 +140,7 @@ function handleKeyboard(gameFinish, clickedButton, key, keyCode) {
         if ($(clickedButton).hasClass('enter') || keyCode === 13)
             return;
 
-        if (abcRegex.test(String.fromCharCode(keyCode)))
+        if (abcRegex.test(key))
             letra = key;
 
         if (letra) {
