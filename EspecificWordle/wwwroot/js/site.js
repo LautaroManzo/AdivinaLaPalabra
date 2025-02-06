@@ -140,7 +140,7 @@ function handleKeyboard(gameFinish, clickedButton, key, keyCode) {
         if ($(clickedButton).hasClass('enter') || keyCode === 13)
             return;
 
-        if (abcRegex.test(key))
+        if (key && abcRegex.test(key))
             letra = key;
 
         if (letra) {
