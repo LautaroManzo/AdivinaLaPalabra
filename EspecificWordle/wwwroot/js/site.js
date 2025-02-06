@@ -55,22 +55,6 @@ $(document).ready(function () {
         handleKeyboard($("#GameFinish").val(), this);
     });
 
-    if ('virtualKeyboard' in navigator) {
-        $(document).on("focus", 'input', function () {
-            navigator.virtualKeyboard.hide();
-        });
-    }
-
-});
-
-$(document).on("keypress", function (e) {
-
-    let keyCode = e.keyCode || e.which;
-
-    // Se hace esto para evitar el uso de letras con acento.
-    // Si la tecla presionada está dentro del rango de letras del alfabeto inglés.
-    if ((keyCode < 65 || keyCode > 90) && (keyCode < 97 || keyCode > 122))
-        e.preventDefault();
 });
 
 $(document).on("keydown", function (e) {
@@ -91,7 +75,10 @@ $(document).on("keydown", function (e) {
         if (e.keyCode === 9)
             e.preventDefault();
 
-        if (abcRegex.test(String.fromCharCode(e.keyCode))) {
+        if (inputFocus.val() == "") {
+            handleKeyboard($("#GameFinish").val(), null, e.key.toUpperCase(), e.keyCode);
+        }
+        else if (abcRegex.test(String.fromCharCode(e.keyCode))) {
 
             // Esto es para reemplazar el valor si el input ya contiene
             if (inputFocus.val() != "") {
@@ -139,20 +126,28 @@ function obtenerFila(model, intento, length) {
     return palabraIngresada;
 }
 
-function handleKeyboard(gameFinish, clickedButton) {
+function handleKeyboard(gameFinish, clickedButton, key, keyCode) {
 
-    if (gameFinish == "False" || gameFinish == "false") {   // Ver otra manera de hacer esto
+    if (String(gameFinish).toLowerCase() !== "true") {
 
-        if ($(clickedButton).hasClass('delete')) {
+        let letra = $(clickedButton).text().trim();
+
+        if ($(clickedButton).hasClass('delete') || keyCode === 8 || keyCode === 46) {
             onDeleteClick();
             return;
-        } else if ($(clickedButton).hasClass('enter'))
+        }
+
+        if ($(clickedButton).hasClass('enter') || keyCode === 13)
             return;
 
-        inputFocus.val($(clickedButton).text());
-        inputFocus.parent().next('div').find('input').focus();
-    }
+        if (abcRegex.test(String.fromCharCode(keyCode)))
+            letra = key;
 
+        if (letra) {
+            inputFocus.val(letra);
+            inputFocus.parent().next('div').find('input').focus();
+        }
+    }
 }
 
 // funcion para manejar el borrado en inputs

@@ -52,8 +52,8 @@
                     @for (int j = 0; j < Model.Length; j++)  // COLUMNAS
                     {
                         <div class="flex-fill">
-                            <input name="@($"{i}_{j}")" type="text" class="form-control form-control-lg input p-0" autocomplete="off" role="presentation"
-                                   maxlength="1" oninput="this.value = this.value.toUpperCase()" />
+                            <input name="@($"{i}_{j}")" type="text" class="form-control-custom form-control-lg input p-0" autocomplete="off" role="presentation"
+                                   maxlength="1" oninput="this.value = this.value.toUpperCase()" readonly/>
                         </div>
                     }
                 </div>
