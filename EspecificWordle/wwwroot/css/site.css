@@ -509,6 +509,10 @@ sup {
     margin: 0;
 }
 
+.fa-lg {
+    font-size: 1.5em;
+}
+
 .fa-xs {
     font-size: .50em;
 }

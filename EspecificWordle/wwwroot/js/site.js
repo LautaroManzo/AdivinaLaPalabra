@@ -38,6 +38,10 @@ $.fn.serializeObject = function () {
 
 $(document).ready(function () {
 
+    // Para manejar el zoom que se aplica por defecto
+    var isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (isMobile) $("html").css("zoom", "100%");        
+    
     setInterval(() => (updateCountdown(), updateCountdown()), 1000);
 
     // Guardo en todo momento el input que tiene focus
