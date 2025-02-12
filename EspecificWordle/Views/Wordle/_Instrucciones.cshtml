@@ -5,24 +5,24 @@
 
         <div class="modal-body d-flex flex-column justify-content-center align-items-center p-0">
 
-            <div class="div-content-modal d-flex flex-column w-100 gap-3 h-100 justify-content-between align-items-start">
+            <div class="div-content-modal d-flex flex-column w-100 gap-4 h-100 justify-content-between align-items-start">
 
-                <div class="d-flex flex-column w-100 gap-4">
-                    <div class="div-btn-close d-flex justify-content-end p-2">
+                <div class="d-flex flex-column w-100 gap-4 p-2">
+                    <div class="div-btn-close d-flex justify-content-end">
                         <button type="button" class="btn btn-close-modal" data-bs-dismiss="modal" aria-label="Close">
                             <i class="fa-solid fa-xmark fa-lg"></i>
                         </button>
                     </div>
                 </div>
 
-                <div class="div-instrucciones flex-grow-1 d-flex flex-column justify-content-evenly gap-3">
+                <div class="div-instrucciones flex-grow-1 d-flex flex-column justify-content-evenly gap-5 p-2">
 
                     <div class="div-game">
                         <p class="text-muted" style="font-size: 15px;">Tenés 5 intentos para adivinar la palabra según el modo de juego.</p>
                     </div>
 
                     <div class="d-flex flex-column gap-2">
-                        <div class="div-example d-flex flex-column gap-2">
+                        <div class="div-example d-flex flex-column gap-3 pb-3">
 
                             <h2>Ejemplo</h2>
 
@@ -37,7 +37,7 @@
 
                         </div>
 
-                        <ul class="ul-references p-0 m-0 text-muted">
+                        <ul class="d-flex flex-column ul-references p-0 m-0 text-muted gap-2">
                             <li class="d-flex">
                                 <div>
                                     <i class="fa-solid fa-circle fa-xs icon-success">&nbsp;</i>
@@ -65,9 +65,9 @@
                         <p class="text-muted">Si te quedas sin ideas, hay una pista con una breve descripción de la palabra y un tiempo limitado para leerla (Lo vas a ver como una tecla más en el teclado).</p>
                     </div>
 
-                    <div class="div-claves shadow">
-                        <h2 class="title-claves">Datos claves</h2>
-                        <ul class="ul-claves m-0 text-muted d-flex flex-column gap-2">
+                    <div class="div-claves shadow-sm">
+                        <h2 class="title-claves pb-2">Datos claves</h2>
+                        <ul class="ul-claves m-0 text-muted d-flex flex-column gap-3">
                             <li>. Solo se permiten palabras que existan.</li>
                             <li>. La palabra a adivinar depende del modo de juego.</li>
                             <li>. Cada modo de juego actualiza la palabra diaria a las 00 <span onclick="resetGame()">:</span> 00.</li>

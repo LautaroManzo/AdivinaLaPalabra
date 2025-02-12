@@ -281,8 +281,6 @@ namespace EspecificWordle.Controllers
             return result == 1 ? exitoso[intento] : fallido[new Random().Next(fallido.Count)];
         }
 
-
-
         #region Cookies
 
         public void SaveGameInCookie(Dictionary<string, List<Session>> juegoDictionary, int modoId)
@@ -292,13 +290,9 @@ namespace EspecificWordle.Controllers
                 var listSession = juegoDictionary[modoId.ToString()];
                 var listSessionJson = JsonConvert.SerializeObject(listSession);
 
-                #region Cálculo del tiempo de expiración de la cookie, hasta las 00:00
-
-                var fechaActual = DateTimeOffset.Now;
-                var proximaMedianoche = new DateTimeOffset(fechaActual.Year, fechaActual.Month, fechaActual.Day, 0, 0, 0, fechaActual.Offset).AddDays(1);
+                var fechaActual = DateTimeOffset.UtcNow;
+                var proximaMedianoche = new DateTimeOffset(fechaActual.Year, fechaActual.Month, fechaActual.Day, 0, 0, 0, TimeSpan.Zero).AddDays(1);
                 var duracionHastaMedianoche = proximaMedianoche - fechaActual;
-
-                #endregion
 
                 Response.Cookies.Append($"GameByModo_{modoId}", listSessionJson, new CookieOptions
                 {
@@ -310,7 +304,7 @@ namespace EspecificWordle.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error al guardar cookie: {ex.Message}");
+                throw new Exception($"Error al guardar cookie", ex);
             }
         }
 
