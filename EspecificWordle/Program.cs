@@ -27,8 +27,7 @@ builder.Services.AddDbContext<WordGameContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DatabaseConnection"))
 );
 
-// Configuración de Cookies seguras
-builder.Services.ConfigureApplicationCookie(options =>
+builder.Services.AddAntiforgery(options =>
 {
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     options.Cookie.HttpOnly = true;
@@ -47,37 +46,12 @@ app.UseRouting();
 // Encabezados
 app.Use(async (context, next) =>
 {
+    context.Response.Headers.Append("Content-Security-Policy", "form-action 'self'; frame-ancestors 'none';");
     context.Response.Headers.Append("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
     context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
     context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
     context.Response.Headers.Append("X-Frame-Options", "SAMEORIGIN");
     context.Response.Headers.Append("Cross-Origin-Resource-Policy", "same-origin");
-
-    if (!app.Environment.IsDevelopment())
-    {
-        context.Response.Headers.Append("Content-Security-Policy",
-            "default-src 'self' https://adivinalapalabra-fnb3.onrender.com; " +
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval' " +
-                "https://adivinalapalabra-fnb3.onrender.com " +
-                "https://kit.fontawesome.com " +
-                "https://ka-f.fontawesome.com " +
-                "https://ajax.googleapis.com " +
-                "https://cdn.jsdelivr.net " +
-                "https://cdnjs.cloudflare.com; " +
-            "style-src 'self' 'unsafe-inline' " +
-                "https://adivinalapalabra-fnb3.onrender.com " +
-                "https://ka-f.fontawesome.com; " +
-            "font-src 'self' https://ka-f.fontawesome.com data:; " +
-            "img-src 'self' data: https://adivinalapalabra-fnb3.onrender.com; " +
-            "connect-src 'self' https://adivinalapalabra-fnb3.onrender.com " +
-                "https://api.example.com " +
-                "https://ka-f.fontawesome.com " +
-                "wss://adivinalapalabra-fnb3.onrender.com " +
-                "https://cdnjs.cloudflare.com; " +
-            "frame-src 'self'; " +
-            "object-src 'none'; " +
-            "base-uri 'none';");
-    }
 
     await next();
 });
