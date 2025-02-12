@@ -1,4 +1,6 @@
-﻿namespace EspecificWordle.DTOs
+﻿using DataBase.Models;
+
+namespace EspecificWordle.DTOs
 {
     public class WordDTO
     {
@@ -14,8 +16,8 @@
 
         public string EjemploUso { get; set; }
 
-        public string Sinonimos { get; set; }
+        public List<Sinonimo> Sinonimos { get; set; }
 
-        public string Antonimos { get; set; }
+        public List<Antonimo> Antonimos { get; set; }
     }
 }

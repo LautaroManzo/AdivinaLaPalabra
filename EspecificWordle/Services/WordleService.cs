@@ -79,8 +79,8 @@ namespace EspecificWordle.Services
                     PalabraEn = wm.PalabraEn.Descripcion,
                     Pista = wm.Pista.Descripcion,
                     EjemploUso = wm.Uso.Descripcion,
-                    Sinonimos = string.Join(", ", wm.Sinonimo.Select(s => s.Descripcion.ToLower())),
-                    Antonimos = string.Join(", ", wm.Antonimo.Select(a => a.Descripcion.ToLower()))
+                    Sinonimos = wm.Sinonimo.Count > 0 ? wm.Sinonimo.ToList() : new List<Sinonimo>(),
+                    Antonimos = wm.Antonimo.Count > 0 ? wm.Antonimo.ToList() : new List<Antonimo>()
                 }).FirstOrDefault();
 
             return dto;

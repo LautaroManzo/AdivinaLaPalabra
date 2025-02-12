@@ -5,37 +5,44 @@
 
         <div class="modal-body d-flex flex-column justify-content-center align-items-center p-0">
 
-            <div class="div-content-modal d-flex flex-column w-100 gap-3">
-                
-                <div class="div-instrucciones d-flex flex-column gap-3">
+            <div class="div-content-modal d-flex flex-column w-100 gap-3 h-100 justify-content-between align-items-start">
 
-                    <div class="div-btn-close d-flex justify-content-end mb-4">
+                <div class="d-flex flex-column w-100 gap-4">
+
+                    <div class="div-btn-close d-flex justify-content-between">
+                        <h2 style="font-size: 24px;font-weight: 500;">
+                            ¿Cómo jugar?
+                        </h2>
                         <button type="button" class="btn btn-close-modal" data-bs-dismiss="modal" aria-label="Close">
                             <i class="fa-solid fa-xmark fa-lg"></i>
                         </button>
                     </div>
 
                     <div class="div-game">
-                        <h1 class="text-muted title-game">¿Cómo jugar?</h1>
-                        <div>
-                            <p>Tenés 5 intentos para adivinar la palabra según el modo de juego.</p>
-                        </div>
+                        <p class="text-muted" style="font-size: 15px;">Tenés 5 intentos para adivinar la palabra según el modo de juego.</p>
                     </div>
 
-                    <div>
-                        <div class="text-muted div-example d-flex">
+                </div>
+
+                <div class="div-instrucciones flex-grow-1 d-flex flex-column justify-content-evenly gap-3">
+
+                    <div class="d-flex flex-column gap-2">
+                        <div class="div-example d-flex flex-column gap-2">
+
                             <h2>Ejemplo</h2>
-                            <div class="word-example d-flex align-items-center gap-2">
-                                <div class="input-success text-center">P</div>
-                                <div class="input-medium text-center">U</div>
-                                <div class="input-gray text-center">E</div>
-                                <div class="input-gray text-center">R</div>
-                                <div class="input-medium text-center">T</div>
-                                <div class="input-gray text-center">A</div>
+
+                            <div class="word-example d-flex justify-content-center align-items-center gap-2">
+                                <div class="input-success d-flex justify-content-center align-items-center shadow-sm">P</div>
+                                <div class="input-medium d-flex justify-content-center align-items-center shadow-sm">U</div>
+                                <div class="input-gray d-flex justify-content-center align-items-center shadow-sm">E</div>
+                                <div class="input-gray d-flex justify-content-center align-items-center shadow-sm">R</div>
+                                <div class="input-medium d-flex justify-content-center align-items-center shadow-sm">T</div>
+                                <div class="input-gray d-flex justify-content-center align-items-center shadow-sm">A</div>
                             </div>
+
                         </div>
 
-                        <ul class="ul-references p-0 m-0">
+                        <ul class="ul-references p-0 m-0 text-muted">
                             <li class="d-flex">
                                 <div>
                                     <i class="fa-solid fa-circle fa-xs icon-success">&nbsp;</i>
@@ -55,19 +62,22 @@
                                 La letra no está en la palabra.
                             </li>
                         </ul>
+
                     </div>
 
                     <div class="div-pista">
-                        <h2 class="text-muted title-pista">Pistas</h2>
-                        <p>Si te quedas sin ideas, hay una pista con una breve descripción de la palabra y un tiempo limitado para leerla.</p>
+                        <h2 class="title-pista">Pistas</h2>
+                        <p class="text-muted">Si te quedas sin ideas, hay una pista con una breve descripción de la palabra y un tiempo limitado para leerla (Lo vas a ver como una tecla más en el teclado).</p>
                     </div>
 
-                    <div class="div-claves">
-                        <h2 class="text-muted title-claves">Datos claves</h2>
-                        <ul class="ul-claves m-0">
-                            <li>La palabra a adivinar depende del modo de juego.</li>
-                            <li>Solo se permiten palabras que existan.</li>
-                            <li>Cada modo de juego actualiza la palabra diaria a las 00:00.</li>
+                    <div class="div-claves shadow">
+                        <h2 class="title-claves">Datos claves</h2>
+                        <ul class="ul-claves m-0 text-muted d-flex flex-column gap-2">
+                            <li>. Solo se permiten palabras que existan.</li>
+                            <li>. La palabra a adivinar depende del modo de juego.</li>
+                            <li>. Cada modo de juego actualiza la palabra diaria a las 00 <span onclick="resetGame()">:</span> 00.</li>
+                            <li>. El modo de juego <strong>Ciencia</strong> cubre una amplia variedad de temas relacionados.</li>
+                            <li>. El modo de juego <strong>Naturaleza</strong> incluye categorías como animales, plantas y árboles.</li>
                         </ul>
                     </div>
 

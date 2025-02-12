@@ -1,4 +1,6 @@
-﻿namespace EspecificWordle.Models.Wordle
+﻿using DataBase.Models;
+
+namespace EspecificWordle.Models.Wordle
 {
     public class ResultViewModel
     {
@@ -8,9 +10,9 @@
 
         public string Definicion { get; set; }
 
-        public string Sinonimos { get; set; }
+        public List<Sinonimo> Sinonimos { get; set; }
 
-        public string Antonimos { get; set; }
+        public List<Antonimo> Antonimos { get; set; }
 
         public string PalabraEn { get; set; }
 

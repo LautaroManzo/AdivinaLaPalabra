@@ -8,103 +8,115 @@
 
         <div class="modal-body d-flex flex-column justify-content-center align-items-center p-0">
 
-            <div class="div-content-modal d-flex flex-column w-100 gap-3">
+            <div class="div-content-modal d-flex flex-column w-100 gap-3 h-100 justify-content-between pt-0 align-items-start">
 
-                <div>
-
-                    <div class="div-btn-close d-flex justify-content-end mb-4">
+                <div class="d-flex flex-column w-100 gap-3">
+                    
+                    <div class="div-btn-close d-flex justify-content-between p-2" style="border-bottom: 1px solid var(--hover-color);">
+                        <div class="div-modo col-6 d-flex">
+                            <i>@Model.ModoDescripcion</i>
+                        </div>
                         <button type="button" class="btn btn-close-modal" data-bs-dismiss="modal" aria-label="Close">
                             <i class="fa-solid fa-xmark fa-lg"></i>
                         </button>
                     </div>
 
-                    <div class="div-result d-flex">
+                    <div class="mb-0 p-2 text-center alert alert-@(Model.Result == 1 ? "success" : "danger")" role="alert">
+                        @Model.Intento&nbsp;
+                    </div>
 
-                        <div class="col-6">
+                </div>
+
+                <div class="div-details flex-grow-1 d-flex flex-column justify-content-center gap-4">
+
+                    <div class="div-word-def d-flex flex-column">
+
+                        <div class="div-content-word-def d-flex flex-column gap-3">
+
+                            <div class="div-word d-flex flex-column gap-3">
+
+                                <div>
+                                    <span class="word-es">@Model.Palabra</span><sup class="shadow-sm sup-es">ES</sup>
+                                </div>
+
+                                <div>
+                                    <span class="text-muted word-en" style="font-weight:400; font-size:26px;">@Model.PalabraEn</span><sup class="shadow-sm sup-en" style="font-size: 14px;">EN</sup>
+                                </div>
+
+                            </div>
+
+                            <div class="div-def">
+                                <div class="text-muted info-small">Definición</div>
+                                <span class="span-def">
+                                    @Html.Raw(Model.Definicion.Replace("\n", "<br>"))
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.EjemploUso))
+                    {
+                        <div class="div-use pb-2">
+                            <div class="text-muted info-small">Ejemplo de uso</div>
                             <span>
-                                @Model.Intento&nbsp;
-                            </span>
-
-                            <span class="text-muted">
-                                @(Model.Result == 1 ? "ganaste" : "perdiste")
+                                @Model.EjemploUso
                             </span>
                         </div>
+                    }
 
-                        <div class="div-modo col-6 d-flex justify-content-end">
-                            <i>@Model.ModoDescripcion</i>
+                    @if (Model.Sinonimos.Count > 0 || Model.Antonimos.Count > 0)
+                    {
+                        <div class="div-sin-ant d-flex gap-3 pb-2">
+
+                            @if (Model.Sinonimos.Count > 0)
+                            {
+                                <div class="col-6">
+                                    <div class="text-muted info-small" style="font-size: 10px;">Sinónimos</div>
+                                    <div class="d-flex flex-row gap-2">
+                                        @foreach (var sinoninmo in Model.Sinonimos) {
+                                            <span class="shadow-sm" style="background-color: white;padding: 5px 10px;border-radius: 10px;">
+                                                @sinoninmo.Descripcion
+                                            </span>
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+                            @if (Model.Antonimos.Count > 0)
+                            {
+                                <div class="col-6">
+                                    <div class="text-muted info-small" style="font-size: 10px;">Antónimos</div>
+                                    <div class="d-flex flex-row gap-2">
+                                        @foreach (var antonimo in Model.Antonimos)
+                                        {
+                                            <span class="shadow-sm" style="background-color: white;padding: 5px 10px;border-radius: 10px;">
+                                                @antonimo.Descripcion
+                                            </span>
+                                        }                                
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    }
+
+                    <div>
+                        <div class="div-modal-modos d-flex gap-2">
+                            <button type="button" onclick="redirectByMode('Aleatoria')" class="btn-modo form-control form-control-lg rounded-1 shadow-sm pt-0 pb-0">Aleatoria</button>
+                            <button type="button" onclick="redirectByMode('Ciencia')" class="btn-modo form-control form-control-lg rounded-1 shadow-sm pt-0 pb-0">Ciencia</button>
+                            <button type="button" onclick="redirectByMode('Naturaleza')" class="btn-modo form-control form-control-lg rounded-1 shadow-sm pt-0 pb-0">Naturaleza</button>
                         </div>
 
-                    </div>
-
-                </div>
-
-                <div class="div-word-def d-flex flex-column">
-
-                    <div class="div-content-word-def d-flex flex-column gap-3">
-
-                        <div class="div-word d-flex">
-                            <span class="col-6">@Model.Palabra<sup>ES</sup></span>
-                            <span class="col-6">@Model.PalabraEn<sup>EN</sup></span>
-                        </div>
-
-                        <div class="div-def">
-                            <span class="span-def">
-                                @Html.Raw(Model.Definicion.Replace("\n", "<br>"))
-                            </span>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                @if (!string.IsNullOrEmpty(Model.EjemploUso))
-                {
-                    <div class="div-use pb-2">
-                        <div class="text-muted info-small">Ejemplo de uso</div>
-                        <span>
-                            @Model.EjemploUso
-                        </span>
-                    </div>
-                }
-
-                @if (!string.IsNullOrEmpty(Model.Sinonimos) || !string.IsNullOrEmpty(Model.Antonimos))
-                {
-                    <div class="div-sin-ant d-flex gap-3 pb-2">
-
-                        @if (!string.IsNullOrEmpty(Model.Sinonimos))
-                        {
-                            <div class="col-6">
-                                <div class="text-muted info-small">Sinónimos</div>
-                                <span>
-                                    @Model.Sinonimos
-                                </span>
+                        <div title="Cuenta regresiva" class="div-parent-countdown pt-2">
+                            <div id="countdown" class="text-muted d-flex flex-column align-items-center">
+                                <span>Próxima palabra en</span>
+                                <span id="time-remaining"></span>
                             </div>
-                        }
-
-                        @if (!string.IsNullOrEmpty(Model.Antonimos))
-                        {
-                            <div class="col-6">
-                                <div class="text-muted info-small">Antónimos</div>
-                                <span>
-                                    @Model.Antonimos
-                                </span>
-                            </div>
-                        }
-
+                        </div>
                     </div>
-                }
 
-                <div class="div-buttons d-flex gap-2 pt-3">
-                    <button type="button" onclick="redirectByMode('Aleatoria')" class="btn-modo form-control form-control-lg rounded-1">Aleatoria</button>
-                    <button type="button" onclick="redirectByMode('Ciencia')" class="btn-modo form-control form-control-lg rounded-1">Ciencia</button>
-                    <button type="button" onclick="redirectByMode('Naturaleza')" class="btn-modo form-control form-control-lg rounded-1">Naturaleza</button>
-                </div>
-
-                <div title="Cuenta regresiva" class="div-parent-countdown">
-                    <div id="countdown" class="text-muted d-flex flex-column align-items-center">
-                        <span>Próxima palabra en</span>
-                        <span id="time-remaining"></span>
-                    </div>
                 </div>
 
             </div>

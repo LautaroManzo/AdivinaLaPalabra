@@ -88,11 +88,6 @@ html, body, form, main, .div-contenedor {
     border-right:none;
 }
 
-#btn-reset {
-    font-size: xx-small !important;
-    padding-left: 1.5em !important;
-}
-
 /* Wordle */
 
 .div-wordle {
@@ -331,28 +326,17 @@ html, body, form, main, .div-contenedor {
 
 .div-modo i {
     font-size: 14px;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     font-weight: 600;
 }
 
 .info-small {
-    font-size: x-small;
-    padding-bottom: 10px;
-}
-
-.div-result span {
-    font-size:14px;
-    color: black;
-}
-
-.div-word-def {
-    border-bottom: 1px solid var(--hover-color);
-    border-top: 1px solid var(--hover-color);
-    padding: 20px 0px;
+    font-size: small;
+    padding-bottom: 5px;
 }
 
 .span-def {
-    font-size: 20px;
+    font-size: 22px;
 }
 
 .div-word {
@@ -370,15 +354,14 @@ html, body, form, main, .div-contenedor {
     letter-spacing: 5px;
     line-height: 40px;
     text-wrap: auto;
-}
-
-.div-sin-ant {
-    border-bottom: 1px solid var(--hover-color);
+    font-weight: 700;
+    padding-right: 5px;
 }
 
 .div-sin-ant div span {
-    font-size: 14px;
+    font-size: 12px;
     color: black;
+    font-weight: 500;
 }
 
 .div-sin-ant div span small {
@@ -386,12 +369,8 @@ html, body, form, main, .div-contenedor {
     letter-spacing: 1px;
 }
 
-.div-use {
-    border-bottom: 1px solid var(--hover-color);
-}
-
 .div-use span {
-    font-size: 16px;
+    font-size: 18px;
     color: black;
 }
 
@@ -401,10 +380,6 @@ html, body, form, main, .div-contenedor {
 
 #countdown {
     font-size: 10px;
-    letter-spacing: 1px;
-}
-
-.div-buttons {
     letter-spacing: 1px;
 }
 
@@ -424,7 +399,6 @@ html, body, form, main, .div-contenedor {
     padding: 2%;
     max-width: 600px;
     letter-spacing: 1px;
-    background-color: var(--background-color);
 }
 
 .btn-close-modal {
@@ -450,14 +424,17 @@ html, body, form, main, .div-contenedor {
 }
 
 .div-modal-modos button {
-    font-size: 1.2rem;
-    font-weight: 500;
+    font-size: 1rem;
 }
 
 sup {
-    letter-spacing: 2px;
-    background-color: ghostwhite;
-    padding: 2px;
+    color: white;
+    letter-spacing: 0px;
+    border-radius: 8px;
+    padding: 3px 7px;
+    background-color: var(--foco-color);
+    font-size: 16px;
+    font-weight: 100;
 }
 
 /* Iconos */
@@ -469,41 +446,30 @@ sup {
 
 /* Modal de instrucciones */
 
-.div-game div {
-    border-top: 1px solid var(--border-color);
-}
-
 .div-game div p {
     font-size: medium;
-    padding: 5px 0 5px 0;
-}
-
-.title-game {
-    font-size: 25px;
-    font-weight: bold;
-    padding: 5px 0 5px 0;
 }
 
 .div-example {
-    border-bottom: 1px solid var(--border-color);
     padding-bottom: 5px;
     column-gap: 20px;
 }
 
 .div-example h2 {
-    font-size: 25px;
-    font-weight: bold;
+    font-size: 18px;
+    font-weight: 500;
 }
 
 .word-example div {
-    width: 20px;
+    width: 30px;
+    height: 30px;
     border-radius: 2px;
+    font-weight: 600;
 }
 
 .ul-references {
     list-style-type: none;
-    font-size: medium;
-    padding: 5px 0 5px 0;
+    font-size: 15px;
 }
 
 .ul-references li {
@@ -511,28 +477,30 @@ sup {
 }
 
 .title-pista {
-    font-size: 25px;
-    font-weight: bold;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 5px;
+    font-size: 18px;
+    font-weight: 500;
 }
 
 .div-pista p {
-    font-size: medium;
+    font-size: 15px;
     padding: 5px 0 5px 0;
 }
 
 .title-claves {
-    font-size: 25px;
-    font-weight: bold;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 5px;
+    font-size: 18px;
+    font-weight: 500;
 }
 
 .ul-claves {
     list-style-type: none;
+    font-size: 15px;
     padding: 5px 0 5px 0;
-    font-size: medium;
+}
+
+.div-claves {
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
 }
 
 /* Otros estilos */
@@ -576,9 +544,51 @@ sup {
     font-weight: 500;
 }
 
-/* Resolución menor a 276px */
+/* Vista contacto */
 
-@media (max-width: 276px) {
+.contact-link {
+    display: flex;
+    width: 100%;
+    gap: 12px;
+    align-items: center;
+    text-decoration: none;
+    font-weight: 600;
+    color: black;
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+.icon-style {
+    font-size: 1.5em;
+    padding: 5px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#ul-contact a:hover {
+    background-color: white;
+    border-color: white;
+    border-radius:10px;
+    color:black;
+}
+
+@media (max-width: 400px) {
+    .div-details {
+        justify-content: flex-start !important;
+        gap: 1rem !important;
+    }
+
+    .div-sin-ant {
+        flex-direction: column !important;
+    }
+
+}
+
+/* Resolución menor a 300px */
+
+@media (max-width: 300px) {
 
     .titulo {
         font-size: 16px;
@@ -611,47 +621,36 @@ sup {
 
     /* Estilos dentro del modal */
 
+    .word-es {
+        font-size:30px !important;
+    }
+
+    .sup-es {
+        font-size: 14px !important;
+    }
+
+    .word-en {
+        font-size: 16px !important;
+    }
+
+    .sup-en {
+        font-size: 12px !important;
+    }
+
+    .span-def {
+        font-size:18px !important;
+    }
+
+    .div-use span {
+        font-size: 16px !important;
+    }
+
     .div-modal-modos {
         flex-direction: column;
     }
 
-    .div-modo i {
-        font-size: 12px;
-    }
-
-    .div-word {
-        flex-direction: column;
-        gap: 1em;
-    }
-
-        .div-word span {
-            font-size: 30px;
-            width: 100%;
-            text-align: center;
-        }
-
-    .div-def {
-        text-align: center;
-    }
-
-    .span-def span {
-        font-size: 16px;
-    }
-
-    .div-sin-ant div span, .div-use span {
-        font-size: 14px;
-    }
-
-    /* Estilos para modal de instrucciones */
-
-    .title-game, .title-pista, .title-claves {
-        text-align: center;
-    }
-
-    .div-example {
-        flex-direction: column;
-        align-items: center;
-        gap: 5px;
+    .div-modal-modos button {
+        font-size: 1rem !important;
     }
 }
 

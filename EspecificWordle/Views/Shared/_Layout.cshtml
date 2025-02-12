@@ -50,9 +50,10 @@
 </html>
 
 <script>
-    let enterUrl = '@Html.Raw(Url.Action("Enter", "Wordle"))';
+    const enterUrl = '@Html.Raw(Url.Action("Enter", "Wordle"))';
     const instruccionesUrl = '@Url.Action("Instrucciones", "Wordle")';
     var indexUrl = '@Url.Action("Index", "Wordle", new { modoDescripcion = "__MODODESCRIPCION__" })';
-    var resultModalUrl = '@Url.Action("Result", "Wordle")';
-    var resetGameUrl = '@Url.Action("ResetGame", "Wordle")';
+    const resultModalUrl = '@Url.Action("Result", "Wordle")';
+    const resetGameUrl = '@Url.Action("ResetGame", "Wordle")';
+    const contactoUrl = '@Url.Action("Contacto", "Wordle")';
 </script>

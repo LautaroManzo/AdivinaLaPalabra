@@ -297,9 +297,9 @@ function showInstrucciones() {
     });
 }
 
-function sendEmail(body) {
+function sendEmail(body, report = false) {
     let email = "test@test.com";
-    let subject = body ? "Reporte de error - Adiviná la palabra" : "Contacto - Adiviná la palabra";
+    let subject = report ? "Reporte de error - Adiviná la palabra" : "Contacto - Adiviná la palabra";
 
     let mailtoURL = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
 
@@ -326,6 +326,38 @@ function updateCountdown() {
     $('#time-remaining').text(
         `${String(hours).padStart(2, '0')} : ${String(minutes).padStart(2, '0')} : ${String(seconds).padStart(2, '0')}`
     );
+}
+
+function showContacto() {
+
+    $.ajax({
+        url: contactoUrl,
+        method: 'GET',
+        success: function (data) {
+
+            let divModal = $("#contactoModal");
+            divModal.attr('role', 'dialog');
+            divModal.addClass('modal fade');
+
+            divModal.append(data);
+
+            document.getElementById('contactoModal').addEventListener('hidden.bs.modal', function () {
+
+                $(".modal-dialog").remove();
+
+                if (document.activeElement)
+                    document.activeElement.blur();
+            });
+
+            // Close sidebar
+            $('#sidebar').offcanvas('hide');
+
+            divModal.modal('show');
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error('Error al realizar la solicitud AJAX:', errorThrown);
+        }
+    });
 }
 
 function redirectByMode(modoDescripcion) {

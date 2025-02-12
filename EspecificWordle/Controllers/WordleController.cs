@@ -223,7 +223,7 @@ namespace EspecificWordle.Controllers
 
             var resultado = new ResultViewModel()
             {
-                Intento = result == 1 ? ResultadoSegunIntento(intento) : "Que mal..",
+                Intento = ResultadoSegunIntento(intento, result),
                 Palabra = aleatoriaDTO.Palabra,
                 Definicion = aleatoriaDTO.Definicion,
                 Sinonimos = aleatoriaDTO.Sinonimos,
@@ -243,17 +243,32 @@ namespace EspecificWordle.Controllers
             return PartialView("_Instrucciones");
         }
 
-        private string ResultadoSegunIntento(int intento)
+        [HttpGet]
+        public IActionResult Contacto()
         {
-            var resultados = new Dictionary<int, string>
+            return PartialView("_Contacto");
+        }
+
+        private string ResultadoSegunIntento(int intento, int result)
+        {
+            var exitoso = new Dictionary<int, string>
             {
-                { 1, SystemConstants.EstadoResult.Excelente }, { 2, SystemConstants.EstadoResult.Buenisimo },
-                { 3, SystemConstants.EstadoResult.Aceptable }, { 4, SystemConstants.EstadoResult.Normal },
-                { 5, SystemConstants.EstadoResult.Mejorable }
+                { 1, SystemConstants.EstadoResultadoExitoso.Impecable }, { 2, SystemConstants.EstadoResultadoExitoso.Experto },
+                { 3, SystemConstants.EstadoResultadoExitoso.Aceptable }, { 4, SystemConstants.EstadoResultadoExitoso.Regular },
+                { 5, SystemConstants.EstadoResultadoExitoso.Justo }
             };
 
-            return resultados[intento];
+            var fallido = new List<string>
+            {
+                SystemConstants.EstadoResultadoFallido.Vergonzoso, SystemConstants.EstadoResultadoFallido.Flojo, SystemConstants.EstadoResultadoFallido.DesastreTotal,
+                SystemConstants.EstadoResultadoFallido.EraFacil, SystemConstants.EstadoResultadoFallido.Perdido,
+                SystemConstants.EstadoResultadoFallido.SobrePensado, SystemConstants.EstadoResultadoFallido.SinPalabras, SystemConstants.EstadoResultadoFallido.MasOnda
+            };
+
+            return result == 1 ? exitoso[intento] : fallido[new Random().Next(fallido.Count)];
         }
+
+
 
         #region Cookies
 
