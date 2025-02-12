@@ -119,7 +119,7 @@ namespace EspecificWordle.Controllers
                     }
                 }
 
-                #region Manejo de letras repetidas
+                #region Manejo de letras repetidas (Buscar otra manera de hacer esto)
 
                 var letrasRepetidasPalabraIngresada = wordleViewModel.PalabraIngresada
                     .GroupBy(letra => letra)
@@ -132,10 +132,23 @@ namespace EspecificWordle.Controllers
                     .Any(grupoLetras => grupoLetras.Count() > 1);
 
                 if (letrasRepetidasPalabraIngresada.Count > 0 && !tieneLetrasRepetidasWordSecret)
+                {
                     foreach (var item in letters)
                         if (letrasRepetidasPalabraIngresada.Contains(item.Letra) && item.Color == SystemConstants.ColorLetra.Amarillo
                             && letters.Any(l => l.Letra == item.Letra && l.Color == SystemConstants.ColorLetra.Verde))
                             item.Color = SystemConstants.ColorLetra.Gris;
+                }
+                else if (letrasRepetidasPalabraIngresada.Count > 0)
+                {
+                    foreach (var letter in letters)
+                    {
+                        var repiteLetra = wordSecret.Count(c => c.ToString() == letter.Letra);
+
+                        if ((wordSecret.Contains(letter.Letra) && repiteLetra == 1) && letrasRepetidasPalabraIngresada.Contains(letter.Letra) && letter.Color == SystemConstants.ColorLetra.Amarillo
+                            && letters.Any(l => l.Letra == letter.Letra && l.Color == SystemConstants.ColorLetra.Verde))
+                            letter.Color = SystemConstants.ColorLetra.Gris;
+                    }
+                }
 
                 #endregion
 
