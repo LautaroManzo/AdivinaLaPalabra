@@ -29,7 +29,7 @@ builder.Services.AddDbContext<WordGameContext>(options =>
 
 builder.Services.AddAntiforgery(options =>
 {
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.Strict;
 });
