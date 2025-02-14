@@ -12,7 +12,7 @@ const connection = new signalR.HubConnectionBuilder()
     .build();
 
 connection.on("RefreshPage", function () {
-    location.reload();
+    resetGame();
 });
 
 connection.start().catch(function (err) {

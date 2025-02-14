@@ -27,13 +27,6 @@ builder.Services.AddDbContext<WordGameContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DatabaseConnection"))
 );
 
-builder.Services.AddAntiforgery(options =>
-{
-    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-    options.Cookie.HttpOnly = true;
-    options.Cookie.SameSite = SameSiteMode.Strict;
-});
-
 var app = builder.Build();
 
 // Manejo de excepciones
