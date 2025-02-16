@@ -290,13 +290,9 @@ namespace EspecificWordle.Controllers
                 var listSession = juegoDictionary[modoId.ToString()];
                 var listSessionJson = JsonConvert.SerializeObject(listSession);
 
-                var fechaActual = DateTimeOffset.UtcNow;
-                var proximaMedianoche = new DateTimeOffset(fechaActual.Year, fechaActual.Month, fechaActual.Day, 0, 0, 0, TimeSpan.Zero).AddDays(1);
-                var duracionHastaMedianoche = proximaMedianoche - fechaActual;
-
                 Response.Cookies.Append($"GameByModo_{modoId}", listSessionJson, new CookieOptions
                 {
-                    Expires = fechaActual.Add(duracionHastaMedianoche),
+                    Expires = DateTime.Now.AddDays(2),
                     HttpOnly = true,
                     Secure = true,
                     SameSite = SameSiteMode.Strict
@@ -314,8 +310,7 @@ namespace EspecificWordle.Controllers
             {
                 if (Request.Cookies.TryGetValue($"GameByModo_{modoId}", out var listSessionJson))
                 {
-                    var listSession = JsonConvert.DeserializeObject<List<Session>>(listSessionJson);
-                    return listSession;
+                    return JsonConvert.DeserializeObject<List<Session>>(listSessionJson);
                 }
 
                 return new List<Session>();

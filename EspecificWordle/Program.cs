@@ -13,6 +13,15 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IWordleService, WordleService>();
 builder.Services.AddSingleton<IRefreshService, RefreshService>();
 
+// Variable de entorno para la conexión a la BD
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+
+if (string.IsNullOrEmpty(connectionString))
+    throw new InvalidOperationException("La variable de entorno 'DB_CONNECTION_STRING' no existe.");
+
+// Agrega la variable de entorno al appsettings
+builder.Configuration["ConnectionStrings:DatabaseConnection"] = connectionString;
+
 // Hangfire
 builder.Services.AddHangfire(config => config.UsePostgreSqlStorage(
     builder.Configuration.GetConnectionString("DatabaseConnection")
