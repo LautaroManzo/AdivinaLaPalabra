@@ -302,7 +302,7 @@ function showInstrucciones() {
 }
 
 function sendEmail(body, report = false) {
-    let email = "test@test.com";
+    let email = "adivina.la.palabra.contact@gmail.com";
     let subject = report ? "Reporte de error - Adiviná la palabra" : "Contacto - Adiviná la palabra";
 
     let mailtoURL = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
