@@ -292,7 +292,7 @@ namespace EspecificWordle.Controllers
 
                 Response.Cookies.Append($"GameByModo_{modoId}", listSessionJson, new CookieOptions
                 {
-                    Expires = DateTime.Now.Date.AddDays(1),
+                    Expires = DateTime.Today.AddHours(23).AddMinutes(59).AddSeconds(59) - TimeSpan.FromHours(3),
                     HttpOnly = true,
                     Secure = true,
                     SameSite = SameSiteMode.Strict
