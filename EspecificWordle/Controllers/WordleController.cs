@@ -290,7 +290,7 @@ namespace EspecificWordle.Controllers
                 var zonaServidor = TimeZoneInfo.Local;
                 var fechaLocal = DateTime.Now;
                 var proximaMedianocheLocal = fechaLocal.Date.AddDays(1);
-                var fechaExpiracionUtc = TimeZoneInfo.ConvertTimeToUtc(proximaMedianocheLocal, zonaServidor);
+                var fechaExpiracionUtc = proximaMedianocheLocal.ToUniversalTime();
 
                 var listSession = juegoDictionary[modoId.ToString()];
                 var listSessionJson = JsonConvert.SerializeObject(listSession);
