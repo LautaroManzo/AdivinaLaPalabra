@@ -287,19 +287,12 @@ namespace EspecificWordle.Controllers
         {
             try
             {
-                #region Cálculo del tiempo de expiración de la cookie, hasta las 00:00
-
-                var fechaActual = DateTime.Now;
-                var proximaMedianoche = fechaActual.Date.AddDays(1);
-
-                #endregion
-
                 var listSession = juegoDictionary[modoId.ToString()];
                 var listSessionJson = JsonConvert.SerializeObject(listSession);
 
                 Response.Cookies.Append($"GameByModo_{modoId}", listSessionJson, new CookieOptions
                 {
-                    Expires = fechaActual.Add(proximaMedianoche - fechaActual).ToUniversalTime(),
+                    Expires = DateTime.Now.Date.AddDays(1).ToUniversalTime(),
                     HttpOnly = true,
                     Secure = true,
                     SameSite = SameSiteMode.Strict
