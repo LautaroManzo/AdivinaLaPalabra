@@ -287,12 +287,17 @@ namespace EspecificWordle.Controllers
         {
             try
             {
+                TimeZoneInfo localTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/Argentina/Buenos_Aires");
+                DateTime localExpiration = DateTime.Today.AddHours(23).AddMinutes(59).AddSeconds(59);
+                localExpiration = DateTime.SpecifyKind(localExpiration, DateTimeKind.Unspecified);
+                DateTime utcExpiration = TimeZoneInfo.ConvertTimeToUtc(localExpiration, localTimeZone);
+
                 var listSession = juegoDictionary[modoId.ToString()];
                 var listSessionJson = JsonConvert.SerializeObject(listSession);
 
                 Response.Cookies.Append($"GameByModo_{modoId}", listSessionJson, new CookieOptions
                 {
-                    Expires = DateTime.Today.AddHours(23).AddMinutes(59).AddSeconds(59) - TimeSpan.FromHours(3),
+                    Expires = utcExpiration,
                     HttpOnly = true,
                     Secure = true,
                     SameSite = SameSiteMode.Strict
