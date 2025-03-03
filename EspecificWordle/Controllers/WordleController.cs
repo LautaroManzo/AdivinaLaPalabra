@@ -287,17 +287,19 @@ namespace EspecificWordle.Controllers
         {
             try
             {
-                TimeZoneInfo localTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/Argentina/Buenos_Aires");
-                DateTime localExpiration = DateTime.Today.AddHours(23).AddMinutes(59).AddSeconds(59);
-                localExpiration = DateTime.SpecifyKind(localExpiration, DateTimeKind.Unspecified);
-                DateTime utcExpiration = TimeZoneInfo.ConvertTimeToUtc(localExpiration, localTimeZone);
+                #region Cálculo del tiempo de expiración de la cookie, hasta las 00:00
+
+                var fechaActual = DateTimeOffset.Now;
+                var proximaMedianoche = fechaActual.Date.AddDays(1);
+
+                #endregion
 
                 var listSession = juegoDictionary[modoId.ToString()];
                 var listSessionJson = JsonConvert.SerializeObject(listSession);
 
                 Response.Cookies.Append($"GameByModo_{modoId}", listSessionJson, new CookieOptions
                 {
-                    Expires = utcExpiration,
+                    Expires = fechaActual.Add(proximaMedianoche - fechaActual),
                     HttpOnly = true,
                     Secure = true,
                     SameSite = SameSiteMode.Strict
