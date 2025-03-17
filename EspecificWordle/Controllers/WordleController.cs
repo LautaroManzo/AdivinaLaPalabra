@@ -287,15 +287,16 @@ namespace EspecificWordle.Controllers
         {
             try
             {
-                DateTime medianoche = DateTime.Now.Date.AddDays(1);
-                TimeSpan tiempoRestante = medianoche - DateTime.Now;
+                DateTimeOffset ahora = DateTimeOffset.Now;
+                DateTimeOffset medianoche = ahora.Date.AddDays(1);
+                TimeSpan tiempoRestante = medianoche - ahora;
 
                 var listSession = juegoDictionary[modoId.ToString()];
                 var listSessionJson = JsonConvert.SerializeObject(listSession);
 
                 Response.Cookies.Append($"GameByModo_{modoId}", listSessionJson, new CookieOptions
                 {
-                    Expires = DateTime.Now.Add(tiempoRestante),
+                    Expires = ahora.Add(tiempoRestante),
                     HttpOnly = true,
                     Secure = true,
                     SameSite = SameSiteMode.Strict
