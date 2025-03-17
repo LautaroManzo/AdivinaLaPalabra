@@ -578,14 +578,19 @@ sup {
     color:black;
 }
 
-@media (max-width: 400px) {
-    .div-details {
-        justify-content: flex-start !important;
-        gap: 1rem !important;
-    }
+@media (max-width: 600px) {
 
     .div-sin-ant {
         flex-direction: column !important;
+    }
+
+}
+
+@media (max-width: 400px) {
+
+    .div-details {
+        justify-content: flex-start !important;
+        gap: 1rem !important;
     }
 
 }
