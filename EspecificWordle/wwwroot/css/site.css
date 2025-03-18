@@ -15,7 +15,7 @@ html {
     background-color: var(--background-color);
     font-size: 14px;
     user-select: none;
-    zoom: 90%;
+    zoom: 110%;
 }
 
 body {
@@ -578,10 +578,14 @@ sup {
     color:black;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 600px), (max-height: 600px) {
 
     .div-sin-ant {
         flex-direction: column !important;
+    }
+
+    html {
+        zoom: 90%;
     }
 
 }

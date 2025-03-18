@@ -77,8 +77,8 @@ using (var scope = app.Services.CreateScope())
     var refreshService = services.GetRequiredService<IRefreshService>();
 
     // Hangfire: Programación de tareas
-    recurringJobManager.AddOrUpdate("UpdateRandomWordDaily", () => wordService.UpdateRandomWordDaily(), "0 3 * * *");
-    recurringJobManager.AddOrUpdate("NotifyRefresh", () => refreshService.NotifyRefresh(), "0 3 * * *");
+    recurringJobManager.AddOrUpdate("UpdateRandomWordDaily", () => wordService.UpdateRandomWordDaily(), "0 0 * * *");
+    recurringJobManager.AddOrUpdate("NotifyRefresh", () => refreshService.NotifyRefresh(), "0 0 * * *");
 }
 
 // Rutas y SignalR
