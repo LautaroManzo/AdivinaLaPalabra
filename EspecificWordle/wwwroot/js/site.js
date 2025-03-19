@@ -315,7 +315,9 @@ function sendEmail(body, report = false) {
 
 function updateCountdown() {
     const now = new Date();
-    let targetTime = new Date().setHours(21, 0, 0, 0);
+    let targetTime = new Date();
+    targetTime.setHours(21, 0, 0, 0);
+
     if (now > targetTime) targetTime.setDate(targetTime.getDate() + 1);
 
     const timeRemaining = targetTime - now;
